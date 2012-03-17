@@ -12,6 +12,9 @@ public:
     WidgetTestOpenGL(QWidget* inParent = 0);
     ~WidgetTestOpenGL();
 
+public slots:
+    void onPulse();
+
 protected:
     virtual void resizeGL(int inWidth, int inHeight);
     virtual void initializeGL();

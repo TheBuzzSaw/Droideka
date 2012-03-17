@@ -3,12 +3,14 @@
 
 WindowTestOpenGL::WindowTestOpenGL()
 {
-    mGLW = new WidgetTestOpenGL;
+    mGLW = new WidgetTestOpenGL(this);
 
     QHBoxLayout* layout = new QHBoxLayout;
+    layout->setMargin(0);
     layout->addWidget(mGLW);
     setLayout(layout);
     resize(QSize(400, 400));
+    setWindowTitle(tr("Droideka"));
 }
 
 void WindowTestOpenGL::keyPressEvent(QKeyEvent* inEvent)

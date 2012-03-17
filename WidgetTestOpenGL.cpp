@@ -6,10 +6,25 @@ WidgetTestOpenGL::WidgetTestOpenGL(QWidget *inParent)
 {
     mRotation = 0.0f;
     setMouseTracking(true);
+
+    QTimer* timer = new QTimer(this);
+    connect(timer, SIGNAL(timeout()), this, SLOT(onPulse()));
+    timer->start(25);
 }
 
 WidgetTestOpenGL::~WidgetTestOpenGL()
 {
+}
+
+void WidgetTestOpenGL::onPulse()
+{
+    mRotation += 1.0f;
+
+    if (mRotation > 180.0f) mRotation -= 360.0f;
+
+    mModelViewMatrix.loadIdentity();
+    mModelViewMatrix.rotateZ(mRotation);
+    updateGL();
 }
 
 void WidgetTestOpenGL::resizeGL(int inWidth, int inHeight)
@@ -54,18 +69,8 @@ void WidgetTestOpenGL::paintGL()
 
 void WidgetTestOpenGL::mousePressEvent(QMouseEvent* inEvent)
 {
-    mRotation -= 5.0f;
-
-    mModelViewMatrix.loadIdentity();
-    mModelViewMatrix.rotateZ(mRotation);
-    updateGL();
 }
 
 void WidgetTestOpenGL::mouseMoveEvent(QMouseEvent* inEvent)
 {
-    mRotation += 1.0f;
-
-    mModelViewMatrix.loadIdentity();
-    mModelViewMatrix.rotateZ(mRotation);
-    updateGL();
 }
