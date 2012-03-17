@@ -11,8 +11,13 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        LoginWindow.cpp
+        LoginWindow.cpp \
+    WindowTestOpenGL.cpp \
+    WidgetTestOpenGL.cpp
 
-HEADERS  += LoginWindow.h
+HEADERS  += LoginWindow.h \
+    WindowTestOpenGL.hpp \
+    WidgetTestOpenGL.hpp \
+    Matrix4x4.hpp
 
 FORMS    += LoginWindow.ui
