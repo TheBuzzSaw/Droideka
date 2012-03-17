@@ -8,6 +8,7 @@ WindowTestOpenGL::WindowTestOpenGL()
     QHBoxLayout* layout = new QHBoxLayout;
     layout->addWidget(mGLW);
     setLayout(layout);
+    resize(QSize(400, 400));
 }
 
 void WindowTestOpenGL::keyPressEvent(QKeyEvent* inEvent)
