@@ -555,6 +555,11 @@ namespace CGE
 
         inResult[3] = at(3, 0) * inVertex[0] + at(3, 1) * inVertex[1]
             + at(3, 2) * inVertex[2] + at(3, 3) * inVertex[3];
+
+        inResult[0] /= inResult[3];
+        inResult[1] /= inResult[3];
+        inResult[2] /= inResult[3];
+        inResult[3] = 1.0f;
     }
 
     /// This finds the inverse matrix and stores it into inMatrix.
@@ -782,5 +787,6 @@ namespace CGE
 }
 
 typedef CGE::Matrix4x4<float> mat4f;
+typedef CGE::Matrix4x4<double> mat4d;
 
 #endif

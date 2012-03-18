@@ -2,7 +2,12 @@
 #include <QtOpenGL>
 
 WidgetTestOpenGL::WidgetTestOpenGL(QWidget *inParent)
-    : QGLWidget(QGLFormat(QGL::AlphaChannel | QGL::DepthBuffer | QGL::DoubleBuffer | QGL::DeprecatedFunctions), inParent)
+    : QGLWidget(QGLFormat(QGL::AlphaChannel
+                          | QGL::Rgba
+                          | QGL::DepthBuffer
+                          | QGL::DoubleBuffer
+                          | QGL::DeprecatedFunctions
+                          ), inParent)
 {
     mRotation = 0.0f;
     setMouseTracking(true);
@@ -17,6 +22,7 @@ WidgetTestOpenGL::WidgetTestOpenGL(QWidget *inParent)
 
 WidgetTestOpenGL::~WidgetTestOpenGL()
 {
+    mBuffer.destroy();
 }
 
 void WidgetTestOpenGL::onPulse()
@@ -81,8 +87,10 @@ void WidgetTestOpenGL::paintGL()
 
 void WidgetTestOpenGL::mousePressEvent(QMouseEvent* inEvent)
 {
+    (void)inEvent;
 }
 
 void WidgetTestOpenGL::mouseMoveEvent(QMouseEvent* inEvent)
 {
+    (void)inEvent;
 }
