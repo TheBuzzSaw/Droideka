@@ -22,8 +22,11 @@ protected:
     virtual void paintGL();
     virtual void mousePressEvent(QMouseEvent* inEvent);
     virtual void mouseMoveEvent(QMouseEvent* inEvent);
+    virtual void keyPressEvent(QKeyEvent* inEvent);
 
 private:
+    void testFolders();
+
     CGE::Matrix4x4<float> mProjectionMatrix;
     CGE::Matrix4x4<float> mModelViewMatrix;
     float mRotation;

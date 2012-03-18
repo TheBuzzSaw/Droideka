@@ -14,13 +14,17 @@ SOURCES += main.cpp\
         LoginWindow.cpp \
     WidgetTestOpenGL.cpp \
     SceneGraphNode.cpp \
-    CardNode.cpp
+    CardNode.cpp \
+    CardModel.cpp
 
 HEADERS  += LoginWindow.h \
     WidgetTestOpenGL.hpp \
     Matrix4x4.hpp \
     SceneGraphNode.hpp \
     Vectors.hpp \
-    CardNode.hpp
+    CardNode.hpp \
+    CardModel.hpp
 
 FORMS    += LoginWindow.ui
+
+RESOURCES +=

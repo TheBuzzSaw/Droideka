@@ -94,3 +94,27 @@ void WidgetTestOpenGL::mouseMoveEvent(QMouseEvent* inEvent)
 {
     (void)inEvent;
 }
+
+void WidgetTestOpenGL::keyPressEvent(QKeyEvent* inEvent)
+{
+    switch (inEvent->key())
+    {
+    case Qt::Key_Backslash:
+        testFolders();
+        break;
+
+    case Qt::Key_Escape:
+        close();
+        break;
+
+    default:
+        break;
+    }
+}
+
+void WidgetTestOpenGL::testFolders()
+{
+    QDir home = QDir::home();
+    bool success = home.mkpath("Droideka/data/huh");
+    qDebug() << (success ? "WOOT" : "dawww");
+}
