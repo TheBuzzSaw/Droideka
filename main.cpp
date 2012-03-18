@@ -1,12 +1,10 @@
 #include <QtGui/QApplication>
 #include "LoginWindow.h"
-#include "WindowTestOpenGL.hpp"
+#include "WidgetTestOpenGL.hpp"
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    //LoginWindow w;
-    //WindowTestOpenGL w;
     WidgetTestOpenGL w;
     w.show();
     

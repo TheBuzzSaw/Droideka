@@ -7,12 +7,12 @@ WidgetTestOpenGL::WidgetTestOpenGL(QWidget *inParent)
     mRotation = 0.0f;
     setMouseTracking(true);
 
+    setWindowTitle(QString("Droideka"));
+    resize(QSize(400, 400));
+
     QTimer* timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(onPulse()));
     timer->start(25);
-
-    setWindowTitle(tr("Droideka"));
-    resize(QSize(400, 400));
 }
 
 WidgetTestOpenGL::~WidgetTestOpenGL()
@@ -46,6 +46,19 @@ void WidgetTestOpenGL::resizeGL(int inWidth, int inHeight)
 
 void WidgetTestOpenGL::initializeGL()
 {
+    const GLfloat z = -10.0f;
+    GLfloat vertices[] = {
+        1.0f, 1.0f, z,
+        1.0f, -1.0f, z,
+        -1.0f, -1.0f, z,
+        -1.0f, 1.0f, z
+        };
+
+    mBuffer.create();
+    mBuffer.bind();
+    mBuffer.setUsagePattern(QGLBuffer::StaticDraw);
+    mBuffer.allocate(vertices, sizeof(vertices));
+
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
     glFrontFace(GL_CW);
@@ -59,15 +72,11 @@ void WidgetTestOpenGL::paintGL()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glLoadMatrixf(mModelViewMatrix);
-    //glLoadIdentity();
-
-    const float z = -10.0f;
-    glBegin(GL_TRIANGLES);
+    glEnableClientState(GL_VERTEX_ARRAY);
     glColor3f(1.0f, 0.0f, 0.0f);
-    glVertex3f(-1.0f, 0.0f, z);
-    glVertex3f(0.0f, 1.0f, z);
-    glVertex3f(1.0f, 0.0f, z);
-    glEnd();
+    glVertexPointer(3, GL_FLOAT, 0, 0);
+    glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
+    glDisableClientState(GL_VERTEX_ARRAY);
 }
 
 void WidgetTestOpenGL::mousePressEvent(QMouseEvent* inEvent)

@@ -3,6 +3,7 @@
 
 #include "Matrix4x4.hpp"
 #include <QGLWidget>
+#include <QGLBuffer>
 
 class WidgetTestOpenGL : public QGLWidget
 {
@@ -26,6 +27,7 @@ private:
     CGE::Matrix4x4<float> mProjectionMatrix;
     CGE::Matrix4x4<float> mModelViewMatrix;
     float mRotation;
+    QGLBuffer mBuffer;
 };
 
 #endif
