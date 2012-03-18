@@ -10,6 +10,9 @@ WidgetTestOpenGL::WidgetTestOpenGL(QWidget *inParent)
     QTimer* timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(onPulse()));
     timer->start(25);
+
+    setWindowTitle(tr("Droideka"));
+    resize(QSize(400, 400));
 }
 
 WidgetTestOpenGL::~WidgetTestOpenGL()
