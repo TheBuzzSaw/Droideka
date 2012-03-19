@@ -23,7 +23,7 @@ protected:
 
     QGLBuffer mBuffer;
     GLenum mDataType;
-    GLuint mBytesPerDatum;
+    GLuint mBytesPerValue;
     GLuint mValuesPerVertex;
     GLuint mVertexCount;
     GLuint mValueCount;

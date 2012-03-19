@@ -12,9 +12,6 @@ WidgetTestOpenGL::WidgetTestOpenGL(QWidget *inParent)
     mRotation = 0.0f;
     setMouseTracking(true);
 
-    setWindowTitle(QString("Droideka"));
-    resize(QSize(640, 480));
-
     QTimer* timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(onPulse()));
     timer->start(25);
@@ -90,23 +87,6 @@ void WidgetTestOpenGL::mousePressEvent(QMouseEvent* inEvent)
 void WidgetTestOpenGL::mouseMoveEvent(QMouseEvent* inEvent)
 {
     (void)inEvent;
-}
-
-void WidgetTestOpenGL::keyPressEvent(QKeyEvent* inEvent)
-{
-    switch (inEvent->key())
-    {
-    case Qt::Key_Backslash:
-        testFolders();
-        break;
-
-    case Qt::Key_Escape:
-        close();
-        break;
-
-    default:
-        break;
-    }
 }
 
 void WidgetTestOpenGL::testFolders()

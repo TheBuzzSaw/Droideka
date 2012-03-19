@@ -18,7 +18,8 @@ SOURCES += main.cpp\
     CardModel.cpp \
     TrackballCamera.cpp \
     VertexBufferObject.cpp \
-    IndexBufferObject.cpp
+    IndexBufferObject.cpp \
+    MainWindow.cpp
 
 HEADERS  += LoginWindow.h \
     WidgetTestOpenGL.hpp \
@@ -29,7 +30,8 @@ HEADERS  += LoginWindow.h \
     CardModel.hpp \
     TrackballCamera.hpp \
     VertexBufferObject.hpp \
-    IndexBufferObject.hpp
+    IndexBufferObject.hpp \
+    MainWindow.hpp
 
 FORMS    += LoginWindow.ui
 

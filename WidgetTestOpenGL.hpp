@@ -22,7 +22,6 @@ protected:
     virtual void paintGL();
     virtual void mousePressEvent(QMouseEvent* inEvent);
     virtual void mouseMoveEvent(QMouseEvent* inEvent);
-    virtual void keyPressEvent(QKeyEvent* inEvent);
 
 private:
     void testFolders();

@@ -3,7 +3,7 @@
 
 VertexBufferObject::VertexBufferObject(QGLBuffer::Type inBufferType,
     GLenum inDataType, QGLBuffer::UsagePattern inUsage)
-    : mBuffer(inBufferType), mDataType(inDataType), mBytesPerDatum(0),
+    : mBuffer(inBufferType), mDataType(inDataType), mBytesPerValue(0),
       mValuesPerVertex(0), mVertexCount(0), mValueCount(0), mClientState(0)
 {
     mBuffer.create();
@@ -12,24 +12,24 @@ VertexBufferObject::VertexBufferObject(QGLBuffer::Type inBufferType,
     switch (mDataType)
     {
     case GL_FLOAT:
-        mBytesPerDatum = sizeof(GLfloat);
+        mBytesPerValue = sizeof(GLfloat);
         break;
 
     case GL_UNSIGNED_BYTE:
-        mBytesPerDatum = sizeof(GLubyte);
+        mBytesPerValue = sizeof(GLubyte);
         break;
 
     case GL_UNSIGNED_SHORT:
-        mBytesPerDatum = sizeof(GLushort);
+        mBytesPerValue = sizeof(GLushort);
         break;
 
     case GL_UNSIGNED_INT:
-        mBytesPerDatum = sizeof(GLuint);
+        mBytesPerValue = sizeof(GLuint);
         break;
 
     default:
         mDataType = GL_FLOAT;
-        mBytesPerDatum = sizeof(GLfloat);
+        mBytesPerValue = sizeof(GLfloat);
     }
 }
 
@@ -46,7 +46,7 @@ void VertexBufferObject::loadData(const GLvoid *inData, GLuint inCount,
 
     bind();
     mValueCount = mVertexCount * mValuesPerVertex;
-    mBuffer.allocate(inData, mValueCount * mBytesPerDatum);
+    mBuffer.allocate(inData, mValueCount * mBytesPerValue);
 }
 
 void VertexBufferObject::vertexPointer()
