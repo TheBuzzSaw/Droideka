@@ -2,6 +2,7 @@
 #define WIDGETTESTOPENGL_HPP
 
 #include "Matrix4x4.hpp"
+#include "CardModel.hpp"
 #include <QGLWidget>
 #include <QGLBuffer>
 
@@ -31,6 +32,7 @@ private:
     CGE::Matrix4x4<float> mModelViewMatrix;
     float mRotation;
     QGLBuffer mBuffer;
+    CardModel mCardModel;
 };
 
 #endif

@@ -9,9 +9,11 @@ public:
     CardModel();
     virtual ~CardModel();
 
-    void drawFront();
-    void drawBack();
+    void drawFront(GLuint inTexture);
+    void drawBack(GLuint inTexture);
     void drawEdge();
+
+    void assemble();
 
 private:
     QGLBuffer mVertexBuffer;

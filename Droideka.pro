@@ -15,7 +15,8 @@ SOURCES += main.cpp\
     WidgetTestOpenGL.cpp \
     SceneGraphNode.cpp \
     CardNode.cpp \
-    CardModel.cpp
+    CardModel.cpp \
+    TrackballCamera.cpp
 
 HEADERS  += LoginWindow.h \
     WidgetTestOpenGL.hpp \
@@ -23,7 +24,8 @@ HEADERS  += LoginWindow.h \
     SceneGraphNode.hpp \
     Vectors.hpp \
     CardNode.hpp \
-    CardModel.hpp
+    CardModel.hpp \
+    TrackballCamera.hpp
 
 FORMS    += LoginWindow.ui
 
