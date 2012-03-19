@@ -41,10 +41,8 @@ void WidgetTestOpenGL::onPulse()
 void WidgetTestOpenGL::initializeGL()
 {
     QImage wood(QString("wood.jpg"));
-    qDebug() << wood.size() << " : " << wood.format();
+    qDebug() << wood.size();
     mTexture = bindTexture(wood, GL_TEXTURE_2D);
-    qDebug() << "texture id -- " << mTexture << " -- "
-        << glIsTexture(mTexture);
 
     mCardModel.assemble();
 
@@ -54,6 +52,8 @@ void WidgetTestOpenGL::initializeGL()
     glCullFace(GL_BACK);
     glClearColor(0.1f, 0.1f, 0.6f, 1.0f);
     glMatrixMode(GL_MODELVIEW);
+    glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_ADD);
+    glColor3f(0.0f, 0.0f, 0.0f);
 }
 
 void WidgetTestOpenGL::resizeGL(int inWidth, int inHeight)

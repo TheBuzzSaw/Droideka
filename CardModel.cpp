@@ -20,7 +20,6 @@ CardModel::~CardModel()
 
 void CardModel::drawFront(GLuint inTexture)
 {
-    glColor3f(1.0f, 1.0f, 1.0f);
     glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, inTexture);
 
@@ -42,7 +41,6 @@ void CardModel::drawFront(GLuint inTexture)
 
 void CardModel::drawBack(GLuint inTexture)
 {
-    glColor3f(1.0f, 1.0f, 1.0f);
     glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, inTexture);
 
@@ -64,7 +62,6 @@ void CardModel::drawBack(GLuint inTexture)
 
 void CardModel::drawEdge()
 {
-    glColor3f(0.0f, 0.0f, 0.0f);
     glEnableClientState(GL_VERTEX_ARRAY);
     mVertexBuffer.bind();
     glVertexPointer(3, GL_FLOAT, 0, 0);
