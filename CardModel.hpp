@@ -1,7 +1,7 @@
 #ifndef CARDMODEL_HPP
 #define CARDMODEL_HPP
 
-#include <QGLBuffer>
+#include "IndexBufferObject.hpp"
 
 class CardModel
 {
@@ -16,11 +16,11 @@ public:
     void assemble();
 
 private:
-    QGLBuffer mVertexBuffer;
-    QGLBuffer mTextureBuffer;
-    QGLBuffer mTopIndexBuffer;
-    QGLBuffer mMiddleIndexBuffer;
-    QGLBuffer mBottomIndexBuffer;
+    VertexBufferObject mVertexBuffer;
+    VertexBufferObject mTextureBuffer;
+    IndexBufferObject mTopIndexBuffer;
+    IndexBufferObject mMiddleIndexBuffer;
+    IndexBufferObject mBottomIndexBuffer;
 };
 
 #endif

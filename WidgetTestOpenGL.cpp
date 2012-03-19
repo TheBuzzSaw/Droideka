@@ -18,11 +18,13 @@ WidgetTestOpenGL::WidgetTestOpenGL(QWidget *inParent)
     QTimer* timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(onPulse()));
     timer->start(25);
+    mCardModel = 0;
 }
 
 WidgetTestOpenGL::~WidgetTestOpenGL()
 {
     deleteTexture(mTexture);
+    delete mCardModel;
 }
 
 void WidgetTestOpenGL::onPulse()
@@ -40,11 +42,10 @@ void WidgetTestOpenGL::onPulse()
 
 void WidgetTestOpenGL::initializeGL()
 {
+    mCardModel = new CardModel;
     QImage wood(QString("wood.jpg"));
     qDebug() << wood.size();
     mTexture = bindTexture(wood, GL_TEXTURE_2D);
-
-    mCardModel.assemble();
 
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
@@ -76,9 +77,9 @@ void WidgetTestOpenGL::paintGL()
 
     glLoadMatrixf(mModelViewMatrix);
 
-    mCardModel.drawFront(mTexture);
-    mCardModel.drawEdge();
-    mCardModel.drawBack(mTexture);
+    mCardModel->drawFront(mTexture);
+    mCardModel->drawEdge();
+    mCardModel->drawBack(mTexture);
 }
 
 void WidgetTestOpenGL::mousePressEvent(QMouseEvent* inEvent)

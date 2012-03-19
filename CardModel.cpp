@@ -1,41 +1,24 @@
 #include "CardModel.hpp"
 #include <QDebug>
 
-CardModel::CardModel() : mVertexBuffer(QGLBuffer::VertexBuffer),
-    mTextureBuffer(QGLBuffer::VertexBuffer),
-    mTopIndexBuffer(QGLBuffer::IndexBuffer),
-    mMiddleIndexBuffer(QGLBuffer::IndexBuffer),
-    mBottomIndexBuffer(QGLBuffer::IndexBuffer)
+CardModel::CardModel()
 {
+    assemble();
 }
 
 CardModel::~CardModel()
 {
-    mVertexBuffer.destroy();
-    mTextureBuffer.destroy();
-    mTopIndexBuffer.destroy();
-    mMiddleIndexBuffer.destroy();
-    mBottomIndexBuffer.destroy();
 }
 
 void CardModel::drawFront(GLuint inTexture)
 {
     glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, inTexture);
-
-    glEnableClientState(GL_VERTEX_ARRAY);
-    mVertexBuffer.bind();
-    glVertexPointer(3, GL_FLOAT, 0, 0);
-
-    glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-    mTextureBuffer.bind();
-    glTexCoordPointer(2, GL_FLOAT, 0, 0);
-
-    mTopIndexBuffer.bind();
-    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-
-    glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-    glDisableClientState(GL_VERTEX_ARRAY);
+    mVertexBuffer.vertexPointer();
+    mTextureBuffer.textureCoordinatePointer();
+    mTopIndexBuffer.drawElements();
+    mTextureBuffer.disableClientState();
+    mVertexBuffer.disableClientState();
     glDisable(GL_TEXTURE_2D);
 }
 
@@ -43,33 +26,19 @@ void CardModel::drawBack(GLuint inTexture)
 {
     glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, inTexture);
-
-    glEnableClientState(GL_VERTEX_ARRAY);
-    mVertexBuffer.bind();
-    glVertexPointer(3, GL_FLOAT, 0, 0);
-
-    glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-    mTextureBuffer.bind();
-    glTexCoordPointer(2, GL_FLOAT, 0, 0);
-
-    mBottomIndexBuffer.bind();
-    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-
-    glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-    glDisableClientState(GL_VERTEX_ARRAY);
+    mVertexBuffer.vertexPointer();
+    mTextureBuffer.textureCoordinatePointer();
+    mBottomIndexBuffer.drawElements();
+    mTextureBuffer.disableClientState();
+    mVertexBuffer.disableClientState();
     glDisable(GL_TEXTURE_2D);
 }
 
 void CardModel::drawEdge()
 {
-    glEnableClientState(GL_VERTEX_ARRAY);
-    mVertexBuffer.bind();
-    glVertexPointer(3, GL_FLOAT, 0, 0);
-
-    mMiddleIndexBuffer.bind();
-    glDrawElements(GL_TRIANGLES, 24, GL_UNSIGNED_INT, 0);
-
-    glDisableClientState(GL_VERTEX_ARRAY);
+    mVertexBuffer.vertexPointer();
+    mMiddleIndexBuffer.drawElements();
+    mVertexBuffer.disableClientState();
 }
 
 void CardModel::assemble()
@@ -92,10 +61,7 @@ void CardModel::assemble()
         -w, +h, -d
         };
 
-    mVertexBuffer.create();
-    mVertexBuffer.bind();
-    mVertexBuffer.setUsagePattern(QGLBuffer::StaticDraw);
-    mVertexBuffer.allocate(points, sizeof(points));
+    mVertexBuffer.loadData(points, 8, 3);
 
     GLfloat textureCoordinates[16] = {
         1.0f, 0.0f,
@@ -119,12 +85,11 @@ void CardModel::assemble()
         textureCoordinates[index + 1] *= adjustment;
     }
 
-    mTextureBuffer.create();
-    mTextureBuffer.bind();
-    mTextureBuffer.setUsagePattern(QGLBuffer::StaticDraw);
-    mTextureBuffer.allocate(textureCoordinates, sizeof(textureCoordinates));
+    mTextureBuffer.loadData(textureCoordinates, 8, 2);
 
     GLuint topIndices[6] = { 0, 1, 2, 0, 2, 3 };
+
+    mTopIndexBuffer.loadData(topIndices, 2, 3);
 
     GLuint middleIndices[24] = {
         1, 0, 4, 1, 4, 5, // right
@@ -133,20 +98,9 @@ void CardModel::assemble()
         0, 3, 7, 0, 7, 4  // back
         };
 
+    mMiddleIndexBuffer.loadData(middleIndices, 8, 3);
+
     GLuint bottomIndices[6] = { 7, 6, 5, 7, 5, 4 };
 
-    mTopIndexBuffer.create();
-    mTopIndexBuffer.bind();
-    mTopIndexBuffer.setUsagePattern(QGLBuffer::StaticDraw);
-    mTopIndexBuffer.allocate(topIndices, sizeof(topIndices));
-
-    mMiddleIndexBuffer.create();
-    mMiddleIndexBuffer.bind();
-    mMiddleIndexBuffer.setUsagePattern(QGLBuffer::StaticDraw);
-    mMiddleIndexBuffer.allocate(middleIndices, sizeof(middleIndices));
-
-    mBottomIndexBuffer.create();
-    mBottomIndexBuffer.bind();
-    mBottomIndexBuffer.setUsagePattern(QGLBuffer::StaticDraw);
-    mBottomIndexBuffer.allocate(bottomIndices, sizeof(bottomIndices));
+    mBottomIndexBuffer.loadData(bottomIndices, 2, 3);
 }

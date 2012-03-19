@@ -30,7 +30,7 @@ private:
     CGE::Matrix4x4<float> mProjectionMatrix;
     CGE::Matrix4x4<float> mModelViewMatrix;
     float mRotation;
-    CardModel mCardModel;
+    CardModel* mCardModel;
     GLuint mTexture;
 };
 
