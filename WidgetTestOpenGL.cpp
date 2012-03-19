@@ -22,7 +22,7 @@ WidgetTestOpenGL::WidgetTestOpenGL(QWidget *inParent)
 
 WidgetTestOpenGL::~WidgetTestOpenGL()
 {
-    mBuffer.destroy();
+    deleteTexture(mTexture);
 }
 
 void WidgetTestOpenGL::onPulse()
@@ -36,6 +36,24 @@ void WidgetTestOpenGL::onPulse()
     mModelViewMatrix.translate(0.0f, 0.0f, -20.0f);
     mModelViewMatrix.rotateY(mRotation);
     updateGL();
+}
+
+void WidgetTestOpenGL::initializeGL()
+{
+    QImage wood(QString("wood.jpg"));
+    qDebug() << wood.size() << " : " << wood.format();
+    mTexture = bindTexture(wood, GL_TEXTURE_2D);
+    qDebug() << "texture id -- " << mTexture << " -- "
+        << glIsTexture(mTexture);
+
+    mCardModel.assemble();
+
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_CULL_FACE);
+    glFrontFace(GL_CW);
+    glCullFace(GL_BACK);
+    glClearColor(0.1f, 0.1f, 0.6f, 1.0f);
+    glMatrixMode(GL_MODELVIEW);
 }
 
 void WidgetTestOpenGL::resizeGL(int inWidth, int inHeight)
@@ -52,50 +70,20 @@ void WidgetTestOpenGL::resizeGL(int inWidth, int inHeight)
     glMatrixMode(GL_MODELVIEW);
 }
 
-void WidgetTestOpenGL::initializeGL()
-{
-    const GLfloat z = 0.0f;
-    GLfloat vertices[] = {
-        1.0f, 1.0f, z,
-        1.0f, -1.0f, z,
-        -1.0f, -1.0f, z,
-        -1.0f, 1.0f, z
-        };
-
-    mBuffer.create();
-    mBuffer.bind();
-    mBuffer.setUsagePattern(QGLBuffer::StaticDraw);
-    mBuffer.allocate(vertices, sizeof(vertices));
-
-    mCardModel.assemble();
-
-    glEnable(GL_DEPTH_TEST);
-    //glEnable(GL_CULL_FACE);
-    glFrontFace(GL_CW);
-    glCullFace(GL_BACK);
-    glClearColor(0.1f, 0.1f, 0.6f, 1.0f);
-    glMatrixMode(GL_MODELVIEW);
-}
-
 void WidgetTestOpenGL::paintGL()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glLoadMatrixf(mModelViewMatrix);
 
+    mCardModel.drawFront(mTexture);
     mCardModel.drawEdge();
-
-    glEnableClientState(GL_VERTEX_ARRAY);
-    glColor3f(1.0f, 0.0f, 0.0f);
-    mBuffer.bind();
-    glVertexPointer(3, GL_FLOAT, 0, 0);
-    glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
-    glDisableClientState(GL_VERTEX_ARRAY);
+    mCardModel.drawBack(mTexture);
 }
 
 void WidgetTestOpenGL::mousePressEvent(QMouseEvent* inEvent)
 {
-    (void)inEvent;
+    qDebug() << inEvent->pos();
 }
 
 void WidgetTestOpenGL::mouseMoveEvent(QMouseEvent* inEvent)

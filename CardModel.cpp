@@ -20,6 +20,7 @@ CardModel::~CardModel()
 
 void CardModel::drawFront(GLuint inTexture)
 {
+    glColor3f(1.0f, 1.0f, 1.0f);
     glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, inTexture);
 
@@ -41,6 +42,7 @@ void CardModel::drawFront(GLuint inTexture)
 
 void CardModel::drawBack(GLuint inTexture)
 {
+    glColor3f(1.0f, 1.0f, 1.0f);
     glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, inTexture);
 
@@ -113,9 +115,11 @@ void CardModel::assemble()
     float adjustment = 490.0f / 512.0f; // card image size adjustment
     for (size_t i = 0; i < 8; ++i)
     {
+        break;
+        size_t index = i * 2;
         // It is assumed that the card is taller than it is wide.
-        textureCoordinates[i * 2] *= ratio * adjustment;
-        textureCoordinates[i * 2 + 1] *= adjustment;
+        textureCoordinates[index] *= ratio * adjustment;
+        textureCoordinates[index + 1] *= adjustment;
     }
 
     mTextureBuffer.create();
