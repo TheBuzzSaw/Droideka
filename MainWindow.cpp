@@ -6,7 +6,7 @@
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent)
 {
-    mGLW = new WidgetTestOpenGL(this);
+    mGLW = new CanvasOpenGL(this);
     setCentralWidget(mGLW);
 
     setWindowTitle(QString("Droideka"));

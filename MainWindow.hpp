@@ -1,7 +1,7 @@
 #ifndef MAINWINDOW_HPP
 #define MAINWINDOW_HPP
 
-#include "WidgetTestOpenGL.hpp"
+#include "CanvasOpenGL.hpp"
 #include <QMainWindow>
 
 class MainWindow : public QMainWindow
@@ -23,7 +23,7 @@ private:
     void setupActions();
     void setupMenu();
 
-    WidgetTestOpenGL* mGLW;
+    CanvasOpenGL* mGLW;
     QMenu* mHelpMenu;
     QAction* mAboutAct;
     QAction* mAboutQtAct;

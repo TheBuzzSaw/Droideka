@@ -1,7 +1,7 @@
-#include "WidgetTestOpenGL.hpp"
+#include "CanvasOpenGL.hpp"
 #include <QtOpenGL>
 
-WidgetTestOpenGL::WidgetTestOpenGL(QWidget *inParent)
+CanvasOpenGL::CanvasOpenGL(QWidget *inParent)
     : QGLWidget(QGLFormat(QGL::AlphaChannel
                           | QGL::Rgba
                           | QGL::DepthBuffer
@@ -18,13 +18,13 @@ WidgetTestOpenGL::WidgetTestOpenGL(QWidget *inParent)
     mCardModel = 0;
 }
 
-WidgetTestOpenGL::~WidgetTestOpenGL()
+CanvasOpenGL::~CanvasOpenGL()
 {
     deleteTexture(mFrontTexture);
     delete mCardModel;
 }
 
-void WidgetTestOpenGL::onPulse()
+void CanvasOpenGL::onPulse()
 {
     mRotation += 1.0f;
 
@@ -37,7 +37,7 @@ void WidgetTestOpenGL::onPulse()
     updateGL();
 }
 
-void WidgetTestOpenGL::initializeGL()
+void CanvasOpenGL::initializeGL()
 {
     mCardModel = new CardModel;
     mFrontTexture = bindTexture(QImage("localuprising.gif"), GL_TEXTURE_2D);
@@ -53,7 +53,7 @@ void WidgetTestOpenGL::initializeGL()
     glColor3f(0.0f, 0.0f, 0.0f);
 }
 
-void WidgetTestOpenGL::resizeGL(int inWidth, int inHeight)
+void CanvasOpenGL::resizeGL(int inWidth, int inHeight)
 {
     glViewport(0, 0, inWidth, inHeight);
 
@@ -67,7 +67,7 @@ void WidgetTestOpenGL::resizeGL(int inWidth, int inHeight)
     glMatrixMode(GL_MODELVIEW);
 }
 
-void WidgetTestOpenGL::paintGL()
+void CanvasOpenGL::paintGL()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -78,17 +78,17 @@ void WidgetTestOpenGL::paintGL()
     mCardModel->drawBack(mBackTexture);
 }
 
-void WidgetTestOpenGL::mousePressEvent(QMouseEvent* inEvent)
+void CanvasOpenGL::mousePressEvent(QMouseEvent* inEvent)
 {
     qDebug() << inEvent->pos();
 }
 
-void WidgetTestOpenGL::mouseMoveEvent(QMouseEvent* inEvent)
+void CanvasOpenGL::mouseMoveEvent(QMouseEvent* inEvent)
 {
     (void)inEvent;
 }
 
-void WidgetTestOpenGL::testFolders()
+void CanvasOpenGL::testFolders()
 {
     QDir home = QDir::home();
     bool success = home.mkpath("Droideka/data/huh");

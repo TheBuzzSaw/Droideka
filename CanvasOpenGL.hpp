@@ -5,13 +5,13 @@
 #include "CardModel.hpp"
 #include <QGLWidget>
 
-class WidgetTestOpenGL : public QGLWidget
+class CanvasOpenGL : public QGLWidget
 {
     Q_OBJECT
 
 public:
-    WidgetTestOpenGL(QWidget* inParent = 0);
-    ~WidgetTestOpenGL();
+    CanvasOpenGL(QWidget* inParent = 0);
+    ~CanvasOpenGL();
 
 public slots:
     void onPulse();

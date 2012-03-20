@@ -12,17 +12,17 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         LoginWindow.cpp \
-    WidgetTestOpenGL.cpp \
     SceneGraphNode.cpp \
     CardNode.cpp \
     CardModel.cpp \
     TrackballCamera.cpp \
     VertexBufferObject.cpp \
     IndexBufferObject.cpp \
-    MainWindow.cpp
+    MainWindow.cpp \
+    CanvasOpenGL.cpp \
+    CardModule.cpp
 
 HEADERS  += LoginWindow.h \
-    WidgetTestOpenGL.hpp \
     Matrix4x4.hpp \
     SceneGraphNode.hpp \
     Vectors.hpp \
@@ -31,7 +31,9 @@ HEADERS  += LoginWindow.h \
     TrackballCamera.hpp \
     VertexBufferObject.hpp \
     IndexBufferObject.hpp \
-    MainWindow.hpp
+    MainWindow.hpp \
+    CanvasOpenGL.hpp \
+    CardModule.hpp
 
 FORMS    += LoginWindow.ui
 
