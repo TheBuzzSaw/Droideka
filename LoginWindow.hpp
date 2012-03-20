@@ -1,5 +1,5 @@
-#ifndef LOGINWINDOW_H
-#define LOGINWINDOW_H
+#ifndef LOGINWINDOW_HPP
+#define LOGINWINDOW_HPP
 
 #include <QMainWindow>
 #include <QNetworkAccessManager>

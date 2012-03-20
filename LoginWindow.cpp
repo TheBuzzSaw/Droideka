@@ -1,4 +1,4 @@
-#include "LoginWindow.h"
+#include "LoginWindow.hpp"
 #include "ui_LoginWindow.h"
 
 #include <QNetworkRequest>

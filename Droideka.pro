@@ -21,7 +21,7 @@ SOURCES += main.cpp\
     MainWindow.cpp \
     CanvasOpenGL.cpp
 
-HEADERS  += LoginWindow.h \
+HEADERS  += \
     Matrix4x4.hpp \
     SceneGraphNode.hpp \
     Vectors.hpp \
@@ -31,7 +31,8 @@ HEADERS  += LoginWindow.h \
     VertexBufferObject.hpp \
     IndexBufferObject.hpp \
     MainWindow.hpp \
-    CanvasOpenGL.hpp
+    CanvasOpenGL.hpp \
+    LoginWindow.hpp
 
 FORMS    += LoginWindow.ui
 

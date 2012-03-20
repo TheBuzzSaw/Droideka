@@ -95,3 +95,16 @@ void CanvasOpenGL::testFolders()
     bool success = home.mkpath("Droideka/data/huh");
     qDebug() << (success ? "WOOT" : "dawww");
 }
+
+GLuint CanvasOpenGL::loadCardTexture(const QImage& inImage)
+{
+    GLuint outTexture = 0;
+
+    if (!inImage.isNull())
+    {
+        QImage adjustedImage = inImage.scaled(QSize(512, 512), Qt::KeepAspectRatio,
+            Qt::FastTransformation);
+    }
+
+    return outTexture;
+}

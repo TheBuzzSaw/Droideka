@@ -1,5 +1,5 @@
-#ifndef WIDGETTESTOPENGL_HPP
-#define WIDGETTESTOPENGL_HPP
+#ifndef CANVASOPENGL_HPP
+#define CANVASOPENGL_HPP
 
 #include "Matrix4x4.hpp"
 #include "CardModel.hpp"
@@ -13,7 +13,7 @@ public:
     CanvasOpenGL(QWidget* inParent = 0);
     ~CanvasOpenGL();
 
-public slots:
+protected slots:
     void onPulse();
 
 protected:
@@ -25,6 +25,7 @@ protected:
 
 private:
     void testFolders();
+    GLuint loadCardTexture(const QImage& inImage);
 
     mat4f mProjectionMatrix;
     mat4f mModelViewMatrix;
