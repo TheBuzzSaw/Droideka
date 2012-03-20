@@ -26,8 +26,8 @@ protected:
 private:
     void testFolders();
 
-    CGE::Matrix4x4<float> mProjectionMatrix;
-    CGE::Matrix4x4<float> mModelViewMatrix;
+    mat4f mProjectionMatrix;
+    mat4f mModelViewMatrix;
     float mRotation;
     CardModel* mCardModel;
     GLuint mFrontTexture;

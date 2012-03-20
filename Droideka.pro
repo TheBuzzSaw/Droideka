@@ -19,8 +19,7 @@ SOURCES += main.cpp\
     VertexBufferObject.cpp \
     IndexBufferObject.cpp \
     MainWindow.cpp \
-    CanvasOpenGL.cpp \
-    CardModule.cpp
+    CanvasOpenGL.cpp
 
 HEADERS  += LoginWindow.h \
     Matrix4x4.hpp \
@@ -32,8 +31,7 @@ HEADERS  += LoginWindow.h \
     VertexBufferObject.hpp \
     IndexBufferObject.hpp \
     MainWindow.hpp \
-    CanvasOpenGL.hpp \
-    CardModule.hpp
+    CanvasOpenGL.hpp
 
 FORMS    += LoginWindow.ui
 

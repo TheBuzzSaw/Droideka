@@ -21,6 +21,7 @@ CanvasOpenGL::CanvasOpenGL(QWidget *inParent)
 CanvasOpenGL::~CanvasOpenGL()
 {
     deleteTexture(mFrontTexture);
+    deleteTexture(mBackTexture);
     delete mCardModel;
 }
 
