@@ -20,7 +20,7 @@ WidgetTestOpenGL::WidgetTestOpenGL(QWidget *inParent)
 
 WidgetTestOpenGL::~WidgetTestOpenGL()
 {
-    deleteTexture(mTexture);
+    deleteTexture(mFrontTexture);
     delete mCardModel;
 }
 
@@ -40,9 +40,8 @@ void WidgetTestOpenGL::onPulse()
 void WidgetTestOpenGL::initializeGL()
 {
     mCardModel = new CardModel;
-    QImage wood(QString("wood.jpg"));
-    qDebug() << wood.size();
-    mTexture = bindTexture(wood, GL_TEXTURE_2D);
+    mFrontTexture = bindTexture(QImage("localuprising.gif"), GL_TEXTURE_2D);
+    mBackTexture = bindTexture(QImage("liberation.gif"), GL_TEXTURE_2D);
 
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
@@ -74,9 +73,9 @@ void WidgetTestOpenGL::paintGL()
 
     glLoadMatrixf(mModelViewMatrix);
 
-    mCardModel->drawFront(mTexture);
+    mCardModel->drawFront(mFrontTexture);
     mCardModel->drawEdge();
-    mCardModel->drawBack(mTexture);
+    mCardModel->drawBack(mBackTexture);
 }
 
 void WidgetTestOpenGL::mousePressEvent(QMouseEvent* inEvent)

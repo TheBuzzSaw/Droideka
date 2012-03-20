@@ -17,8 +17,16 @@ public slots:
 protected:
     virtual void keyPressEvent(QKeyEvent* inEvent);
 
+private slots:
+
 private:
+    void setupActions();
+    void setupMenu();
+
     WidgetTestOpenGL* mGLW;
+    QMenu* mHelpMenu;
+    QAction* mAboutAct;
+    QAction* mAboutQtAct;
 };
 
 #endif

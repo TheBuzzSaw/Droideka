@@ -64,14 +64,14 @@ void CardModel::assemble()
     mVertexBuffer.loadData(points, 8, 3);
 
     GLfloat textureCoordinates[16] = {
+        1.0f, 1.0f,
         1.0f, 0.0f,
-        1.0f, 1.0f,
-        0.0f, 1.0f,
-        0.0f, 0.0f,
         0.0f, 0.0f,
         0.0f, 1.0f,
-        1.0f, 1.0f,
-        1.0f, 0.0f
+        0.0f, 1.0f,
+        0.0f, 0.0f,
+        1.0f, 0.0f,
+        1.0f, 1.0f
         };
 
     float ratio = inWidth / inHeight;
