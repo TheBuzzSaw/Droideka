@@ -16,12 +16,14 @@ CanvasOpenGL::CanvasOpenGL(QWidget *inParent)
     connect(timer, SIGNAL(timeout()), this, SLOT(onPulse()));
     timer->start(25);
     mCardModel = 0;
+    mCardNode = 0;
 }
 
 CanvasOpenGL::~CanvasOpenGL()
 {
     deleteTexture(mFrontTexture);
     deleteTexture(mBackTexture);
+    delete mCardNode;
     delete mCardModel;
 }
 
@@ -32,17 +34,19 @@ void CanvasOpenGL::onPulse()
     if (mRotation > 180.0f) mRotation -= 360.0f;
 
     mModelViewMatrix.loadIdentity();
-    //mModelViewMatrix.rotateZ(mRotation);
     mModelViewMatrix.translate(0.0f, 0.0f, -20.0f);
     mModelViewMatrix.rotateY(mRotation);
+
+    mCardNode->updateMatrices(mat4f(), mModelViewMatrix);
     updateGL();
 }
 
 void CanvasOpenGL::initializeGL()
 {
     mCardModel = new CardModel;
-    mFrontTexture = bindTexture(QImage("localuprising.gif"), GL_TEXTURE_2D);
-    mBackTexture = bindTexture(QImage("liberation.gif"), GL_TEXTURE_2D);
+    mFrontTexture = loadCardTexture(QImage("localuprising.gif"));
+    mBackTexture = loadCardTexture(QImage("liberation.gif"));
+    mCardNode = new CardNode(*mCardModel, mFrontTexture, mBackTexture);
 
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
@@ -74,9 +78,7 @@ void CanvasOpenGL::paintGL()
 
     glLoadMatrixf(mModelViewMatrix);
 
-    mCardModel->drawFront(mFrontTexture);
-    mCardModel->drawEdge();
-    mCardModel->drawBack(mBackTexture);
+    mCardNode->draw();
 }
 
 void CanvasOpenGL::mousePressEvent(QMouseEvent* inEvent)
@@ -102,8 +104,11 @@ GLuint CanvasOpenGL::loadCardTexture(const QImage& inImage)
 
     if (!inImage.isNull())
     {
-        QImage adjustedImage = inImage.scaled(QSize(512, 512), Qt::KeepAspectRatio,
-            Qt::FastTransformation);
+        QImage square(QSize(512, 512), inImage.format());
+        QPainter painter(&square);
+        painter.drawImage(QRect(0, 0, 512, 512), inImage);
+        qDebug() << "square" << square.size();
+        outTexture = bindTexture(square, GL_TEXTURE_2D);
     }
 
     return outTexture;

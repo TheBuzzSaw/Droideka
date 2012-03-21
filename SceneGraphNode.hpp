@@ -25,7 +25,8 @@ public:
     void removeAllChildrenNodes();
     void removeFromParentNode();
 
-    void updateMatrices(const mat4f& inModelMatrix, const mat4f& inModelViewMatrix);
+    void updateMatrices(const mat4f& inModelMatrix,
+        const mat4f& inModelViewMatrix);
 
 protected:
     inline mat4f& localMatrix() { return mLocalMatrix; }

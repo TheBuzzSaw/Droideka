@@ -35,11 +35,24 @@ void MainWindow::setupMenu()
 
     mHelpMenu = menuBar()->addMenu("Help");
     mHelpMenu->addAction(mAboutQtAct);
+    mHelpMenu->addAction(mAboutAct);
+
+    statusBar();
 }
 
 void MainWindow::setupActions()
 {
-    mAboutQtAct = new QAction("&About Qt", this);
+    mAboutAct = new QAction("About &DEJARIX", this);
+    mAboutAct->setStatusTip("Information about DEJARIX");
+    connect(mAboutAct, SIGNAL(triggered()), this, SLOT(showAboutDialog()));
+
+    mAboutQtAct = new QAction("About &Qt", this);
     mAboutQtAct->setStatusTip("Information about Qt");
     connect(mAboutQtAct, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
+}
+
+void MainWindow::showAboutDialog()
+{
+    QMessageBox::about(this, QString("About DEJARIX"),
+        QString("DEJARIX 0.1 -- Star Wars CCG Online"));
 }

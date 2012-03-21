@@ -1,6 +1,9 @@
 #include "CardNode.hpp"
 
-CardNode::CardNode()
+CardNode::CardNode(CardModel& inCardModel, GLuint inFrontTexture,
+    GLuint inBackTexture)
+    : mCardModel(inCardModel), mFrontTexture(inFrontTexture),
+      mBackTexture(inBackTexture)
 {
 }
 
@@ -8,10 +11,20 @@ CardNode::~CardNode()
 {
 }
 
+void CardNode::draw()
+{
+    mCardModel.drawEdge();
+
+    if (mDrawFront)
+        mCardModel.drawFront(mFrontTexture);
+    else
+        mCardModel.drawBack(mBackTexture);
+}
+
 void CardNode::willUpdate()
 {
     localMatrix().loadIdentity();
-    localMatrix().rotateZ(0.0f);
+    localMatrix().translate(mPosition[0], mPosition[1], mPosition[2]);
 }
 
 void CardNode::didUpdate()
@@ -29,5 +42,5 @@ void CardNode::didUpdate()
     mDirection[1] -= mModelViewOrigin[1];
     mDirection[2] -= mModelViewOrigin[2];
 
-    mRenderFront = mDirection[2] > 0.0f;
+    mDrawFront = mDirection[2] > 0.0f;
 }

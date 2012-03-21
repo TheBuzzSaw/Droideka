@@ -18,6 +18,7 @@ protected:
     virtual void keyPressEvent(QKeyEvent* inEvent);
 
 private slots:
+    void showAboutDialog();
 
 private:
     void setupActions();

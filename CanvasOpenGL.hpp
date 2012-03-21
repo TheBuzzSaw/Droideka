@@ -2,7 +2,7 @@
 #define CANVASOPENGL_HPP
 
 #include "Matrix4x4.hpp"
-#include "CardModel.hpp"
+#include "CardNode.hpp"
 #include <QGLWidget>
 
 class CanvasOpenGL : public QGLWidget
@@ -31,6 +31,7 @@ private:
     mat4f mModelViewMatrix;
     float mRotation;
     CardModel* mCardModel;
+    CardNode* mCardNode;
     GLuint mFrontTexture;
     GLuint mBackTexture;
 };
