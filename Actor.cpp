@@ -1,7 +1,7 @@
 #include "Actor.hpp"
 #include <QGLWidget>
 
-Actor::Actor() : mNextActor(NULL), mPreviousActor(NULL)
+Actor::Actor() : mNextActor(0), mPreviousActor(0)
 {
 }
 
@@ -27,8 +27,8 @@ void Actor::removeFromChain()
     if (mPreviousActor) mPreviousActor->mNextActor = mNextActor;
     if (mNextActor) mNextActor->mPreviousActor = mPreviousActor;
 
-    mNextActor = NULL;
-    mPreviousActor = NULL;
+    mNextActor = 0;
+    mPreviousActor = 0;
 }
 
 void Actor::drawChain()

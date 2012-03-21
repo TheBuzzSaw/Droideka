@@ -1,4 +1,5 @@
 #include "CardActor.hpp"
+#include <QDebug>
 
 CardActor::CardActor(CardModel& inCardModel, GLuint inFrontTexture,
     GLuint inBackTexture)

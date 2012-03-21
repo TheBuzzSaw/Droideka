@@ -1,7 +1,7 @@
 #ifndef CANVASOPENGL_HPP
 #define CANVASOPENGL_HPP
 
-#include "Matrix4x4.hpp"
+#include "TrackballCamera.hpp"
 #include "CardActor.hpp"
 #include <QGLWidget>
 
@@ -28,10 +28,10 @@ private:
     GLuint loadCardTexture(const QImage& inImage);
 
     mat4f mProjectionMatrix;
-    mat4f mModelViewMatrix;
-    float mRotation;
+    TrackballCamera mCamera;
+    Actor mHeadActor;
     CardModel* mCardModel;
-    CardActor* mCardNode;
+    CardActor* mCardActor;
     GLuint mFrontTexture;
     GLuint mBackTexture;
 };

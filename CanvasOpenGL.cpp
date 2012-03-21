@@ -9,35 +9,29 @@ CanvasOpenGL::CanvasOpenGL(QWidget *inParent)
                           | QGL::DeprecatedFunctions
                           ), inParent)
 {
-    mRotation = 0.0f;
     setMouseTracking(true);
 
     QTimer* timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(onPulse()));
     timer->start(25);
     mCardModel = 0;
-    mCardNode = 0;
+    mCardActor = 0;
 }
 
 CanvasOpenGL::~CanvasOpenGL()
 {
     deleteTexture(mFrontTexture);
     deleteTexture(mBackTexture);
-    delete mCardNode;
+    delete mCardActor;
     delete mCardModel;
 }
 
 void CanvasOpenGL::onPulse()
 {
-    mRotation += 1.0f;
+    mCamera.changeRotation(1.0f);
+    mCamera.update();
 
-    if (mRotation > 180.0f) mRotation -= 360.0f;
-
-    mModelViewMatrix.loadIdentity();
-    mModelViewMatrix.translate(0.0f, 0.0f, -20.0f);
-    mModelViewMatrix.rotateY(mRotation);
-
-    mCardNode->updateMatrices(mat4f(), mModelViewMatrix);
+    mHeadActor.updateMatrices(mat4f(), mCamera.matrix());
     updateGL();
 }
 
@@ -46,7 +40,13 @@ void CanvasOpenGL::initializeGL()
     mCardModel = new CardModel;
     mFrontTexture = loadCardTexture(QImage("localuprising.gif"));
     mBackTexture = loadCardTexture(QImage("liberation.gif"));
-    mCardNode = new CardActor(*mCardModel, mFrontTexture, mBackTexture);
+    mCardActor = new CardActor(*mCardModel, mFrontTexture, mBackTexture);
+
+    mHeadActor.addChildNode(*mCardActor);
+    mCardActor->addToChain(mHeadActor);
+
+    mCamera.setDistance(20.0f);
+    mCamera.setAngle(-45.0f);
 
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
@@ -76,9 +76,9 @@ void CanvasOpenGL::paintGL()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    glLoadMatrixf(mModelViewMatrix);
-
-    mCardNode->draw();
+    //mHeadActor.drawChain();
+    glLoadMatrixf(mCardActor->modelViewMatrix());
+    mCardActor->draw();
 }
 
 void CanvasOpenGL::mousePressEvent(QMouseEvent* inEvent)
