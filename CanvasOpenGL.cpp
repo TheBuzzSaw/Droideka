@@ -28,7 +28,8 @@ CanvasOpenGL::~CanvasOpenGL()
 
 void CanvasOpenGL::onPulse()
 {
-    mCamera.changeRotation(1.0f);
+    //mCamera.changeRotation(1.0f);
+    mCamera.changeAngle(-1.0f);
     mCamera.update();
 
     mHeadActor.updateMatrices(mat4f(), mCamera.matrix());

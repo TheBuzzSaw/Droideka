@@ -43,7 +43,8 @@ void SceneGraphNode::removeFromParentNode()
     if (mParent) mParent->removeChildNode(*this);
 }
 
-void SceneGraphNode::updateMatrices(const mat4f& inModelMatrix, const mat4f& inModelViewMatrix)
+void SceneGraphNode::updateMatrices(const mat4f& inModelMatrix,
+    const mat4f& inModelViewMatrix)
 {
     willUpdate();
     mModelMatrix.multiply(inModelMatrix, mLocalMatrix);
