@@ -13,26 +13,28 @@ TEMPLATE = app
 SOURCES += main.cpp\
         LoginWindow.cpp \
     SceneGraphNode.cpp \
-    CardNode.cpp \
     CardModel.cpp \
     TrackballCamera.cpp \
     VertexBufferObject.cpp \
     IndexBufferObject.cpp \
     MainWindow.cpp \
-    CanvasOpenGL.cpp
+    CanvasOpenGL.cpp \
+    Actor.cpp \
+    CardActor.cpp
 
 HEADERS  += \
     Matrix4x4.hpp \
     SceneGraphNode.hpp \
     Vectors.hpp \
-    CardNode.hpp \
     CardModel.hpp \
     TrackballCamera.hpp \
     VertexBufferObject.hpp \
     IndexBufferObject.hpp \
     MainWindow.hpp \
     CanvasOpenGL.hpp \
-    LoginWindow.hpp
+    LoginWindow.hpp \
+    Actor.hpp \
+    CardActor.hpp
 
 FORMS    += LoginWindow.ui
 

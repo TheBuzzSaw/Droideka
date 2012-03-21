@@ -46,7 +46,7 @@ void CanvasOpenGL::initializeGL()
     mCardModel = new CardModel;
     mFrontTexture = loadCardTexture(QImage("localuprising.gif"));
     mBackTexture = loadCardTexture(QImage("liberation.gif"));
-    mCardNode = new CardNode(*mCardModel, mFrontTexture, mBackTexture);
+    mCardNode = new CardActor(*mCardModel, mFrontTexture, mBackTexture);
 
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);

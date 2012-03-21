@@ -1,18 +1,18 @@
 #ifndef CARDNODE_HPP
 #define CARDNODE_HPP
 
-#include "SceneGraphNode.hpp"
+#include "Actor.hpp"
 #include "Vectors.hpp"
 #include "CardModel.hpp"
 
-class CardNode : public SceneGraphNode
+class CardActor : public Actor
 {
 public:
-    CardNode(CardModel& inCardModel, GLuint inFrontTexture,
+    CardActor(CardModel& inCardModel, GLuint inFrontTexture,
         GLuint inBackTexture);
-    virtual ~CardNode();
+    virtual ~CardActor();
 
-    void draw();
+    virtual void draw();
 
 protected:
     virtual void willUpdate();

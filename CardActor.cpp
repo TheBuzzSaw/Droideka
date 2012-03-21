@@ -1,17 +1,17 @@
-#include "CardNode.hpp"
+#include "CardActor.hpp"
 
-CardNode::CardNode(CardModel& inCardModel, GLuint inFrontTexture,
+CardActor::CardActor(CardModel& inCardModel, GLuint inFrontTexture,
     GLuint inBackTexture)
     : mCardModel(inCardModel), mFrontTexture(inFrontTexture),
       mBackTexture(inBackTexture)
 {
 }
 
-CardNode::~CardNode()
+CardActor::~CardActor()
 {
 }
 
-void CardNode::draw()
+void CardActor::draw()
 {
     mCardModel.drawEdge();
 
@@ -21,13 +21,13 @@ void CardNode::draw()
         mCardModel.drawBack(mBackTexture);
 }
 
-void CardNode::willUpdate()
+void CardActor::willUpdate()
 {
     localMatrix().loadIdentity();
     localMatrix().translate(mPosition[0], mPosition[1], mPosition[2]);
 }
 
-void CardNode::didUpdate()
+void CardActor::didUpdate()
 {
     vec4f origin;
     origin[3] = 1.0f;
