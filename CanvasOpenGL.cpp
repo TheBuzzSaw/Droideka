@@ -15,21 +15,20 @@ CanvasOpenGL::CanvasOpenGL(QWidget *inParent)
     connect(timer, SIGNAL(timeout()), this, SLOT(onPulse()));
     timer->start(25);
     mCardModel = 0;
-    mCardActor = 0;
+    mMouseMode = None;
 }
 
 CanvasOpenGL::~CanvasOpenGL()
 {
-    deleteTexture(mFrontTexture);
-    deleteTexture(mBackTexture);
-    delete mCardActor;
+    destroyAll();
+
     delete mCardModel;
 }
 
 void CanvasOpenGL::onPulse()
 {
     //mCamera.changeRotation(1.0f);
-    mCamera.changeAngle(-1.0f);
+    //mCamera.changeAngle(-0.5f);
     mCamera.update();
 
     mHeadActor.updateMatrices(mat4f(), mCamera.matrix());
@@ -39,12 +38,24 @@ void CanvasOpenGL::onPulse()
 void CanvasOpenGL::initializeGL()
 {
     mCardModel = new CardModel;
-    mFrontTexture = loadCardTexture(QImage("localuprising.gif"));
-    mBackTexture = loadCardTexture(QImage("liberation.gif"));
-    mCardActor = new CardActor(*mCardModel, mFrontTexture, mBackTexture);
 
-    mHeadActor.addChildNode(*mCardActor);
-    mCardActor->addToChain(mHeadActor);
+    GLuint frontTexture = loadCardTextureByName(QString("localuprising.gif"));
+    GLuint backTexture = loadCardTextureByName(QString("liberation.gif"));
+
+    for (int i = 0; i < 12; ++i)
+    {
+        CardActor* cardActor = new CardActor(*mCardModel, frontTexture,
+            backTexture);
+
+        float offset = float(i) * 0.5f;
+
+        mat4f& m = cardActor->matrix();
+        m.translate(0.0f, offset, offset);
+
+        mHeadActor.addChildNode(*cardActor);
+        cardActor->addToChain(mHeadActor);
+        mCardActors.append(cardActor);
+    }
 
     mCamera.setDistance(20.0f);
     mCamera.setAngle(-45.0f);
@@ -77,19 +88,97 @@ void CanvasOpenGL::paintGL()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    //mHeadActor.drawChain();
-    glLoadMatrixf(mCardActor->modelViewMatrix());
-    mCardActor->draw();
+    mHeadActor.drawChain();
 }
 
 void CanvasOpenGL::mousePressEvent(QMouseEvent* inEvent)
 {
-    qDebug() << inEvent->pos();
+    switch (inEvent->button())
+    {
+    case Qt::LeftButton:
+        break;
+
+    case Qt::MiddleButton:
+        qDebug() << "middle button";
+        break;
+
+    case Qt::RightButton:
+        if (mMouseMode == None)
+        {
+            mAnchorX = inEvent->x();
+            mAnchorY = inEvent->y();
+            mMouseMode = MoveCamera;
+        }
+        break;
+
+    default:
+        break;
+    }
+}
+
+void CanvasOpenGL::mouseReleaseEvent(QMouseEvent* inEvent)
+{
+    (void)inEvent;
+
+    switch (inEvent->button())
+    {
+    case Qt::LeftButton:
+        break;
+
+    case Qt::MiddleButton:
+        qDebug() << "middle button";
+        break;
+
+    case Qt::RightButton:
+        if (mMouseMode == MoveCamera)
+            mMouseMode = None;
+        break;
+
+    default:
+        break;
+    }
 }
 
 void CanvasOpenGL::mouseMoveEvent(QMouseEvent* inEvent)
 {
-    (void)inEvent;
+    switch (mMouseMode)
+    {
+    case MoveCamera:
+    {
+        const float Step = 0.5f;
+        float deltaX = float(inEvent->x() - mAnchorX) * Step;
+        float deltaY = float(inEvent->y() - mAnchorY) * Step;
+
+        mAnchorX = inEvent->x();
+        mAnchorY = inEvent->y();
+
+        mCamera.changeAngle(deltaY);
+        mCamera.changeRotation(deltaX);
+
+        break;
+    }
+
+    default:
+        break;
+    }
+}
+
+void CanvasOpenGL::wheelEvent(QWheelEvent* inEvent)
+{
+    const float change = 1.0f;
+    mCamera.changeDistance(inEvent->delta() > 0 ? -change : change);
+}
+
+void CanvasOpenGL::destroyAll()
+{
+    for (int i = 0; i < mTextures.size(); ++i)
+        deleteTexture(mTextures[i]);
+
+    mTextures.clear();
+    mTexturesByName.clear();
+
+    while (!mCardActors.isEmpty())
+        delete mCardActors.takeFirst();
 }
 
 void CanvasOpenGL::testFolders()
@@ -99,17 +188,29 @@ void CanvasOpenGL::testFolders()
     qDebug() << (success ? "WOOT" : "dawww");
 }
 
-GLuint CanvasOpenGL::loadCardTexture(const QImage& inImage)
+GLuint CanvasOpenGL::loadCardTextureByName(const QString& inName)
 {
     GLuint outTexture = 0;
 
-    if (!inImage.isNull())
+    QMap<QString, GLuint>::ConstIterator i = mTexturesByName.find(inName);
+
+    if (i == mTexturesByName.end())
     {
-        QImage square(QSize(512, 512), inImage.format());
-        QPainter painter(&square);
-        painter.drawImage(QRect(0, 0, 512, 512), inImage);
-        qDebug() << "square" << square.size();
-        outTexture = bindTexture(square, GL_TEXTURE_2D);
+        QImage image(inName);
+
+        if (!image.isNull())
+        {
+            QImage square(QSize(512, 512), image.format());
+            QPainter painter(&square);
+            painter.drawImage(QRect(0, 0, 512, 512), image);
+            outTexture = bindTexture(square, GL_TEXTURE_2D);
+            mTextures.append(outTexture);
+            mTexturesByName.insert(inName, outTexture);
+        }
+    }
+    else
+    {
+        outTexture = i.value();
     }
 
     return outTexture;

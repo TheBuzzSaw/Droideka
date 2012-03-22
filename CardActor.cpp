@@ -4,7 +4,7 @@
 CardActor::CardActor(CardModel& inCardModel, GLuint inFrontTexture,
     GLuint inBackTexture)
     : mCardModel(inCardModel), mFrontTexture(inFrontTexture),
-      mBackTexture(inBackTexture)
+      mBackTexture(inBackTexture), mFlip(0.0f)
 {
 }
 
@@ -24,8 +24,8 @@ void CardActor::draw()
 
 void CardActor::willUpdate()
 {
-    localMatrix().loadIdentity();
-    localMatrix().translate(mPosition[0], mPosition[1], mPosition[2]);
+    //localMatrix().loadIdentity();
+    //localMatrix().translate(mPosition[0], mPosition[1], mPosition[2]);
 }
 
 void CardActor::didUpdate()
@@ -43,5 +43,11 @@ void CardActor::didUpdate()
     mDirection[1] -= mModelViewOrigin[1];
     mDirection[2] -= mModelViewOrigin[2];
 
-    mDrawFront = mDirection[2] > 0.0f;
+    vec4f cameraToPolygon = mModelViewOrigin;
+    CGE::normalize3(cameraToPolygon.getData());
+
+    float dotProduct = CGE::dot(cameraToPolygon.getData(),
+        mDirection.getData());
+
+    mDrawFront = dotProduct < 0.0f;
 }

@@ -1,4 +1,5 @@
 #include "SceneGraphNode.hpp"
+#include <QDebug>
 
 SceneGraphNode::SceneGraphNode() : mParent(NULL)
 {

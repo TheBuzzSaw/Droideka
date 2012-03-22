@@ -14,6 +14,8 @@ public:
 
     virtual void draw();
 
+    inline mat4f& matrix() { return localMatrix(); }
+
 protected:
     virtual void willUpdate();
     virtual void didUpdate();
@@ -29,6 +31,7 @@ private:
     bool mDrawFront;
 
     vec3f mPosition;
+    float mFlip;
 };
 
 #endif

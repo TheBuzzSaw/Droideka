@@ -16,6 +16,7 @@ void Actor::draw()
 
 void Actor::addToChain(Actor& inActor)
 {
+    removeFromChain();
     mPreviousActor = &inActor;
     mNextActor = inActor.mNextActor;
     inActor.mNextActor = this;
