@@ -2,6 +2,23 @@
 
 TableModel::TableModel(GLuint inTexture) : mTexture(inTexture)
 {
+    GLfloat vertices[] = {
+        500.0f, 500.0f,
+        500.0f, -500.0f,
+        -500.0f, -500.0f,
+        -500.0f, 500.0f,
+        };
+
+    mVertexBuffer.loadData(vertices, 4, 2);
+
+    GLfloat textureCoordinates[] = {
+        100.0f, 100.0f,
+        100.0f, -100.0f,
+        -100.0f, -100.0f,
+        -100.0f, 100.0f,
+        };
+
+    mTextureBuffer.loadData(textureCoordinates, 4, 2);
 }
 
 TableModel::~TableModel()

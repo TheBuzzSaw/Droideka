@@ -3,6 +3,7 @@
 
 #include "TrackballCamera.hpp"
 #include "CardActor.hpp"
+#include "TableActor.hpp"
 #include <QGLWidget>
 #include <QList>
 #include <QVector>
@@ -46,6 +47,9 @@ private:
     TrackballCamera mCamera;
     Actor mHeadActor;
     CardModel* mCardModel;
+    TableModel* mTableModel;
+    TableActor* mTableActor;
+    GLuint mTableTexture;
 };
 
 #endif

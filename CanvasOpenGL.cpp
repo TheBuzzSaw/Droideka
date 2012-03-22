@@ -15,6 +15,9 @@ CanvasOpenGL::CanvasOpenGL(QWidget *inParent)
     connect(timer, SIGNAL(timeout()), this, SLOT(onPulse()));
     timer->start(25);
     mCardModel = 0;
+    mTableModel = 0;
+    mTableActor = 0;
+    mTableTexture = 0;
     mMouseMode = None;
 }
 
@@ -22,7 +25,11 @@ CanvasOpenGL::~CanvasOpenGL()
 {
     destroyAll();
 
+    delete mTableActor;
+    delete mTableModel;
     delete mCardModel;
+
+    deleteTexture(mTableTexture);
 }
 
 void CanvasOpenGL::onPulse()
@@ -37,7 +44,14 @@ void CanvasOpenGL::onPulse()
 
 void CanvasOpenGL::initializeGL()
 {
+    mTableTexture = bindTexture(QImage("wood.jpg"), GL_TEXTURE_2D);
+
     mCardModel = new CardModel;
+    mTableModel = new TableModel(mTableTexture);
+    mTableActor = new TableActor(*mTableModel);
+
+    mHeadActor.addChildNode(*mTableActor);
+    mTableActor->addToChain(mHeadActor);
 
     GLuint frontTexture = loadCardTextureByName(QString("localuprising.gif"));
     GLuint backTexture = loadCardTextureByName(QString("liberation.gif"));

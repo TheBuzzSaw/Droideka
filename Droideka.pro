@@ -21,7 +21,8 @@ SOURCES += main.cpp\
     CanvasOpenGL.cpp \
     Actor.cpp \
     CardActor.cpp \
-    TableModel.cpp
+    TableModel.cpp \
+    TableActor.cpp
 
 HEADERS  += \
     Matrix4x4.hpp \
@@ -36,7 +37,8 @@ HEADERS  += \
     LoginWindow.hpp \
     Actor.hpp \
     CardActor.hpp \
-    TableModel.hpp
+    TableModel.hpp \
+    TableActor.hpp
 
 FORMS    += LoginWindow.ui
 
