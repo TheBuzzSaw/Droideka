@@ -201,7 +201,7 @@ void CanvasOpenGL::mouseMoveEvent(QMouseEvent* inEvent)
 
 void CanvasOpenGL::wheelEvent(QWheelEvent* inEvent)
 {
-    const float change = 1.0f;
+    const float change = 3.0f;
     mCamera.changeDistance(inEvent->delta() > 0 ? -change : change);
 }
 

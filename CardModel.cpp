@@ -71,17 +71,6 @@ void CardModel::assemble()
         1.0f, 1.0f
         };
 
-    float ratio = mWidth / mHeight;
-    float adjustment = 490.0f / 512.0f; // card image size adjustment
-    for (size_t i = 0; i < 8; ++i)
-    {
-        break;
-        size_t index = i * 2;
-        // It is assumed that the card is taller than it is wide.
-        textureCoordinates[index] *= ratio * adjustment;
-        textureCoordinates[index + 1] *= adjustment;
-    }
-
     mTextureBuffer.loadData(textureCoordinates, 8, 2);
 
     GLuint topIndices[6] = { 0, 1, 2, 0, 2, 3 };

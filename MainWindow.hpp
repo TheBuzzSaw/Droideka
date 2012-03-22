@@ -28,6 +28,7 @@ private:
     QMenu* mHelpMenu;
     QAction* mAboutAct;
     QAction* mAboutQtAct;
+    bool mIsFullScreen;
 };
 
 #endif

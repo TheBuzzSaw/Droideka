@@ -13,12 +13,23 @@ MainWindow::MainWindow(QWidget *parent) :
     resize(QSize(640, 480));
 
     setupMenu();
+
+    mIsFullScreen = false;
 }
 
 void MainWindow::keyPressEvent(QKeyEvent* inEvent)
 {
     switch (inEvent->key())
     {
+    case Qt::Key_F11:
+        mIsFullScreen = !mIsFullScreen;
+
+        if (mIsFullScreen)
+            showFullScreen();
+        else
+            showNormal();
+
+        break;
 
     case Qt::Key_Escape:
         close();
