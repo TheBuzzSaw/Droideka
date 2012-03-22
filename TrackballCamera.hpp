@@ -14,6 +14,8 @@ public:
 
     void update();
 
+    void smartPan(float inX, float inY);
+
     void setPosition(const vec3f& inPosition);
     void changePosition(const vec3f& inDelta);
 

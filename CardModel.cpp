@@ -1,7 +1,7 @@
 #include "CardModel.hpp"
 #include <QDebug>
 
-CardModel::CardModel()
+CardModel::CardModel() : mWidth(6.3f), mHeight(8.8f), mDepth(0.05f)
 {
     assemble();
 }
@@ -43,12 +43,9 @@ void CardModel::drawEdge()
 
 void CardModel::assemble()
 {
-    float inWidth = 6.3f;
-    float inHeight = 8.8f;
-
-    float w = inWidth  / 2.0f;
-    float h = inHeight / 2.0f;
-    float d = 0.05 / 2.0f;
+    float w = mWidth  / 2.0f;
+    float h = mHeight / 2.0f;
+    float d = mDepth / 2.0f;
 
     GLfloat points[24] = {
         +w, +h, +d,
@@ -74,7 +71,7 @@ void CardModel::assemble()
         1.0f, 1.0f
         };
 
-    float ratio = inWidth / inHeight;
+    float ratio = mWidth / mHeight;
     float adjustment = 490.0f / 512.0f; // card image size adjustment
     for (size_t i = 0; i < 8; ++i)
     {

@@ -96,6 +96,12 @@ void CanvasOpenGL::mousePressEvent(QMouseEvent* inEvent)
     switch (inEvent->button())
     {
     case Qt::LeftButton:
+        if (mMouseMode == None)
+        {
+            mAnchorX = inEvent->x();
+            mAnchorY = inEvent->y();
+            mMouseMode = PanCamera;
+        }
         break;
 
     case Qt::MiddleButton:
@@ -107,7 +113,7 @@ void CanvasOpenGL::mousePressEvent(QMouseEvent* inEvent)
         {
             mAnchorX = inEvent->x();
             mAnchorY = inEvent->y();
-            mMouseMode = MoveCamera;
+            mMouseMode = RotateCamera;
         }
         break;
 
@@ -123,6 +129,8 @@ void CanvasOpenGL::mouseReleaseEvent(QMouseEvent* inEvent)
     switch (inEvent->button())
     {
     case Qt::LeftButton:
+        if (mMouseMode == PanCamera)
+            mMouseMode = None;
         break;
 
     case Qt::MiddleButton:
@@ -130,7 +138,7 @@ void CanvasOpenGL::mouseReleaseEvent(QMouseEvent* inEvent)
         break;
 
     case Qt::RightButton:
-        if (mMouseMode == MoveCamera)
+        if (mMouseMode == RotateCamera)
             mMouseMode = None;
         break;
 
@@ -143,7 +151,7 @@ void CanvasOpenGL::mouseMoveEvent(QMouseEvent* inEvent)
 {
     switch (mMouseMode)
     {
-    case MoveCamera:
+    case RotateCamera:
     {
         const float Step = 0.5f;
         float deltaX = float(inEvent->x() - mAnchorX) * Step;
@@ -154,6 +162,20 @@ void CanvasOpenGL::mouseMoveEvent(QMouseEvent* inEvent)
 
         mCamera.changeAngle(deltaY);
         mCamera.changeRotation(deltaX);
+
+        break;
+    }
+
+    case PanCamera:
+    {
+        const float Step = 0.1f;
+        float deltaX = float(inEvent->x() - mAnchorX) * Step;
+        float deltaY = float(inEvent->y() - mAnchorY) * Step;
+
+        mAnchorX = inEvent->x();
+        mAnchorY = inEvent->y();
+
+        mCamera.smartPan(-deltaX, deltaY);
 
         break;
     }

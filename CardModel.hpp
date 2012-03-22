@@ -13,9 +13,17 @@ public:
     void drawBack(GLuint inTexture);
     void drawEdge();
 
-    void assemble();
+    inline float width() const { return mWidth; }
+    inline float height() const { return mHeight; }
+    inline float depth() const { return mDepth; }
 
 private:
+    void assemble();
+
+    float mWidth;
+    float mHeight;
+    float mDepth;
+
     VertexBufferObject mVertexBuffer;
     VertexBufferObject mTextureBuffer;
     IndexBufferObject mTopIndexBuffer;

@@ -4,7 +4,7 @@
 CardActor::CardActor(CardModel& inCardModel, GLuint inFrontTexture,
     GLuint inBackTexture)
     : mCardModel(inCardModel), mFrontTexture(inFrontTexture),
-      mBackTexture(inBackTexture), mFlip(0.0f)
+      mBackTexture(inBackTexture), mRotation(0.0f), mFlip(0.0f)
 {
 }
 

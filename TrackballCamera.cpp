@@ -20,6 +20,21 @@ void TrackballCamera::update()
     mMatrix.translate(-mPosition[0], -mPosition[1], -mPosition[2]);
 }
 
+void TrackballCamera::smartPan(float inX, float inY)
+{
+    float theta = mRotation * 3.141592654f / 180.0f;
+    float c = cos(theta);
+    float s = sin(theta);
+
+    float deltaX = c * inX;
+    float deltaY = -s * inX;
+    deltaX += s * inY;
+    deltaY += c * inY;
+
+    mPosition[0] += deltaX;
+    mPosition[1] += deltaY;
+}
+
 void TrackballCamera::setPosition(const vec3f& inPosition)
 {
     mPosition = inPosition;

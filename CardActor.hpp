@@ -31,6 +31,7 @@ private:
     bool mDrawFront;
 
     vec3f mPosition;
+    float mRotation;
     float mFlip;
 };
 

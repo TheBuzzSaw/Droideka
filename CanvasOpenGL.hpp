@@ -29,7 +29,7 @@ protected:
     virtual void wheelEvent(QWheelEvent* inEvent);
 
 private:
-    enum { None, MoveCamera } mMouseMode;
+    enum { None, RotateCamera, PanCamera } mMouseMode;
 
     int mAnchorX;
     int mAnchorY;
