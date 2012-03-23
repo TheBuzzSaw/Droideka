@@ -21,6 +21,7 @@ public:
     inline const vec3f& position() const { return mPosition; }
     inline void position(float* inPosition) { mPosition = inPosition; }
     bool contains(float inX, float inY);
+    void rotate90();
 
 protected:
     virtual void willUpdate();
@@ -40,6 +41,8 @@ private:
     vec3f mPosition;
     float mRotation;
     float mFlip;
+    bool mIsHorizontal;
+    int mRotationStepsLeft;
 };
 
 #endif

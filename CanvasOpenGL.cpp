@@ -140,6 +140,10 @@ void CanvasOpenGL::initializeGL()
         CardActor* cardActor = new CardActor(*mCardModel, frontTexture,
             backTexture);
 
+        vec3f position;
+        position[0] = float(i) * mCardModel->width() + 0.5f;
+        cardActor->position(position);
+
         float offset = float(i) * mCardModel->depth();
 
         mat4f& m = cardActor->matrix();
@@ -230,6 +234,11 @@ void CanvasOpenGL::mousePressEvent(QMouseEvent* inEvent)
             mAnchor3D = mMouse3D;
             mMouseMode = RotateCamera;
         }
+        else if (mMouseMode == MoveCard)
+        {
+            mSelectedCard->rotate90();
+        }
+
         break;
 
     default:

@@ -4,7 +4,8 @@
 CardActor::CardActor(CardModel& inCardModel, GLuint inFrontTexture,
     GLuint inBackTexture)
     : mCardModel(inCardModel), mFrontTexture(inFrontTexture),
-      mBackTexture(inBackTexture), mRotation(0.0f), mFlip(0.0f)
+      mBackTexture(inBackTexture), mRotation(0.0f), mFlip(0.0f),
+      mIsHorizontal(false), mRotationStepsLeft(0)
 {
     mPosition[2] = mCardModel.depth() / 2.0f;
 }
@@ -29,16 +30,39 @@ bool CardActor::contains(float inX, float inY)
     float w = mCardModel.width() / 2.0f;
     float h = mCardModel.height() / 2.0f;
 
+    if (mIsHorizontal)
+    {
+        float temp = w;
+        w = h;
+        h = temp;
+    }
+
     return inX > mPosition[0] - w
         && inX < mPosition[0] + w
         && inY > mPosition[1] - h
         && inY < mPosition[1] + h;
 }
 
+void CardActor::rotate90()
+{
+    mIsHorizontal = !mIsHorizontal;
+    mRotationStepsLeft += 4;
+}
+
 void CardActor::willUpdate()
 {
+    if (mRotationStepsLeft > 0)
+    {
+        mRotation -= 22.5f;
+        if (mRotation < -180.0f)
+            mRotation += 360.0f;
+
+        --mRotationStepsLeft;
+    }
+
     localMatrix().loadIdentity();
     localMatrix().translate(mPosition[0], mPosition[1], mPosition[2]);
+    localMatrix().rotateZ(mRotation);
 }
 
 void CardActor::didUpdate()
