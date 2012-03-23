@@ -225,10 +225,17 @@ void CanvasOpenGL::mousePressEvent(QMouseEvent* inEvent)
     case Qt::RightButton:
         if (mMouseMode == None)
         {
-            mAnchorX = inEvent->x();
-            mAnchorY = inEvent->y();
-            mAnchor3D = mMouse3D;
-            mMouseMode = RotateCamera;
+            if (mSelectedCard)
+            {
+                mSelectedCard->flip180();
+            }
+            else
+            {
+                mAnchorX = inEvent->x();
+                mAnchorY = inEvent->y();
+                mAnchor3D = mMouse3D;
+                mMouseMode = RotateCamera;
+            }
         }
         else if (mMouseMode == MoveCard)
         {
