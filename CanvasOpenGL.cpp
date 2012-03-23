@@ -90,10 +90,10 @@ void CanvasOpenGL::initializeGL()
         CardActor* cardActor = new CardActor(*mCardModel, frontTexture,
             backTexture);
 
-        float offset = float(i) * 0.5f;
+        float offset = float(i) * mCardModel->depth();
 
         mat4f& m = cardActor->matrix();
-        m.translate(0.0f, offset, offset);
+        m.translate(0.0f, float(i) * -1.0f, offset);
 
         mHeadActor.addChildNode(*cardActor);
         cardActor->addToChain(mHeadActor);
