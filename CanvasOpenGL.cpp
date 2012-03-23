@@ -42,32 +42,35 @@ void CanvasOpenGL::onPulse()
     mHeadActor.updateMatrices(mat4f(), mCamera.matrix());
     updateGL();
 
-    vec3f red;
-    red[0] = 0.5f;
-
-    vec3f black;
-
-    CardActor* hoverCandidate = 0;
-    for (int i = 0; i < mCardActors.size(); ++i)
+    if (mMouseMode == None)
     {
-        CardActor* ca = mCardActors[i];
+        vec3f red;
+        red[0] = 0.5f;
 
-        if (ca->contains(mMouse3D[0], mMouse3D[1]))
+        vec3f black;
+
+        CardActor* hoverCandidate = 0;
+        for (int i = 0; i < mCardActors.size(); ++i)
         {
-            if (!hoverCandidate || ca->z() > hoverCandidate->z())
-                hoverCandidate = ca;
+            CardActor* ca = mCardActors[i];
+
+            if (ca->contains(mMouse3D[0], mMouse3D[1]))
+            {
+                if (!hoverCandidate || ca->z() > hoverCandidate->z())
+                    hoverCandidate = ca;
+            }
         }
-    }
 
-    if (mSelectedCard)
-        mSelectedCard->setHighlight(black);
+        if (mSelectedCard)
+            mSelectedCard->setHighlight(black);
 
-    mSelectedCard = 0;
+        mSelectedCard = 0;
 
-    if (hoverCandidate)
-    {
-        mSelectedCard = hoverCandidate;
-        mSelectedCard->setHighlight(red);
+        if (hoverCandidate)
+        {
+            mSelectedCard = hoverCandidate;
+            mSelectedCard->setHighlight(red);
+        }
     }
 }
 
