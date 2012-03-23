@@ -14,12 +14,24 @@ CardActor::~CardActor()
 
 void CardActor::draw()
 {
+    glColor3fv(mHighlight);
     mCardModel.drawEdge();
 
     if (mDrawFront)
         mCardModel.drawFront(mFrontTexture);
     else
         mCardModel.drawBack(mBackTexture);
+}
+
+bool CardActor::contains(float inX, float inY)
+{
+    float w = mCardModel.width() / 2.0f;
+    float h = mCardModel.height() / 2.0f;
+
+    return inX > mPosition[0] - w
+        && inX < mPosition[0] + w
+        && inY > mPosition[1] - h
+        && inY < mPosition[1] + h;
 }
 
 void CardActor::willUpdate()
@@ -50,4 +62,6 @@ void CardActor::didUpdate()
         mDirection.getData());
 
     mDrawFront = dotProduct < 0.0f;
+
+    mPosition = mModelOrigin;
 }

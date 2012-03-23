@@ -22,13 +22,7 @@ void MainWindow::keyPressEvent(QKeyEvent* inEvent)
     switch (inEvent->key())
     {
     case Qt::Key_F11:
-        mIsFullScreen = !mIsFullScreen;
-
-        if (mIsFullScreen)
-            showFullScreen();
-        else
-            showNormal();
-
+        toggleFullscreen();
         break;
 
     case Qt::Key_Escape:
@@ -66,4 +60,14 @@ void MainWindow::showAboutDialog()
 {
     QMessageBox::about(this, QString("About DEJARIX"),
         QString("DEJARIX 0.1 -- Star Wars CCG Online"));
+}
+
+void MainWindow::toggleFullscreen()
+{
+    mIsFullScreen = !mIsFullScreen;
+
+    if (mIsFullScreen)
+        showFullScreen();
+    else
+        showNormal();
 }

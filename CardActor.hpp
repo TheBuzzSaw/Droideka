@@ -16,6 +16,10 @@ public:
 
     inline mat4f& matrix() { return localMatrix(); }
 
+    inline void setHighlight(float* inHighlight) { mHighlight = inHighlight; }
+    inline float z() const { return mPosition[2]; }
+    bool contains(float inX, float inY);
+
 protected:
     virtual void willUpdate();
     virtual void didUpdate();
@@ -30,6 +34,7 @@ private:
     vec4f mDirection;
     bool mDrawFront;
 
+    vec3f mHighlight;
     vec3f mPosition;
     float mRotation;
     float mFlip;

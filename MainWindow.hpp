@@ -23,6 +23,7 @@ private slots:
 private:
     void setupActions();
     void setupMenu();
+    void toggleFullscreen();
 
     CanvasOpenGL* mGLW;
     QMenu* mHelpMenu;

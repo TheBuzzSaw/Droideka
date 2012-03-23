@@ -14,6 +14,7 @@ CanvasOpenGL::CanvasOpenGL(QWidget *inParent)
     QTimer* timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(onPulse()));
     timer->start(25);
+    mSelectedCard = 0;
     mCardModel = 0;
     mTableModel = 0;
     mTableActor = 0;
@@ -40,6 +41,34 @@ void CanvasOpenGL::onPulse()
 
     mHeadActor.updateMatrices(mat4f(), mCamera.matrix());
     updateGL();
+
+    vec3f red;
+    red[0] = 0.5f;
+
+    vec3f black;
+
+    CardActor* hoverCandidate = 0;
+    for (int i = 0; i < mCardActors.size(); ++i)
+    {
+        CardActor* ca = mCardActors[i];
+
+        if (ca->contains(mMouse3D[0], mMouse3D[1]))
+        {
+            if (!hoverCandidate || ca->z() > hoverCandidate->z())
+                hoverCandidate = ca;
+        }
+    }
+
+    if (mSelectedCard)
+        mSelectedCard->setHighlight(black);
+
+    mSelectedCard = 0;
+
+    if (hoverCandidate)
+    {
+        mSelectedCard = hoverCandidate;
+        mSelectedCard->setHighlight(red);
+    }
 }
 
 void CanvasOpenGL::initializeGL()
@@ -87,6 +116,7 @@ void CanvasOpenGL::initializeGL()
 void CanvasOpenGL::resizeGL(int inWidth, int inHeight)
 {
     glViewport(0, 0, inWidth, inHeight);
+    glGetIntegerv(GL_VIEWPORT, mViewport);
 
     float ratio = float(inWidth) / float(inHeight);
 
@@ -103,6 +133,12 @@ void CanvasOpenGL::paintGL()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     mHeadActor.drawChain();
+
+    GLfloat depthSample;
+    glReadPixels(mSampleX, mSampleY, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT,
+        &depthSample);
+    unproject(mSampleX, mSampleY, depthSample,
+        mat4f(mProjectionMatrix, mCamera.matrix()), mMouse3D);
 }
 
 void CanvasOpenGL::mousePressEvent(QMouseEvent* inEvent)
@@ -119,8 +155,11 @@ void CanvasOpenGL::mousePressEvent(QMouseEvent* inEvent)
         break;
 
     case Qt::MiddleButton:
-        qDebug() << "middle button";
+    {
+        qDebug() << mMouse3D[0] << mMouse3D[1] << mMouse3D[2];
+
         break;
+    }
 
     case Qt::RightButton:
         if (mMouseMode == None)
@@ -148,7 +187,6 @@ void CanvasOpenGL::mouseReleaseEvent(QMouseEvent* inEvent)
         break;
 
     case Qt::MiddleButton:
-        qDebug() << "middle button";
         break;
 
     case Qt::RightButton:
@@ -163,6 +201,9 @@ void CanvasOpenGL::mouseReleaseEvent(QMouseEvent* inEvent)
 
 void CanvasOpenGL::mouseMoveEvent(QMouseEvent* inEvent)
 {
+    mSampleX = inEvent->x();
+    mSampleY = height() - inEvent->y();
+
     switch (mMouseMode)
     {
     case RotateCamera:
@@ -250,4 +291,19 @@ GLuint CanvasOpenGL::loadCardTextureByName(const QString& inName)
     }
 
     return outTexture;
+}
+
+void CanvasOpenGL::unproject(GLint inX, GLint inY, GLfloat inDepth,
+    const mat4f& inModelViewProjectionMatrix, GLfloat *inResult)
+{
+    float v[4];
+
+    v[0] = GLfloat(inX - mViewport[0]) * 2.0f / GLfloat(mViewport[2]) - 1.0f;
+    v[1] = GLfloat(inY - mViewport[1]) * 2.0f / GLfloat(mViewport[3]) - 1.0f;
+    v[2] = 2.0f * inDepth - 1.0f;
+    v[3] = 1.0f;
+
+    mat4f m;
+    inModelViewProjectionMatrix.copyInverseTo(m);
+    m.transform(v, inResult);
 }

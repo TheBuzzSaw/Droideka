@@ -30,20 +30,30 @@ protected:
     virtual void wheelEvent(QWheelEvent* inEvent);
 
 private:
+    void unproject(GLint inX, GLint inY, GLfloat inDepth,
+        const mat4f& inModelViewProjectionMatrix,
+        GLfloat* inResult);
+
     enum { None, RotateCamera, PanCamera } mMouseMode;
 
     int mAnchorX;
     int mAnchorY;
 
+    int mSampleX;
+    int mSampleY;
+    float mMouse3D[4];
+
     void destroyAll();
     void testFolders();
     GLuint loadCardTextureByName(const QString& inName);
 
+    CardActor* mSelectedCard;
     QList<CardActor*> mCardActors;
     QVector<GLuint> mTextures;
     QMap<QString, GLuint> mTexturesByName;
 
     mat4f mProjectionMatrix;
+    GLint mViewport[4];
     TrackballCamera mCamera;
     Actor mHeadActor;
     CardModel* mCardModel;

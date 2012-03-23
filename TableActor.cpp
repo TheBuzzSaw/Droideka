@@ -10,5 +10,6 @@ TableActor::~TableActor()
 
 void TableActor::draw()
 {
+    glColor3f(0.0f, 0.0f, 0.0f);
     mTableModel.draw();
 }
