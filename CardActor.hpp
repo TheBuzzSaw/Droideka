@@ -18,6 +18,8 @@ public:
 
     inline void setHighlight(float* inHighlight) { mHighlight = inHighlight; }
     inline float z() const { return mPosition[2]; }
+    inline const vec3f& position() const { return mPosition; }
+    inline void position(float* inPosition) { mPosition = inPosition; }
     bool contains(float inX, float inY);
 
 protected:

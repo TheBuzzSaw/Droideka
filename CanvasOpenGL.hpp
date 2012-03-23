@@ -34,7 +34,7 @@ private:
         const mat4f& inModelViewProjectionMatrix,
         GLfloat* inResult);
 
-    enum { None, RotateCamera, PanCamera } mMouseMode;
+    enum { None, RotateCamera, PanCamera, MoveCard } mMouseMode;
 
     int mAnchorX;
     int mAnchorY;
@@ -42,6 +42,9 @@ private:
     int mSampleX;
     int mSampleY;
     float mMouse3D[4];
+    vec4f mAnchor3D;
+    vec3f mOriginalPosition;
+    bool mWillUpdatePanning;
 
     void destroyAll();
     void testFolders();

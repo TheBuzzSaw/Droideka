@@ -42,10 +42,53 @@ void CanvasOpenGL::onPulse()
     mHeadActor.updateMatrices(mat4f(), mCamera.matrix());
     updateGL();
 
-    if (mMouseMode == None)
+    switch (mMouseMode)
     {
-        vec3f red;
-        red[0] = 0.5f;
+    case PanCamera:
+    {
+        if (mWillUpdatePanning)
+        {
+            vec3f delta = mMouse3D;
+
+            delta[0] -= mAnchor3D[0];
+            delta[1] -= mAnchor3D[1];
+            delta[2] = 0.0f;
+
+            delta[0] = -delta[0];
+            delta[1] = -delta[1];
+
+            mCamera.changePosition(delta);
+
+            mWillUpdatePanning = false;
+        }
+
+        break;
+    }
+
+    case MoveCard:
+    {
+        vec4f delta = mMouse3D;
+
+        delta[0] -= mAnchor3D[0];
+        delta[1] -= mAnchor3D[1];
+
+        vec3f newPosition = mOriginalPosition;
+
+        newPosition[0] += delta[0];
+        newPosition[1] += delta[1];
+
+        mSelectedCard->position(newPosition);
+
+        break;
+    }
+
+    case None:
+    {
+        const float Extremity = 0.2f;
+        vec3f hoverColor;
+        hoverColor[0] = Extremity;
+        hoverColor[1] = Extremity;
+        hoverColor[2] = Extremity;
 
         vec3f black;
 
@@ -69,8 +112,12 @@ void CanvasOpenGL::onPulse()
         if (hoverCandidate)
         {
             mSelectedCard = hoverCandidate;
-            mSelectedCard->setHighlight(red);
+            mSelectedCard->setHighlight(hoverColor);
         }
+    }
+
+    default:
+        break;
     }
 }
 
@@ -151,9 +198,20 @@ void CanvasOpenGL::mousePressEvent(QMouseEvent* inEvent)
     case Qt::LeftButton:
         if (mMouseMode == None)
         {
-            mAnchorX = inEvent->x();
-            mAnchorY = inEvent->y();
-            mMouseMode = PanCamera;
+            mAnchor3D = mMouse3D;
+
+            if (mSelectedCard)
+            {
+                mMouseMode = MoveCard;
+                mOriginalPosition = mSelectedCard->position();
+            }
+            else
+            {
+                mAnchorX = inEvent->x();
+                mAnchorY = inEvent->y();
+                mMouseMode = PanCamera;
+                mWillUpdatePanning = false;
+            }
         }
         break;
 
@@ -169,6 +227,7 @@ void CanvasOpenGL::mousePressEvent(QMouseEvent* inEvent)
         {
             mAnchorX = inEvent->x();
             mAnchorY = inEvent->y();
+            mAnchor3D = mMouse3D;
             mMouseMode = RotateCamera;
         }
         break;
@@ -185,7 +244,7 @@ void CanvasOpenGL::mouseReleaseEvent(QMouseEvent* inEvent)
     switch (inEvent->button())
     {
     case Qt::LeftButton:
-        if (mMouseMode == PanCamera)
+        if (mMouseMode == PanCamera || mMouseMode == MoveCard)
             mMouseMode = None;
         break;
 
@@ -209,6 +268,12 @@ void CanvasOpenGL::mouseMoveEvent(QMouseEvent* inEvent)
 
     switch (mMouseMode)
     {
+    case PanCamera:
+    {
+        mWillUpdatePanning = true;
+        break;
+    }
+
     case RotateCamera:
     {
         const float Step = 0.5f;
@@ -220,20 +285,6 @@ void CanvasOpenGL::mouseMoveEvent(QMouseEvent* inEvent)
 
         mCamera.changeAngle(deltaY);
         mCamera.changeRotation(deltaX);
-
-        break;
-    }
-
-    case PanCamera:
-    {
-        const float Step = 0.1f;
-        float deltaX = float(inEvent->x() - mAnchorX) * Step;
-        float deltaY = float(inEvent->y() - mAnchorY) * Step;
-
-        mAnchorX = inEvent->x();
-        mAnchorY = inEvent->y();
-
-        mCamera.smartPan(-deltaX, deltaY);
 
         break;
     }

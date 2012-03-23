@@ -6,6 +6,7 @@ CardActor::CardActor(CardModel& inCardModel, GLuint inFrontTexture,
     : mCardModel(inCardModel), mFrontTexture(inFrontTexture),
       mBackTexture(inBackTexture), mRotation(0.0f), mFlip(0.0f)
 {
+    mPosition[2] = mCardModel.depth() / 2.0f;
 }
 
 CardActor::~CardActor()
@@ -36,8 +37,8 @@ bool CardActor::contains(float inX, float inY)
 
 void CardActor::willUpdate()
 {
-    //localMatrix().loadIdentity();
-    //localMatrix().translate(mPosition[0], mPosition[1], mPosition[2]);
+    localMatrix().loadIdentity();
+    localMatrix().translate(mPosition[0], mPosition[1], mPosition[2]);
 }
 
 void CardActor::didUpdate()
@@ -63,5 +64,5 @@ void CardActor::didUpdate()
 
     mDrawFront = dotProduct < 0.0f;
 
-    mPosition = mModelOrigin;
+    //mPosition = mModelOrigin;
 }
