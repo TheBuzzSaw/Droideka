@@ -7,7 +7,7 @@ CardActor::CardActor(CardModel& inCardModel, GLuint inFrontTexture,
       mBackTexture(inBackTexture), mRotation(0.0f), mFlip(0.0f),
       mIsHorizontal(false), mRotationStepsLeft(0), mFlipStepsLeft(0)
 {
-    setThickness(30.0f);
+    setThickness(1.0f);
 }
 
 CardActor::~CardActor()
