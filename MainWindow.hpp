@@ -15,7 +15,7 @@ signals:
 public slots:
 
 protected:
-    virtual void onKeyPress(QKeyEvent* inEvent);
+    virtual void keyPressEvent(QKeyEvent* inEvent);
 
 private slots:
     void showAboutDialog();

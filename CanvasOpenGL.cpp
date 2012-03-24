@@ -9,6 +9,7 @@ CanvasOpenGL::CanvasOpenGL(QWidget *inParent)
                           | QGL::DeprecatedFunctions
                           ), inParent)
 {
+    setFocusPolicy(Qt::NoFocus);
     setMouseTracking(true);
 
     QTimer* timer = new QTimer(this);
@@ -304,7 +305,7 @@ void CanvasOpenGL::wheelEvent(QWheelEvent* inEvent)
     mCamera.changeDistance(inEvent->delta() > 0 ? -change : change);
 }
 
-void CanvasOpenGL::onKeyPress(QKeyEvent* inEvent)
+void CanvasOpenGL::keyPressEvent(QKeyEvent* inEvent)
 {
     switch (inEvent->key())
     {
@@ -382,4 +383,9 @@ void CanvasOpenGL::unproject(GLint inX, GLint inY, GLfloat inDepth,
     mat4f m;
     inModelViewProjectionMatrix.copyInverseTo(m);
     m.transform(v, inResult);
+}
+
+void CanvasOpenGL::onKeyPress(QKeyEvent* inEvent)
+{
+    keyPressEvent(inEvent);
 }

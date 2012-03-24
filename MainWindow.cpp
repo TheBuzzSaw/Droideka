@@ -15,9 +15,10 @@ MainWindow::MainWindow(QWidget *parent) :
     setupMenu();
 
     mIsFullScreen = false;
+    setFocusPolicy(Qt::StrongFocus);
 }
 
-void MainWindow::onKeyPress(QKeyEvent* inEvent)
+void MainWindow::keyPressEvent(QKeyEvent* inEvent)
 {
     switch (inEvent->key())
     {

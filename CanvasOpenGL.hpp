@@ -26,10 +26,12 @@ protected:
     virtual void resizeGL(int inWidth, int inHeight);
     virtual void initializeGL();
     virtual void paintGL();
+
     virtual void mousePressEvent(QMouseEvent* inEvent);
     virtual void mouseReleaseEvent(QMouseEvent* inEvent);
     virtual void mouseMoveEvent(QMouseEvent* inEvent);
     virtual void wheelEvent(QWheelEvent* inEvent);
+    virtual void keyPressEvent(QKeyEvent* inEvent);
 
 private:
     void unproject(GLint inX, GLint inY, GLfloat inDepth,
