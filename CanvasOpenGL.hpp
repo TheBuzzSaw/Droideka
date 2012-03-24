@@ -17,6 +17,8 @@ public:
     CanvasOpenGL(QWidget* inParent = 0);
     ~CanvasOpenGL();
 
+    void onKeyPress(QKeyEvent* inEvent);
+
 protected slots:
     void onPulse();
 

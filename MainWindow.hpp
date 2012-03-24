@@ -15,7 +15,7 @@ signals:
 public slots:
 
 protected:
-    virtual void keyPressEvent(QKeyEvent* inEvent);
+    virtual void onKeyPress(QKeyEvent* inEvent);
 
 private slots:
     void showAboutDialog();
@@ -25,7 +25,7 @@ private:
     void setupMenu();
     void toggleFullscreen();
 
-    CanvasOpenGL* mGLW;
+    CanvasOpenGL* mCanvas;
     QMenu* mHelpMenu;
     QAction* mAboutAct;
     QAction* mAboutQtAct;

@@ -6,8 +6,8 @@
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent)
 {
-    mGLW = new CanvasOpenGL(this);
-    setCentralWidget(mGLW);
+    mCanvas = new CanvasOpenGL(this);
+    setCentralWidget(mCanvas);
 
     setWindowTitle(QString("Droideka"));
     resize(QSize(640, 480));
@@ -17,7 +17,7 @@ MainWindow::MainWindow(QWidget *parent) :
     mIsFullScreen = false;
 }
 
-void MainWindow::keyPressEvent(QKeyEvent* inEvent)
+void MainWindow::onKeyPress(QKeyEvent* inEvent)
 {
     switch (inEvent->key())
     {
@@ -30,6 +30,7 @@ void MainWindow::keyPressEvent(QKeyEvent* inEvent)
         break;
 
     default:
+        mCanvas->onKeyPress(inEvent);
         break;
     }
 }

@@ -309,6 +309,24 @@ void CanvasOpenGL::wheelEvent(QWheelEvent* inEvent)
     mCamera.changeDistance(inEvent->delta() > 0 ? -change : change);
 }
 
+void CanvasOpenGL::onKeyPress(QKeyEvent* inEvent)
+{
+    switch (inEvent->key())
+    {
+    case Qt::Key_F:
+    {
+        if (mSelectedCard)
+        {
+            mSelectedCard->flip180();
+        }
+        break;
+    }
+
+    default:
+        break;
+    }
+}
+
 void CanvasOpenGL::destroyAll()
 {
     for (int i = 0; i < mTextures.size(); ++i)

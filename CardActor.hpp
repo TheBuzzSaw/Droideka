@@ -22,6 +22,7 @@ public:
     inline void position(float* inPosition) { mPosition = inPosition; }
     bool contains(float inX, float inY);
     void rotate90();
+    void flip180();
 
 protected:
     virtual void willUpdate();
@@ -43,6 +44,7 @@ private:
     float mFlip;
     bool mIsHorizontal;
     int mRotationStepsLeft;
+    int mFlipStepsLeft;
 };
 
 #endif
