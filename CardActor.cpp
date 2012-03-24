@@ -7,7 +7,7 @@ CardActor::CardActor(CardModel& inCardModel, GLuint inFrontTexture,
       mBackTexture(inBackTexture), mRotation(0.0f), mFlip(0.0f),
       mIsHorizontal(false), mRotationStepsLeft(0), mFlipStepsLeft(0)
 {
-    mPosition[2] = mCardModel.depth() / 2.0f;
+    setThickness(30.0f);
 }
 
 CardActor::~CardActor()
@@ -54,6 +54,16 @@ void CardActor::flip180()
     mFlipStepsLeft += 8;
 }
 
+void CardActor::setThickness(float inThickness)
+{
+    mThickness = inThickness;
+
+    if (mThickness < 1.0f) mThickness = 1.0f;
+
+    mOffsetBase = mThickness * mCardModel.depth() / 2.0f;
+    mPosition[2] = mOffsetBase;
+}
+
 void CardActor::willUpdate()
 {
     if (mRotationStepsLeft > 0)
@@ -74,7 +84,7 @@ void CardActor::willUpdate()
             mFlip -= 360.0f;
 
         float radians = mFlip * 3.1415926535898f / 180.0f;
-        mPosition[2] = abs(sin(radians) * mCardModel.width() / 2.0f);
+        mPosition[2] = mOffsetBase + abs(sin(radians) * mCardModel.width() / 2.0f);
 
         --mFlipStepsLeft;
     }
@@ -83,6 +93,7 @@ void CardActor::willUpdate()
     localMatrix().translate(mPosition[0], mPosition[1], mPosition[2]);
     localMatrix().rotateZ(mRotation);
     localMatrix().rotateY(mFlip);
+    localMatrix().scaleZ(mThickness);
 }
 
 void CardActor::didUpdate()

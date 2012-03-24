@@ -14,15 +14,20 @@ public:
 
     virtual void draw();
 
-    inline mat4f& matrix() { return localMatrix(); }
+    inline void position(float inX, float inY)
+    {
+        mPosition[0] = inX;
+        mPosition[1] = inY;
+    }
 
     inline void setHighlight(float* inHighlight) { mHighlight = inHighlight; }
     inline float z() const { return mPosition[2]; }
     inline const vec3f& position() const { return mPosition; }
-    inline void position(float* inPosition) { mPosition = inPosition; }
+
     bool contains(float inX, float inY);
     void rotate90();
     void flip180();
+    void setThickness(float inThickness);
 
 protected:
     virtual void willUpdate();
@@ -40,6 +45,8 @@ private:
 
     vec3f mHighlight;
     vec3f mPosition;
+    float mOffsetBase;
+    float mThickness;
     float mRotation;
     float mFlip;
     bool mIsHorizontal;

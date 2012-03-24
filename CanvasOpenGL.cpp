@@ -72,12 +72,13 @@ void CanvasOpenGL::onPulse()
         delta[0] -= mAnchor3D[0];
         delta[1] -= mAnchor3D[1];
 
-        vec3f newPosition = mOriginalPosition;
+        float x = mOriginalPosition[0];
+        float y = mOriginalPosition[1];
 
-        newPosition[0] += delta[0];
-        newPosition[1] += delta[1];
+        x += delta[0];
+        y += delta[1];
 
-        mSelectedCard->position(newPosition);
+        mSelectedCard->position(x, y);
 
         break;
     }
@@ -140,14 +141,8 @@ void CanvasOpenGL::initializeGL()
         CardActor* cardActor = new CardActor(*mCardModel, frontTexture,
             backTexture);
 
-        vec3f position;
-        position[0] = float(i) * mCardModel->width() + 0.5f;
-        cardActor->position(position);
-
-        float offset = float(i) * mCardModel->depth();
-
-        mat4f& m = cardActor->matrix();
-        m.translate(0.0f, float(i) * -1.0f, offset);
+        float x = float(i) * (mCardModel->width() + 0.5f);
+        cardActor->position(x, 0.0f);
 
         mHeadActor.addChildNode(*cardActor);
         cardActor->addToChain(mHeadActor);
