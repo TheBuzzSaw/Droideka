@@ -18,11 +18,33 @@ public:
     inline float depth() const { return mDepth; }
 
 private:
-    void assemble();
+    void assembleSimple();
+    void assembleDetailed();
 
     float mWidth;
     float mHeight;
     float mDepth;
+    float mCornerRadius;
+    int mDetail;
+
+    void addVertex(float inX, float inY, float inS, float inT);
+
+    GLfloat* mVertices;
+    GLfloat* mVertex;
+    GLfloat* mTextureCoordinates;
+    GLfloat* mTextureCoordinate;
+
+    void addTriangle(GLuint inA, GLuint inB, GLuint inC);
+    void addTriangles(GLuint inA, GLuint inB, GLuint inC);
+    void addQuad(GLuint inA, GLuint inB, GLuint inC, GLuint inD);
+    void addQuads(GLuint inA, GLuint inB, GLuint inC, GLuint inD);
+
+    GLuint* mTopIndices;
+    GLuint* mTopIndex;
+    GLuint* mMiddleIndices;
+    GLuint* mMiddleIndex;
+    GLuint* mBottomIndices;
+    GLuint* mBottomIndex;
 
     VertexBufferObject mVertexBuffer;
     VertexBufferObject mTextureBuffer;

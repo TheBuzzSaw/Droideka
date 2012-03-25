@@ -162,7 +162,7 @@ void CanvasOpenGL::initializeGL()
     GLuint frontTexture = loadCardTextureByName(QString("localuprising.gif"));
     GLuint backTexture = loadCardTextureByName(QString("liberation.gif"));
 
-    for (int i = 0; i < 12; ++i)
+    for (int i = 0; i < 40; ++i)
     {
         CardActor* cardActor = new CardActor(*mCardModel, frontTexture,
             backTexture);

@@ -73,6 +73,7 @@ void CardActor::confirmParent()
         mParent = 0;
         mUnderneath = 0.0f;
         setLineage(this);
+        updateUnderneath();
     }
 }
 
