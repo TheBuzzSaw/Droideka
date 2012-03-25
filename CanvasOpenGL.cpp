@@ -36,6 +36,13 @@ CanvasOpenGL::~CanvasOpenGL()
 
 void CanvasOpenGL::onPulse()
 {
+    for (QList<CardActor*>::Iterator i = mCardActors.begin();
+         i != mCardActors.end(); ++i)
+    {
+        CardActor& ca = *(*i);
+        ca.update();
+    }
+
     //mCamera.changeRotation(1.0f);
     //mCamera.changeAngle(-0.5f);
     mCamera.update();
@@ -79,7 +86,25 @@ void CanvasOpenGL::onPulse()
         x += delta[0];
         y += delta[1];
 
-        mSelectedCard->position(x, y);
+        mSelectedCard->setPosition(x, y);
+        mSelectedCard->confirmParent();
+
+        if (!mSelectedCard->parent())
+        {
+            for (QList<CardActor*>::Iterator i = mCardActors.begin();
+                 i != mCardActors.end(); ++i)
+            {
+                CardActor& ca = *(*i);
+
+                if (mSelectedCard->lineage() != ca.lineage()
+                    && mSelectedCard->overlaps(ca)
+                    && !ca.child())
+                {
+                    ca.setChild(mSelectedCard);
+                    break;
+                }
+            }
+        }
 
         break;
     }
@@ -143,7 +168,7 @@ void CanvasOpenGL::initializeGL()
             backTexture);
 
         float x = float(i) * (mCardModel->width() + 0.5f);
-        cardActor->position(x, 0.0f);
+        cardActor->setPosition(x, 0.0f);
 
         mHeadActor.addChildNode(*cardActor);
         cardActor->addToChain(mHeadActor);
@@ -316,14 +341,6 @@ void CanvasOpenGL::keyPressEvent(QKeyEvent* inEvent)
 {
     switch (inEvent->key())
     {
-    case Qt::Key_F:
-    {
-        if (mSelectedCard)
-        {
-            mSelectedCard->flip180();
-        }
-        break;
-    }
 
     default:
         break;
