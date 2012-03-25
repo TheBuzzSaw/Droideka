@@ -49,6 +49,13 @@ void VertexBufferObject::loadData(const GLvoid *inData, GLuint inCount,
     mBuffer.allocate(inData, mValueCount * mBytesPerValue);
 }
 
+void VertexBufferObject::draw(GLenum inMode)
+{
+    vertexPointer();
+    glDrawArrays(inMode, 0, mVertexCount);
+    disableClientState();
+}
+
 void VertexBufferObject::vertexPointer()
 {
     assert(mClientState == 0);

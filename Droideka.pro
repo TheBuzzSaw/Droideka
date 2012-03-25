@@ -22,7 +22,9 @@ SOURCES += main.cpp\
     Actor.cpp \
     CardActor.cpp \
     TableModel.cpp \
-    TableActor.cpp
+    TableActor.cpp \
+    PingModel.cpp \
+    PingActor.cpp
 
 HEADERS  += \
     Matrix4x4.hpp \
@@ -38,7 +40,9 @@ HEADERS  += \
     Actor.hpp \
     CardActor.hpp \
     TableModel.hpp \
-    TableActor.hpp
+    TableActor.hpp \
+    PingModel.hpp \
+    PingActor.hpp
 
 FORMS    += LoginWindow.ui
 

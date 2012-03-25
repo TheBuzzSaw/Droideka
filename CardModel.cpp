@@ -181,14 +181,15 @@ void CardModel::assembleDetailed()
         1.0f - previousTexture[0], previousTexture[1]);
     previousVertex = mVertex - 6;
     previousTexture = mTextureCoordinate - 4;
-    GLfloat* mirror = mVertex - 12;
-    GLfloat* mirrorTC = mTextureCoordinate - 8;
+    GLfloat* mirrorVertex = mVertex - 12;
+    GLfloat* mirrorTexture = mTextureCoordinate - 8;
 
     for (int i = 0; i < mDetail + 1; ++i)
     {
-        addVertex(-mirror[0], mirror[1], 1.0f - mirrorTC[0], mirrorTC[1]);
-        mirror -= 6;
-        mirrorTC -= 4;
+        addVertex(-mirrorVertex[0], mirrorVertex[1], 1.0f - mirrorTexture[0],
+            mirrorTexture[1]);
+        mirrorVertex -= 6;
+        mirrorTexture -= 4;
     }
 
     // lower right corner
@@ -196,14 +197,15 @@ void CardModel::assembleDetailed()
         1.0f - previousTexture[1]);
     previousVertex = mVertex - 6;
     previousTexture = mTextureCoordinate - 4;
-    mirror = mVertex - 12;
-    mirrorTC = mTextureCoordinate - 8;
+    mirrorVertex = mVertex - 12;
+    mirrorTexture = mTextureCoordinate - 8;
 
     for (int i = 0; i < mDetail + 1; ++i)
     {
-        addVertex(mirror[0], -mirror[1], mirrorTC[0], 1.0f - mirrorTC[1]);
-        mirror -= 6;
-        mirrorTC -= 4;
+        addVertex(mirrorVertex[0], -mirrorVertex[1], mirrorTexture[0],
+            1.0f - mirrorTexture[1]);
+        mirrorVertex -= 6;
+        mirrorTexture -= 4;
     }
 
     // lower left corner
@@ -211,14 +213,15 @@ void CardModel::assembleDetailed()
         previousTexture[1]);
     previousVertex = mVertex - 6;
     previousTexture = mTextureCoordinate - 4;
-    mirror = mVertex - 12;
-    mirrorTC = mTextureCoordinate - 8;
+    mirrorVertex = mVertex - 12;
+    mirrorTexture = mTextureCoordinate - 8;
 
     for (int i = 0; i < mDetail + 1; ++i)
     {
-        addVertex(-mirror[0], mirror[1], 1.0f - mirrorTC[0], mirrorTC[1]);
-        mirror -= 6;
-        mirrorTC -= 4;
+        addVertex(-mirrorVertex[0], mirrorVertex[1], 1.0f - mirrorTexture[0],
+            mirrorTexture[1]);
+        mirrorVertex -= 6;
+        mirrorTexture -= 4;
     }
 
     for (size_t i = 0; i < numVertices; ++i)
@@ -254,8 +257,8 @@ void CardModel::assembleDetailed()
     {
         addQuads(corners[i], corners[i + 1] - 2, corners[(i + 1) % 4] + 2,
             corners[(i + 1) % 4]);
-        addQuad(corners[i + 1] - 2, corners[i + 1] - 1, corners[(i + 1) % 4] + 3,
-            corners[(i + 1) % 4] + 2);
+        addQuad(corners[i + 1] - 2, corners[i + 1] - 1,
+            corners[(i + 1) % 4] + 3, corners[(i + 1) % 4] + 2);
 
         for (int j = 0; j < mDetail; ++j)
         {

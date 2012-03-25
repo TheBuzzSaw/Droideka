@@ -1,4 +1,5 @@
 #include "CanvasOpenGL.hpp"
+#include "PingActor.hpp"
 #include <QtOpenGL>
 
 CanvasOpenGL::CanvasOpenGL(QWidget *inParent)
@@ -47,7 +48,7 @@ void CanvasOpenGL::onPulse()
     //mCamera.changeAngle(-0.5f);
     mCamera.update();
 
-    mHeadActor.updateMatrices(mat4f(), mCamera.matrix());
+    mHeadCardActor.updateMatrices(mat4f(), mCamera.matrix());
     updateGL();
 
     switch (mMouseMode)
@@ -152,12 +153,13 @@ void CanvasOpenGL::initializeGL()
 {
     mTableTexture = bindTexture(QImage("wood.jpg"), GL_TEXTURE_2D);
 
+    mPingModel = new PingModel;
     mCardModel = new CardModel;
     mTableModel = new TableModel(mTableTexture);
     mTableActor = new TableActor(*mTableModel);
 
-    mHeadActor.addChildNode(*mTableActor);
-    mTableActor->addToChain(mHeadActor);
+    mHeadCardActor.addChildNode(*mTableActor);
+    mTableActor->addToChain(mHeadCardActor);
 
     GLuint frontTexture = loadCardTextureByName(QString("localuprising.gif"));
     GLuint backTexture = loadCardTextureByName(QString("liberation.gif"));
@@ -170,15 +172,14 @@ void CanvasOpenGL::initializeGL()
         float x = float(i) * (mCardModel->width() + 0.5f);
         cardActor->setPosition(x, 0.0f);
 
-        mHeadActor.addChildNode(*cardActor);
-        cardActor->addToChain(mHeadActor);
+        mHeadCardActor.addChildNode(*cardActor);
+        cardActor->addToChain(mHeadCardActor);
         mCardActors.append(cardActor);
     }
 
     mCamera.setDistance(20.0f);
     mCamera.setAngle(-45.0f);
 
-    glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
     glFrontFace(GL_CW);
     glCullFace(GL_BACK);
@@ -207,13 +208,18 @@ void CanvasOpenGL::paintGL()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    mHeadActor.drawChain();
+    glEnable(GL_DEPTH_TEST);
+    mHeadCardActor.drawChain();
 
     GLfloat depthSample;
     glReadPixels(mSampleX, mSampleY, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT,
         &depthSample);
     unproject(mSampleX, mSampleY, depthSample,
         mat4f(mProjectionMatrix, mCamera.matrix()), mMouse3D);
+
+    glDisable(GL_DEPTH_TEST);
+
+    mHeadPingActor.drawChain();
 }
 
 void CanvasOpenGL::mousePressEvent(QMouseEvent* inEvent)
@@ -242,7 +248,12 @@ void CanvasOpenGL::mousePressEvent(QMouseEvent* inEvent)
 
     case Qt::MiddleButton:
     {
-        qDebug() << mMouse3D[0] << mMouse3D[1] << mMouse3D[2];
+        //qDebug() << mMouse3D[0] << mMouse3D[1] << mMouse3D[2];
+        PingActor* pingActor = new PingActor(*mPingModel, mMouse3D[0],
+            mMouse3D[1], 1.0f, 0.0f, 0.0f);
+
+        mHeadCardActor.addChildNode(*pingActor);
+        pingActor->addToChain(mHeadPingActor);
 
         break;
     }

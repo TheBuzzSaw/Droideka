@@ -4,6 +4,7 @@
 #include "TrackballCamera.hpp"
 #include "CardActor.hpp"
 #include "TableActor.hpp"
+#include "PingModel.hpp"
 #include <QGLWidget>
 #include <QList>
 #include <QVector>
@@ -62,9 +63,11 @@ private:
     mat4f mProjectionMatrix;
     GLint mViewport[4];
     TrackballCamera mCamera;
-    Actor mHeadActor;
+    Actor mHeadCardActor;
+    Actor mHeadPingActor;
     CardModel* mCardModel;
     TableModel* mTableModel;
+    PingModel* mPingModel;
     TableActor* mTableActor;
     GLuint mTableTexture;
 };

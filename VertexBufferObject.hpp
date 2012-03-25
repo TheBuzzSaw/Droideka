@@ -14,6 +14,8 @@ public:
     void loadData(const GLvoid* inData, GLuint inCount,
         GLuint inValuesPerVertex = 1);
 
+    void draw(GLenum inMode = GL_TRIANGLES);
+
     void vertexPointer();
     void textureCoordinatePointer();
     void disableClientState();
