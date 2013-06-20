@@ -1,0 +1,41 @@
+#ifndef MAINWIDGET_HPP
+#define MAINWIDGET_HPP
+
+#include "CardBuilder.hpp"
+#include <QWidget>
+#include <QMatrix4x4>
+
+#include <QGLWidget>
+#include <QOpenGLFunctions>
+#include <QOpenGLShaderProgram>
+
+class MainWidget : public QGLWidget, protected QOpenGLFunctions
+{
+    Q_OBJECT
+
+public:
+    explicit MainWidget(QWidget* parent = 0);
+    virtual ~MainWidget();
+
+protected slots:
+    void onTimer();
+
+protected:
+    virtual void initializeGL();
+    virtual void resizeGL(int w, int h);
+    virtual void paintGL();
+
+    virtual void mousePressEvent(QMouseEvent* event);
+
+private:
+    CardBuilder _cardBuilder;
+    QMatrix4x4 _projection;
+    float _rotation;
+
+    QOpenGLShaderProgram* _program;
+    GLuint _positionAttribute;
+    GLuint _colorAttribute;
+    GLuint _matrixUniform;
+};
+
+#endif
