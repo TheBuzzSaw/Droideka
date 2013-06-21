@@ -26,20 +26,20 @@ void MainWidget::initializeGL()
     timer->start(25);
 
     const char* vertexShaderSource =
-        "attribute highp vec4 posAttr;\n"
-        "attribute lowp vec2 colAttr;\n"
-        "varying lowp vec2 col;\n"
+        "attribute highp vec4 position;\n"
+        "attribute lowp vec2 tc;\n"
+        "varying lowp vec2 vtc;\n"
         "uniform highp mat4 matrix;\n"
         "void main() {\n"
-        "   col = colAttr;\n"
-        "   gl_Position = matrix * posAttr;\n"
+        "   vtc = tc;\n"
+        "   gl_Position = matrix * position;\n"
         "}\n";
 
     const char* fragmentShaderSource =
         "uniform sampler2D texture;\n"
-        "varying lowp vec2 col;\n"
+        "varying lowp vec2 vtc;\n"
         "void main() {\n"
-        "   gl_FragColor = texture2D(texture, col);\n"
+        "   gl_FragColor = texture2D(texture, vtc);\n"
         "}\n";
 
     _program = new QOpenGLShaderProgram(this);
@@ -48,8 +48,8 @@ void MainWidget::initializeGL()
     _program->addShaderFromSourceCode(QOpenGLShader::Fragment,
         fragmentShaderSource);
     _program->link();
-    _positionAttribute = _program->attributeLocation("posAttr");
-    _colorAttribute = _program->attributeLocation("colAttr");
+    _positionAttribute = _program->attributeLocation("position");
+    _textureAttribute = _program->attributeLocation("tc");
     _matrixUniform = _program->uniformLocation("matrix");
     _textureUniform = _program->uniformLocation("texture");
 
@@ -80,6 +80,7 @@ void MainWidget::paintGL()
     QMatrix4x4 matrix = _projection;
     matrix.translate(0.0f, 0.0f, -12.0f);
     matrix.rotate(_rotation, 0.0f, 1.0f, 0.0f);
+
     _program->bind();
     _program->setUniformValue(_matrixUniform, matrix);
     _program->setUniformValue(_textureUniform, 0);
@@ -87,9 +88,9 @@ void MainWidget::paintGL()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glEnableVertexAttribArray(_positionAttribute);
-    glEnableVertexAttribArray(_colorAttribute);
+    glEnableVertexAttribArray(_textureAttribute);
 
-    _cardBuffer->bind(_positionAttribute, _colorAttribute);
+    _cardBuffer->bind(_positionAttribute, _textureAttribute);
     _cardBuffer->drawMiddle();
 
     if (_rotation > 90.0f || _rotation < -90.0f)
@@ -103,7 +104,7 @@ void MainWidget::paintGL()
         _cardBuffer->drawTop();
     }
 
-    glDisableVertexAttribArray(_colorAttribute);
+    glDisableVertexAttribArray(_textureAttribute);
     glDisableVertexAttribArray(_positionAttribute);
 
     _program->release();
