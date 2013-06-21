@@ -33,9 +33,12 @@ private:
     float _rotation;
 
     QOpenGLShaderProgram* _program;
+    GLuint _frontTexture;
+    GLuint _backTexture;
     GLuint _positionAttribute;
     GLuint _colorAttribute;
     GLuint _matrixUniform;
+    GLuint _textureUniform;
 };
 
 #endif

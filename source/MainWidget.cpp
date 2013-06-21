@@ -2,6 +2,7 @@
 #include <QDebug>
 #include <QMouseEvent>
 #include <QTimer>
+#include <QImage>
 
 MainWidget::MainWidget(QWidget* parent) : QGLWidget(parent)
 {
@@ -11,6 +12,8 @@ MainWidget::MainWidget(QWidget* parent) : QGLWidget(parent)
 
 MainWidget::~MainWidget()
 {
+    deleteTexture(_frontTexture);
+    deleteTexture(_backTexture);
     delete _cardBuffer;
 }
 
@@ -24,8 +27,8 @@ void MainWidget::initializeGL()
 
     const char* vertexShaderSource =
         "attribute highp vec4 posAttr;\n"
-        "attribute lowp vec4 colAttr;\n"
-        "varying lowp vec4 col;\n"
+        "attribute lowp vec2 colAttr;\n"
+        "varying lowp vec2 col;\n"
         "uniform highp mat4 matrix;\n"
         "void main() {\n"
         "   col = colAttr;\n"
@@ -33,9 +36,10 @@ void MainWidget::initializeGL()
         "}\n";
 
     const char* fragmentShaderSource =
-        "varying lowp vec4 col;\n"
+        "uniform sampler2D texture;\n"
+        "varying lowp vec2 col;\n"
         "void main() {\n"
-        "   gl_FragColor = col;\n"
+        "   gl_FragColor = texture2D(texture, col);\n"
         "}\n";
 
     _program = new QOpenGLShaderProgram(this);
@@ -47,11 +51,12 @@ void MainWidget::initializeGL()
     _positionAttribute = _program->attributeLocation("posAttr");
     _colorAttribute = _program->attributeLocation("colAttr");
     _matrixUniform = _program->uniformLocation("matrix");
+    _textureUniform = _program->uniformLocation("texture");
+
+    _frontTexture = bindTexture(QImage("localuprising.gif"));
+    _backTexture = bindTexture(QImage("liberation.gif"));
 
     CardSpecifications specifications;
-    specifications.cornerDetail(8);
-    specifications.cornerRadius(1.5f);
-    specifications.depth(0.5f);
     CardBuilder builder(specifications);
     _cardBuffer = new CardBuffer(builder);
 
@@ -59,7 +64,7 @@ void MainWidget::initializeGL()
     glEnable(GL_CULL_FACE);
     glFrontFace(GL_CW);
     glCullFace(GL_BACK);
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    glClearColor(0.0f, 0.0f, 0.1f, 1.0f);
 }
 
 void MainWidget::resizeGL(int w, int h)
@@ -73,10 +78,11 @@ void MainWidget::resizeGL(int w, int h)
 void MainWidget::paintGL()
 {
     QMatrix4x4 matrix = _projection;
-    matrix.translate(0.0f, 0.0f, -20.0f);
+    matrix.translate(0.0f, 0.0f, -12.0f);
     matrix.rotate(_rotation, 0.0f, 1.0f, 0.0f);
     _program->bind();
     _program->setUniformValue(_matrixUniform, matrix);
+    _program->setUniformValue(_textureUniform, 0);
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -87,9 +93,15 @@ void MainWidget::paintGL()
     _cardBuffer->drawMiddle();
 
     if (_rotation > 90.0f || _rotation < -90.0f)
+    {
+        glBindTexture(GL_TEXTURE_2D, _backTexture);
         _cardBuffer->drawBottom();
+    }
     else
+    {
+        glBindTexture(GL_TEXTURE_2D, _frontTexture);
         _cardBuffer->drawTop();
+    }
 
     glDisableVertexAttribArray(_colorAttribute);
     glDisableVertexAttribArray(_positionAttribute);
