@@ -1,7 +1,7 @@
 #ifndef MAINWIDGET_HPP
 #define MAINWIDGET_HPP
 
-#include "CardBuilder.hpp"
+#include "CardBuffer.hpp"
 #include <QWidget>
 #include <QMatrix4x4>
 
@@ -28,7 +28,7 @@ protected:
     virtual void mousePressEvent(QMouseEvent* event);
 
 private:
-    CardBuilder _cardBuilder;
+    CardBuffer* _cardBuffer;
     QMatrix4x4 _projection;
     float _rotation;
 

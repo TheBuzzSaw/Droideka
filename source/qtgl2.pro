@@ -17,9 +17,11 @@ SOURCES += main.cpp\
         MainWindow.cpp \
     MainWidget.cpp \
     CardSpecifications.cpp \
-    CardBuilder.cpp
+    CardBuilder.cpp \
+    CardBuffer.cpp
 
 HEADERS  += MainWindow.hpp \
     MainWidget.hpp \
     CardSpecifications.hpp \
-    CardBuilder.hpp
+    CardBuilder.hpp \
+    CardBuffer.hpp

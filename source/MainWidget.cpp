@@ -3,8 +3,7 @@
 #include <QMouseEvent>
 #include <QTimer>
 
-MainWidget::MainWidget(QWidget* parent) : QGLWidget(parent),
-    _cardBuilder(CardSpecifications())
+MainWidget::MainWidget(QWidget* parent) : QGLWidget(parent)
 {
     _program = 0;
     _rotation = 0.0;
@@ -12,10 +11,13 @@ MainWidget::MainWidget(QWidget* parent) : QGLWidget(parent),
 
 MainWidget::~MainWidget()
 {
+    delete _cardBuffer;
 }
 
 void MainWidget::initializeGL()
 {
+    initializeOpenGLFunctions();
+
     QTimer* timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(onTimer()));
     timer->start(25);
@@ -33,8 +35,7 @@ void MainWidget::initializeGL()
     const char* fragmentShaderSource =
         "varying lowp vec4 col;\n"
         "void main() {\n"
-        //"   gl_FragColor = col;\n"
-            "   gl_FragColor = vec4(1.0, 0.5, 0.0, 1.0);\n"
+        "   gl_FragColor = col;\n"
         "}\n";
 
     _program = new QOpenGLShaderProgram(this);
@@ -47,6 +48,17 @@ void MainWidget::initializeGL()
     _colorAttribute = _program->attributeLocation("colAttr");
     _matrixUniform = _program->uniformLocation("matrix");
 
+    CardSpecifications specifications;
+    specifications.cornerDetail(8);
+    specifications.cornerRadius(1.5f);
+    specifications.depth(0.5f);
+    CardBuilder builder(specifications);
+    _cardBuffer = new CardBuffer(builder);
+
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_CULL_FACE);
+    glFrontFace(GL_CW);
+    glCullFace(GL_BACK);
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 }
 
@@ -62,26 +74,22 @@ void MainWidget::paintGL()
 {
     QMatrix4x4 matrix = _projection;
     matrix.translate(0.0f, 0.0f, -20.0f);
-    matrix.rotate(_rotation, 0.0f, 0.0f, 1.0f);
+    matrix.rotate(_rotation, 0.0f, 1.0f, 0.0f);
     _program->bind();
     _program->setUniformValue(_matrixUniform, matrix);
 
-    glClear(GL_COLOR_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    glVertexAttribPointer(_positionAttribute, 3, GL_FLOAT, GL_FALSE, 0,
-        _cardBuilder.vertices().constData());
-    glVertexAttribPointer(_colorAttribute, 2, GL_FLOAT, GL_FALSE, 0,
-        _cardBuilder.textureCoordinates().constData());
+    glEnableVertexAttribArray(_positionAttribute);
+    glEnableVertexAttribArray(_colorAttribute);
 
-    glEnableVertexAttribArray(0);
-    glEnableVertexAttribArray(1);
+    _cardBuffer->bind(_positionAttribute, _colorAttribute);
+    _cardBuffer->drawTop();
+    _cardBuffer->drawMiddle();
+    _cardBuffer->drawBottom();
 
-    //glDrawArrays(GL_TRIANGLES, 0, 36);
-    glDrawElements(GL_TRIANGLES, _cardBuilder.topIndices().size(),
-        GL_UNSIGNED_SHORT, _cardBuilder.topIndices().constData());
-
-    glDisableVertexAttribArray(1);
-    glDisableVertexAttribArray(0);
+    glDisableVertexAttribArray(_colorAttribute);
+    glDisableVertexAttribArray(_positionAttribute);
 
     _program->release();
 }
@@ -93,7 +101,7 @@ void MainWidget::mousePressEvent(QMouseEvent* event)
 
 void MainWidget::onTimer()
 {
-    _rotation += 1.0f;
+    _rotation += 1.5f;
 
     if (_rotation > 180.0f)
     {

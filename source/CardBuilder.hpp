@@ -11,6 +11,11 @@ public:
     CardBuilder(const CardSpecifications& specifications);
     ~CardBuilder();
 
+    inline const CardSpecifications& specifications() const
+    {
+        return _specifications;
+    }
+
     inline const QVector<GLfloat>& vertices() const
     {
         return _vertices;
