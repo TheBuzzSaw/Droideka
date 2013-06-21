@@ -53,8 +53,8 @@ void MainWidget::initializeGL()
     _matrixUniform = _program->uniformLocation("matrix");
     _textureUniform = _program->uniformLocation("texture");
 
-    _frontTexture = bindTexture(QImage("localuprising.gif"));
-    _backTexture = bindTexture(QImage("liberation.gif"));
+    _frontTexture = bindTexture(QImage("../localuprising.gif"));
+    _backTexture = bindTexture(QImage("../liberation.gif"));
 
     CardSpecifications specifications;
     CardBuilder builder(specifications);
