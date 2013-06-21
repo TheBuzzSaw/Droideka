@@ -84,9 +84,12 @@ void MainWidget::paintGL()
     glEnableVertexAttribArray(_colorAttribute);
 
     _cardBuffer->bind(_positionAttribute, _colorAttribute);
-    _cardBuffer->drawTop();
     _cardBuffer->drawMiddle();
-    _cardBuffer->drawBottom();
+
+    if (_rotation > 90.0f || _rotation < -90.0f)
+        _cardBuffer->drawBottom();
+    else
+        _cardBuffer->drawTop();
 
     glDisableVertexAttribArray(_colorAttribute);
     glDisableVertexAttribArray(_positionAttribute);
@@ -104,10 +107,7 @@ void MainWidget::onTimer()
     _rotation += 1.5f;
 
     if (_rotation > 180.0f)
-    {
         _rotation -= 360.0f;
-        qDebug() << "reset rotation";
-    }
 
     updateGL();
 }
