@@ -21,7 +21,6 @@ public:
     void drawBottom();
 
 private:
-
     static const int BufferCount = 5;
     static const int Vertex = 0;
     static const int Texture = 1;

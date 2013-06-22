@@ -4,6 +4,7 @@
 #include "Camera.hpp"
 #include "CardActor.hpp"
 #include "CardBuffer.hpp"
+#include "TableBuffer.hpp"
 #include "MainProgram.hpp"
 #include <QWidget>
 #include <QGLWidget>
@@ -40,8 +41,11 @@ private:
 
     MainProgram* _program;
     CardBuffer* _cardBuffer;
+    TableBuffer* _tableBuffer;
+
     CardActor _cardActors[ActorCount];
     QMatrix4x4 _projectionMatrix;
+    GLuint _tableTexture;
     GLuint _frontTexture;
     GLuint _backTexture;
     Camera _camera;

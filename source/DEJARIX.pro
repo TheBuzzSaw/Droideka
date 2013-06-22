@@ -21,7 +21,9 @@ SOURCES += main.cpp\
     MainProgram.cpp \
     CardActor.cpp \
     Rotation.cpp \
-    Camera.cpp
+    Camera.cpp \
+    Animation.cpp \
+    TableBuffer.cpp
 
 HEADERS  += MainWindow.hpp \
     MainWidget.hpp \
@@ -31,4 +33,6 @@ HEADERS  += MainWindow.hpp \
     MainProgram.hpp \
     CardActor.hpp \
     Rotation.hpp \
-    Camera.hpp
+    Camera.hpp \
+    Animation.hpp \
+    TableBuffer.hpp
