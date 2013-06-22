@@ -1,7 +1,7 @@
 #include "Camera.hpp"
 #include <cmath>
 
-Camera::Camera()
+Camera::Camera() : _distance(0.0f)
 {
 }
 

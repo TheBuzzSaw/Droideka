@@ -4,10 +4,13 @@
 #include <QTimer>
 #include <QPainter>
 #include <QDir>
+#include <QVector2D>
 
 MainWidget::MainWidget(QWidget* parent) : QGLWidget(parent)
 {
     _program = 0;
+    _isCameraMoving = false;
+    _camera.distance(12.0f);
 
 #ifdef Q_OS_MAC
     qDebug() << QDir::currentPath();
@@ -52,19 +55,18 @@ void MainWidget::initializeGL()
 void MainWidget::resizeGL(int w, int h)
 {
     float ratio = float(w) / float(h);
-    _projection.setToIdentity();
-    _projection.perspective(60.0f, ratio, 1.0f, 100.0f);
+    _projectionMatrix.setToIdentity();
+    _projectionMatrix.perspective(60.0f, ratio, 1.0f, 100.0f);
     glViewport(0, 0, w, h);
 }
 
 void MainWidget::paintGL()
 {
-    QMatrix4x4 matrix = _projection;
-    matrix.translate(0.0f, 0.0f, -12.0f);
-    matrix.rotate(_rotation.toDegrees(), 0.0f, 1.0f, 0.0f);
+    _camera.update();
+    _cardActor.update(_camera.matrix());
 
     _program->bind();
-    _program->setMatrix(matrix);
+    _program->setMatrix(_projectionMatrix * _cardActor.modelViewMatrix());
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -74,8 +76,7 @@ void MainWidget::paintGL()
     _cardBuffer->drawMiddle();
     _program->enableTexture(true);
 
-    float degrees = _rotation.toDegrees();
-    if (degrees > 90.0f || degrees < -90.0f)
+    if (!_cardActor.isTopVisible())
     {
         glBindTexture(GL_TEXTURE_2D, _backTexture);
         _cardBuffer->drawBottom();
@@ -91,12 +92,38 @@ void MainWidget::paintGL()
 
 void MainWidget::mousePressEvent(QMouseEvent* event)
 {
-    qDebug() << event->x() << event->y();
+    //qDebug() << event->x() << event->y();
+    if (event->button() == Qt::RightButton)
+    {
+        _isCameraMoving = true;
+        _mouseX = event->x();
+        _mouseY = event->y();
+    }
+}
+
+void MainWidget::mouseReleaseEvent(QMouseEvent* event)
+{
+    if (event->button() == Qt::RightButton)
+        _isCameraMoving = false;
+}
+
+void MainWidget::mouseMoveEvent(QMouseEvent* event)
+{
+    if (_isCameraMoving)
+    {
+        int deltaX = event->x() - _mouseX;
+        int deltaY = event->y() - _mouseY;
+
+        _camera.adjustRotation(Rotation::fromDegrees(float(deltaX) / 3.0f));
+        _camera.adjustAngle(Rotation::fromDegrees(float(deltaY) / 3.0f));
+
+        _mouseX = event->x();
+        _mouseY = event->y();
+    }
 }
 
 void MainWidget::onTimer()
 {
-    _rotation += Rotation::fromDegrees(1.5f);
     updateGL();
 }
 
@@ -124,5 +151,4 @@ GLuint MainWidget::loadImage(const QImage& image)
 
 void MainWidget::dump()
 {
-    qDebug() << _rotation.toDegrees();
 }

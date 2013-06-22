@@ -1,11 +1,11 @@
 #ifndef MAINWIDGET_HPP
 #define MAINWIDGET_HPP
 
+#include "Camera.hpp"
+#include "CardActor.hpp"
 #include "CardBuffer.hpp"
 #include "MainProgram.hpp"
-#include "Rotation.hpp"
 #include <QWidget>
-
 #include <QGLWidget>
 #include <QOpenGLFunctions>
 #include <QImage>
@@ -29,18 +29,22 @@ protected:
     virtual void paintGL();
 
     virtual void mousePressEvent(QMouseEvent* event);
-    //virtual void mouseReleaseEvent(QMouseEvent* event);
-    //virtual void mouseMoveEvent(QMouseEvent* event);
+    virtual void mouseReleaseEvent(QMouseEvent* event);
+    virtual void mouseMoveEvent(QMouseEvent* event);
 
 private:
     GLuint loadImage(const QImage& image);
 
     MainProgram* _program;
     CardBuffer* _cardBuffer;
-    QMatrix4x4 _projection;
+    CardActor _cardActor;
+    QMatrix4x4 _projectionMatrix;
     GLuint _frontTexture;
     GLuint _backTexture;
-    Rotation _rotation;
+    Camera _camera;
+    bool _isCameraMoving;
+    int _mouseX;
+    int _mouseY;
 };
 
 #endif

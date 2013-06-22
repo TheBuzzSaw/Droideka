@@ -23,9 +23,11 @@ public:
 
     inline const Rotation rotation() const { return _rotation; }
     inline void rotation(const Rotation r) { _rotation = r; }
+    inline void adjustRotation(const Rotation r) { _rotation += r; }
 
     inline const Rotation angle() const { return _angle; }
     inline void angle(const Rotation a) { _angle = a; }
+    inline void adjustAngle(const Rotation a) { _angle += a; }
 
 private:
     QMatrix4x4 _matrix;
