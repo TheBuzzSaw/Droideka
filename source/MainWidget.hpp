@@ -8,6 +8,7 @@
 #include <QGLWidget>
 #include <QOpenGLFunctions>
 #include <QOpenGLShaderProgram>
+#include <QImage>
 
 class MainWidget : public QGLWidget, protected QOpenGLFunctions
 {
@@ -28,6 +29,8 @@ protected:
     virtual void mousePressEvent(QMouseEvent* event);
 
 private:
+    GLuint loadImage(const QImage& image);
+
     CardBuffer* _cardBuffer;
     QMatrix4x4 _projection;
     float _rotation;
@@ -39,6 +42,7 @@ private:
     GLuint _textureAttribute;
     GLuint _matrixUniform;
     GLuint _textureUniform;
+    GLuint _enableTextureUniform;
 };
 
 #endif

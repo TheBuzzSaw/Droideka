@@ -2,12 +2,19 @@
 #include <QDebug>
 #include <QMouseEvent>
 #include <QTimer>
-#include <QImage>
+#include <QPainter>
+#include <QDir>
 
 MainWidget::MainWidget(QWidget* parent) : QGLWidget(parent)
 {
     _program = 0;
     _rotation = 0.0;
+
+#ifdef Q_OS_MAC
+    qDebug() << QDir::currentPath();
+    QDir::setCurrent("../../..");
+    qDebug() << QDir::currentPath();
+#endif
 }
 
 MainWidget::~MainWidget()
@@ -37,9 +44,12 @@ void MainWidget::initializeGL()
 
     const char* fragmentShaderSource =
         "uniform sampler2D texture;\n"
+        "uniform bool enableTexture;\n"
         "varying lowp vec2 vtc;\n"
         "void main() {\n"
-        "   gl_FragColor = texture2D(texture, vtc);\n"
+        "   vec4 result = vec4(0.0, 0.0, 0.0, 1.0);\n"
+        "   if (enableTexture) result = texture2D(texture, vtc);\n"
+        "   gl_FragColor = result;\n"
         "}\n";
 
     _program = new QOpenGLShaderProgram(this);
@@ -52,11 +62,13 @@ void MainWidget::initializeGL()
     _textureAttribute = _program->attributeLocation("tc");
     _matrixUniform = _program->uniformLocation("matrix");
     _textureUniform = _program->uniformLocation("texture");
+    _enableTextureUniform = _program->uniformLocation("enableTexture");
 
-    _frontTexture = bindTexture(QImage("../localuprising.gif"));
-    _backTexture = bindTexture(QImage("../liberation.gif"));
+    _frontTexture = loadImage(QImage("../localuprising.gif"));
+    _backTexture = loadImage(QImage("../liberation.gif"));
 
     CardSpecifications specifications;
+    //specifications.depth(1.0f);
     CardBuilder builder(specifications);
     _cardBuffer = new CardBuffer(builder);
 
@@ -91,7 +103,9 @@ void MainWidget::paintGL()
     glEnableVertexAttribArray(_textureAttribute);
 
     _cardBuffer->bind(_positionAttribute, _textureAttribute);
+    _program->setUniformValue(_enableTextureUniform, false);
     _cardBuffer->drawMiddle();
+    _program->setUniformValue(_enableTextureUniform, true);
 
     if (_rotation > 90.0f || _rotation < -90.0f)
     {
@@ -123,4 +137,26 @@ void MainWidget::onTimer()
         _rotation -= 360.0f;
 
     updateGL();
+}
+
+GLuint MainWidget::loadImage(const QImage& image)
+{
+    GLuint result = 0;
+
+    if (image.width() > 0 && image.height() > 0)
+    {
+        int width = 1;
+        int height = 1;
+
+        while (width < image.width()) width *= 2;
+        while (height < image.height()) height *= 2;
+
+        QImage square(width, height, image.format());
+        QPainter painter(&square);
+        painter.drawImage(QRect(0, 0, square.width(), square.height()), image);
+        result = bindTexture(square);
+        glGenerateMipmap(GL_TEXTURE_2D);
+    }
+
+    return result;
 }
