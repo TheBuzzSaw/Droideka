@@ -11,11 +11,25 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent)
 }
 
 MainWindow::~MainWindow()
-{    
+{
 }
 
 void MainWindow::keyPressEvent(QKeyEvent* event)
 {
+    switch (event->key())
+    {
+    case Qt::Key_Escape:
+        close();
+        break;
+
+    case Qt::Key_Space:
+        _mainWidget->dump();
+        break;
+
+    default:
+        break;
+    }
+
     if (event->key() == Qt::Key_Escape)
         close();
 }

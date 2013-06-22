@@ -8,7 +8,6 @@
 MainWidget::MainWidget(QWidget* parent) : QGLWidget(parent)
 {
     _program = 0;
-    _rotation = 0.0;
 
 #ifdef Q_OS_MAC
     qDebug() << QDir::currentPath();
@@ -62,7 +61,7 @@ void MainWidget::paintGL()
 {
     QMatrix4x4 matrix = _projection;
     matrix.translate(0.0f, 0.0f, -12.0f);
-    matrix.rotate(_rotation, 0.0f, 1.0f, 0.0f);
+    matrix.rotate(_rotation.toDegrees(), 0.0f, 1.0f, 0.0f);
 
     _program->bind();
     _program->setMatrix(matrix);
@@ -78,7 +77,8 @@ void MainWidget::paintGL()
     _cardBuffer->drawMiddle();
     _program->enableTexture(true);
 
-    if (_rotation > 90.0f || _rotation < -90.0f)
+    float degrees = _rotation.toDegrees();
+    if (degrees > 90.0f || degrees < -90.0f)
     {
         glBindTexture(GL_TEXTURE_2D, _backTexture);
         _cardBuffer->drawBottom();
@@ -102,11 +102,7 @@ void MainWidget::mousePressEvent(QMouseEvent* event)
 
 void MainWidget::onTimer()
 {
-    _rotation += 1.5f;
-
-    if (_rotation > 180.0f)
-        _rotation -= 360.0f;
-
+    _rotation += Rotation::fromDegrees(1.5f);
     updateGL();
 }
 
@@ -130,4 +126,9 @@ GLuint MainWidget::loadImage(const QImage& image)
     }
 
     return result;
+}
+
+void MainWidget::dump()
+{
+    qDebug() << _rotation.toDegrees();
 }

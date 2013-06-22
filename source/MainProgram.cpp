@@ -13,7 +13,11 @@ MainProgram::MainProgram()
         "}\n";
 
     const char* fragmentShaderSource =
+#ifndef Q_OS_LINUX
+        // This produces a warning in Linux:
+        // warning C7022: unrecognized profile specifier "precision"
         "precision highp float;\n"
+#endif
         "uniform bool enableTexture;\n"
         "uniform sampler2D texture;\n"
         "varying lowp vec2 vtc;\n"

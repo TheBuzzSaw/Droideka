@@ -18,11 +18,15 @@ SOURCES += main.cpp\
     CardSpecifications.cpp \
     CardBuilder.cpp \
     CardBuffer.cpp \
-    MainProgram.cpp
+    MainProgram.cpp \
+    CardActor.cpp \
+    Rotation.cpp
 
 HEADERS  += MainWindow.hpp \
     MainWidget.hpp \
     CardSpecifications.hpp \
     CardBuilder.hpp \
     CardBuffer.hpp \
-    MainProgram.hpp
+    MainProgram.hpp \
+    CardActor.hpp \
+    Rotation.hpp

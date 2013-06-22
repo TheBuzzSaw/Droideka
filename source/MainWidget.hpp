@@ -3,6 +3,7 @@
 
 #include "CardBuffer.hpp"
 #include "MainProgram.hpp"
+#include "Rotation.hpp"
 #include <QWidget>
 
 #include <QGLWidget>
@@ -16,6 +17,8 @@ class MainWidget : public QGLWidget, protected QOpenGLFunctions
 public:
     explicit MainWidget(QWidget* parent = 0);
     virtual ~MainWidget();
+
+    void dump();
 
 protected slots:
     void onTimer();
@@ -35,7 +38,7 @@ private:
     QMatrix4x4 _projection;
     GLuint _frontTexture;
     GLuint _backTexture;
-    float _rotation;
+    Rotation _rotation;
 };
 
 #endif
