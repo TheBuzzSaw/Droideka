@@ -46,6 +46,7 @@ void MainWidget::initializeGL()
         _cardActors[i].position(QVector3D(0.0f, i, i + 3));
         _cardActors[i].rotation(Rotation::fromDegrees(45.0f));
         _cardActors[i].flip(Rotation::fromDegrees(45.0f));
+        //_cardActors[i].highlight(QVector4D(0.0f, 0.3f, 0.2f, 0.0f));
     }
 
     CardSpecifications specifications;
@@ -82,6 +83,7 @@ void MainWidget::paintGL()
     {
         _program->setMatrix(_projectionMatrix
            * _cardActors[i].modelViewMatrix());
+        _program->setHighlight(_cardActors[i].highlight());
         _program->enableTexture(false);
         _cardBuffer->drawMiddle();
         _program->enableTexture(true);
@@ -99,6 +101,7 @@ void MainWidget::paintGL()
     }
 
     _program->setMatrix(_projectionMatrix * _camera.matrix());
+    _program->setHighlight(QVector4D());
     glBindTexture(GL_TEXTURE_2D, _tableTexture);
     _tableBuffer->bind(_program->positionAttribute(),
         _program->textureAttribute());

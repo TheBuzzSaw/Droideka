@@ -22,11 +22,12 @@ MainProgram::MainProgram()
 #endif
         "uniform bool enableTexture;\n"
         "uniform sampler2D texture;\n"
+        "uniform lowp vec4 highlight;\n"
         "varying lowp vec2 vtc;\n"
         "void main() {\n"
         "   vec4 result = vec4(0.0, 0.0, 0.0, 1.0);\n"
         "   if (enableTexture) result = texture2D(texture, vtc);\n"
-        "   gl_FragColor = result;\n"
+        "   gl_FragColor = result + highlight;\n"
         "}\n";
 
     _program.addShaderFromSourceCode(QOpenGLShader::Vertex,
@@ -38,9 +39,12 @@ MainProgram::MainProgram()
     _textureAttribute = _program.attributeLocation("tc");
     _matrixUniform = _program.uniformLocation("matrix");
     _textureUniform = _program.uniformLocation("texture");
+    _highlightUniform = _program.uniformLocation("highlight");
     _enableTextureUniform = _program.uniformLocation("enableTexture");
 
     _program.setUniformValue(_textureUniform, 0);
+    enableTexture(true);
+    setHighlight(QVector4D());
 }
 
 MainProgram::~MainProgram()
@@ -69,4 +73,9 @@ void MainProgram::setMatrix(const QMatrix4x4& matrix)
 void MainProgram::enableTexture(bool enable)
 {
     _program.setUniformValue(_enableTextureUniform, enable);
+}
+
+void MainProgram::setHighlight(const QVector4D &highlight)
+{
+    _program.setUniformValue(_highlightUniform, highlight);
 }

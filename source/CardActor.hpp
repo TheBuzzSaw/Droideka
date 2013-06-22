@@ -32,6 +32,9 @@ public:
 
     inline bool isTopVisible() const { return _isTopVisible; }
 
+    inline const QVector4D& highlight() const { return _highlight; }
+    inline void highlight(const QVector4D& h) { _highlight = h; }
+
     inline const QVector3D& position() const { return _position; }
     inline void position(const QVector3D& p) { _position = p; }
 

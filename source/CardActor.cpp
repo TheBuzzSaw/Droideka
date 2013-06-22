@@ -29,6 +29,8 @@ CardActor& CardActor::operator=(const CardActor& other)
     _flip = other._flip;
     _localMatrix = other._localMatrix;
     _modelViewMatrix = other._modelViewMatrix;
+
+    return *this;
 }
 
 void CardActor::update(const QMatrix4x4& modelViewMatrix)

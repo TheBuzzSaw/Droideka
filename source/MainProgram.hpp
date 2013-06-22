@@ -2,6 +2,7 @@
 #define MAINPROGRAM_HPP
 
 #include <QMatrix4x4>
+#include <QVector4D>
 #include <QOpenGLShaderProgram>
 #include <QOpenGLFunctions>
 
@@ -18,6 +19,7 @@ public:
     void release();
     void setMatrix(const QMatrix4x4& matrix);
     void enableTexture(bool enable);
+    void setHighlight(const QVector4D& highlight);
 
 private:
     QOpenGLShaderProgram _program;
@@ -26,6 +28,7 @@ private:
     GLuint _textureAttribute;
     GLuint _matrixUniform;
     GLuint _textureUniform;
+    GLuint _highlightUniform;
     GLuint _enableTextureUniform;
 };
 
