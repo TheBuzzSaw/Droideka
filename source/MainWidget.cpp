@@ -32,8 +32,13 @@ void MainWidget::initializeGL()
 
     _frontTexture = loadImage(QImage("../localuprising.gif"));
     _backTexture = loadImage(QImage("../liberation.gif"));
-    _cardActor.topTexture(_frontTexture);
-    _cardActor.bottomTexture(_backTexture);
+
+    for (int i = 0; i < ActorCount; ++i)
+    {
+        _cardActors[i].topTexture(_frontTexture);
+        _cardActors[i].bottomTexture(_backTexture);
+        _cardActors[i].position(QVector3D(0.0f, i, i));
+    }
 
     CardSpecifications specifications;
     //specifications.depth(1.0f);
@@ -58,28 +63,32 @@ void MainWidget::resizeGL(int w, int h)
 void MainWidget::paintGL()
 {
     _camera.update();
-    _cardActor.update(_camera.matrix());
-
     _program->bind();
-    _program->setMatrix(_projectionMatrix * _cardActor.modelViewMatrix());
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     _cardBuffer->bind(_program->positionAttribute(),
         _program->textureAttribute());
-    _program->enableTexture(false);
-    _cardBuffer->drawMiddle();
-    _program->enableTexture(true);
 
-    if (!_cardActor.isTopVisible())
+    for (int i = 0; i < ActorCount; ++i)
     {
-        glBindTexture(GL_TEXTURE_2D, _cardActor.bottomTexture());
-        _cardBuffer->drawBottom();
-    }
-    else
-    {
-        glBindTexture(GL_TEXTURE_2D, _cardActor.topTexture());
-        _cardBuffer->drawTop();
+        _cardActors[i].update(_camera.matrix());
+         _program->setMatrix(_projectionMatrix
+            * _cardActors[i].modelViewMatrix());
+         _program->enableTexture(false);
+         _cardBuffer->drawMiddle();
+         _program->enableTexture(true);
+
+         if (!_cardActors[i].isTopVisible())
+         {
+             glBindTexture(GL_TEXTURE_2D, _cardActors[i].bottomTexture());
+             _cardBuffer->drawBottom();
+         }
+         else
+         {
+             glBindTexture(GL_TEXTURE_2D, _cardActors[i].topTexture());
+             _cardBuffer->drawTop();
+         }
     }
 
     _program->release();

@@ -10,6 +10,8 @@
 #include <QOpenGLFunctions>
 #include <QImage>
 
+const int ActorCount = 6;
+
 class MainWidget : public QGLWidget, protected QOpenGLFunctions
 {
     Q_OBJECT
@@ -38,7 +40,7 @@ private:
 
     MainProgram* _program;
     CardBuffer* _cardBuffer;
-    CardActor _cardActor;
+    CardActor _cardActors[ActorCount];
     QMatrix4x4 _projectionMatrix;
     GLuint _frontTexture;
     GLuint _backTexture;
