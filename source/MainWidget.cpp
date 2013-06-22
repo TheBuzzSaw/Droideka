@@ -38,6 +38,8 @@ void MainWidget::initializeGL()
         _cardActors[i].topTexture(_frontTexture);
         _cardActors[i].bottomTexture(_backTexture);
         _cardActors[i].position(QVector3D(0.0f, i, i));
+        _cardActors[i].rotation(Rotation::fromDegrees(45.0f));
+        _cardActors[i].flip(Rotation::fromDegrees(45.0f));
     }
 
     CardSpecifications specifications;

@@ -1,11 +1,34 @@
 #include "CardActor.hpp"
 
-CardActor::CardActor() : _topTexture(0), _bottomTexture(0), _isTopVisible(true)
+CardActor::CardActor()
+    : _topTexture(0), _bottomTexture(0), _isTopVisible(true)
+{
+}
+
+CardActor::CardActor(const CardActor &other)
+    : _topTexture(other._topTexture), _bottomTexture(other._bottomTexture),
+    _isTopVisible(other._isTopVisible), _highlight(other._highlight),
+    _position(other._position), _rotation(other._rotation),
+    _flip(other._flip), _localMatrix(other._localMatrix),
+    _modelViewMatrix(other._modelViewMatrix)
 {
 }
 
 CardActor::~CardActor()
 {
+}
+
+CardActor& CardActor::operator=(const CardActor& other)
+{
+    _topTexture = other._topTexture;
+    _bottomTexture = other._bottomTexture;
+    _isTopVisible = other._isTopVisible;
+    _highlight = other._highlight;
+    _position = other._position;
+    _rotation = other._rotation;
+    _flip = other._flip;
+    _localMatrix = other._localMatrix;
+    _modelViewMatrix = other._modelViewMatrix;
 }
 
 void CardActor::update(const QMatrix4x4& modelViewMatrix)

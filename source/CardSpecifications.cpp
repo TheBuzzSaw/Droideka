@@ -6,7 +6,7 @@ CardSpecifications::CardSpecifications()
     _height = 8.8f;
     _depth = 0.05f;
     _cornerRadius = 0.25f;
-    _cornerDetail = 2;
+    _cornerDetail = 4;
 }
 
 CardSpecifications::CardSpecifications(const CardSpecifications &other)

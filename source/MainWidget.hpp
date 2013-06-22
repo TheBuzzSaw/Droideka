@@ -10,7 +10,7 @@
 #include <QOpenGLFunctions>
 #include <QImage>
 
-const int ActorCount = 6;
+const int ActorCount = 8;
 
 class MainWidget : public QGLWidget, protected QOpenGLFunctions
 {
