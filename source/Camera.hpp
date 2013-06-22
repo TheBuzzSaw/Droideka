@@ -19,7 +19,8 @@ public:
     void panRelative(float x, float y);
 
     inline float distance() const { return _distance; }
-    inline void distance(float d) { _distance = d; }
+    inline void distance(float d) { _distance = d > 0.0f ? d : 0.0f; }
+    inline void adjustDistance(float d) { distance(_distance + d); }
 
     inline const Rotation rotation() const { return _rotation; }
     inline void rotation(const Rotation r) { _rotation = r; }

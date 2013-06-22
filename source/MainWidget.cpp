@@ -3,7 +3,6 @@
 #include <QMouseEvent>
 #include <QTimer>
 #include <QPainter>
-#include <QDir>
 #include <QVector2D>
 
 MainWidget::MainWidget(QWidget* parent) : QGLWidget(parent)
@@ -11,12 +10,6 @@ MainWidget::MainWidget(QWidget* parent) : QGLWidget(parent)
     _program = 0;
     _isCameraMoving = false;
     _camera.distance(12.0f);
-
-#ifdef Q_OS_MAC
-    qDebug() << QDir::currentPath();
-    QDir::setCurrent("../../..");
-    qDebug() << QDir::currentPath();
-#endif
 }
 
 MainWidget::~MainWidget()
@@ -39,6 +32,8 @@ void MainWidget::initializeGL()
 
     _frontTexture = loadImage(QImage("../localuprising.gif"));
     _backTexture = loadImage(QImage("../liberation.gif"));
+    _cardActor.topTexture(_frontTexture);
+    _cardActor.bottomTexture(_backTexture);
 
     CardSpecifications specifications;
     //specifications.depth(1.0f);
@@ -78,12 +73,12 @@ void MainWidget::paintGL()
 
     if (!_cardActor.isTopVisible())
     {
-        glBindTexture(GL_TEXTURE_2D, _backTexture);
+        glBindTexture(GL_TEXTURE_2D, _cardActor.bottomTexture());
         _cardBuffer->drawBottom();
     }
     else
     {
-        glBindTexture(GL_TEXTURE_2D, _frontTexture);
+        glBindTexture(GL_TEXTURE_2D, _cardActor.topTexture());
         _cardBuffer->drawTop();
     }
 
@@ -120,6 +115,12 @@ void MainWidget::mouseMoveEvent(QMouseEvent* event)
         _mouseX = event->x();
         _mouseY = event->y();
     }
+}
+
+void MainWidget::wheelEvent(QWheelEvent* event)
+{
+    const float delta = 3.0f;
+    _camera.adjustDistance(event->delta() > 0 ? -delta : delta);
 }
 
 void MainWidget::onTimer()

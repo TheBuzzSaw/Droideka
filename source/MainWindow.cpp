@@ -1,8 +1,15 @@
 #include "MainWindow.hpp"
 #include <QKeyEvent>
+#include <QDir>
 
 MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent)
 {
+#ifdef Q_OS_MAC
+    qDebug() << QDir::currentPath();
+    QDir::setCurrent("../../..");
+    qDebug() << QDir::currentPath();
+#endif
+
     _mainWidget = new MainWidget(this);
 
     setCentralWidget(_mainWidget);
