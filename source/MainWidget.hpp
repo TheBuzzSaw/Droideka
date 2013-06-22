@@ -2,12 +2,11 @@
 #define MAINWIDGET_HPP
 
 #include "CardBuffer.hpp"
+#include "MainProgram.hpp"
 #include <QWidget>
-#include <QMatrix4x4>
 
 #include <QGLWidget>
 #include <QOpenGLFunctions>
-#include <QOpenGLShaderProgram>
 #include <QImage>
 
 class MainWidget : public QGLWidget, protected QOpenGLFunctions
@@ -31,18 +30,12 @@ protected:
 private:
     GLuint loadImage(const QImage& image);
 
+    MainProgram* _program;
     CardBuffer* _cardBuffer;
     QMatrix4x4 _projection;
-    float _rotation;
-
-    QOpenGLShaderProgram* _program;
     GLuint _frontTexture;
     GLuint _backTexture;
-    GLuint _positionAttribute;
-    GLuint _textureAttribute;
-    GLuint _matrixUniform;
-    GLuint _textureUniform;
-    GLuint _enableTextureUniform;
+    float _rotation;
 };
 
 #endif

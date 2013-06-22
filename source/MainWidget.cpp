@@ -22,6 +22,7 @@ MainWidget::~MainWidget()
     deleteTexture(_frontTexture);
     deleteTexture(_backTexture);
     delete _cardBuffer;
+    delete _program;
 }
 
 void MainWidget::initializeGL()
@@ -32,37 +33,7 @@ void MainWidget::initializeGL()
     connect(timer, SIGNAL(timeout()), this, SLOT(onTimer()));
     timer->start(25);
 
-    const char* vertexShaderSource =
-        "attribute highp vec4 position;\n"
-        "attribute lowp vec2 tc;\n"
-        "varying lowp vec2 vtc;\n"
-        "uniform highp mat4 matrix;\n"
-        "void main() {\n"
-        "   vtc = tc;\n"
-        "   gl_Position = matrix * position;\n"
-        "}\n";
-
-    const char* fragmentShaderSource =
-        "uniform sampler2D texture;\n"
-        "uniform bool enableTexture;\n"
-        "varying lowp vec2 vtc;\n"
-        "void main() {\n"
-        "   vec4 result = vec4(0.0, 0.0, 0.0, 1.0);\n"
-        "   if (enableTexture) result = texture2D(texture, vtc);\n"
-        "   gl_FragColor = result;\n"
-        "}\n";
-
-    _program = new QOpenGLShaderProgram(this);
-    _program->addShaderFromSourceCode(QOpenGLShader::Vertex,
-        vertexShaderSource);
-    _program->addShaderFromSourceCode(QOpenGLShader::Fragment,
-        fragmentShaderSource);
-    _program->link();
-    _positionAttribute = _program->attributeLocation("position");
-    _textureAttribute = _program->attributeLocation("tc");
-    _matrixUniform = _program->uniformLocation("matrix");
-    _textureUniform = _program->uniformLocation("texture");
-    _enableTextureUniform = _program->uniformLocation("enableTexture");
+    _program = new MainProgram;
 
     _frontTexture = loadImage(QImage("../localuprising.gif"));
     _backTexture = loadImage(QImage("../liberation.gif"));
@@ -94,18 +65,18 @@ void MainWidget::paintGL()
     matrix.rotate(_rotation, 0.0f, 1.0f, 0.0f);
 
     _program->bind();
-    _program->setUniformValue(_matrixUniform, matrix);
-    _program->setUniformValue(_textureUniform, 0);
+    _program->setMatrix(matrix);
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    glEnableVertexAttribArray(_positionAttribute);
-    glEnableVertexAttribArray(_textureAttribute);
+    glEnableVertexAttribArray(_program->positionAttribute());
+    glEnableVertexAttribArray(_program->textureAttribute());
 
-    _cardBuffer->bind(_positionAttribute, _textureAttribute);
-    _program->setUniformValue(_enableTextureUniform, false);
+    _cardBuffer->bind(_program->positionAttribute(),
+        _program->textureAttribute());
+    _program->enableTexture(false);
     _cardBuffer->drawMiddle();
-    _program->setUniformValue(_enableTextureUniform, true);
+    _program->enableTexture(true);
 
     if (_rotation > 90.0f || _rotation < -90.0f)
     {
@@ -118,8 +89,8 @@ void MainWidget::paintGL()
         _cardBuffer->drawTop();
     }
 
-    glDisableVertexAttribArray(_textureAttribute);
-    glDisableVertexAttribArray(_positionAttribute);
+    glDisableVertexAttribArray(_program->textureAttribute());
+    glDisableVertexAttribArray(_program->positionAttribute());
 
     _program->release();
 }
