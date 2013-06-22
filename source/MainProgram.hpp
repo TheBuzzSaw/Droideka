@@ -3,12 +3,13 @@
 
 #include <QMatrix4x4>
 #include <QOpenGLShaderProgram>
+#include <QOpenGLFunctions>
 
-class MainProgram
+class MainProgram : protected QOpenGLFunctions
 {
 public:
     MainProgram();
-    ~MainProgram();
+    virtual ~MainProgram();
 
     inline GLuint positionAttribute() const { return _positionAttribute; }
     inline GLuint textureAttribute() const { return _textureAttribute; }

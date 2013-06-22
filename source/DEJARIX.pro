@@ -20,7 +20,8 @@ SOURCES += main.cpp\
     CardBuffer.cpp \
     MainProgram.cpp \
     CardActor.cpp \
-    Rotation.cpp
+    Rotation.cpp \
+    Camera.cpp
 
 HEADERS  += MainWindow.hpp \
     MainWidget.hpp \
@@ -29,4 +30,5 @@ HEADERS  += MainWindow.hpp \
     CardBuffer.hpp \
     MainProgram.hpp \
     CardActor.hpp \
-    Rotation.hpp
+    Rotation.hpp \
+    Camera.hpp

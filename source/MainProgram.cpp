@@ -2,6 +2,8 @@
 
 MainProgram::MainProgram()
 {
+    initializeOpenGLFunctions();
+
     const char* vertexShaderSource =
         "attribute highp vec4 position;\n"
         "attribute lowp vec2 tc;\n"
@@ -48,10 +50,14 @@ MainProgram::~MainProgram()
 void MainProgram::bind()
 {
     _program.bind();
+    glEnableVertexAttribArray(_positionAttribute);
+    glEnableVertexAttribArray(_textureAttribute);
 }
 
 void MainProgram::release()
 {
+    glDisableVertexAttribArray(_textureAttribute);
+    glDisableVertexAttribArray(_positionAttribute);
     _program.release();
 }
 

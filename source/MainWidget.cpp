@@ -68,9 +68,6 @@ void MainWidget::paintGL()
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    glEnableVertexAttribArray(_program->positionAttribute());
-    glEnableVertexAttribArray(_program->textureAttribute());
-
     _cardBuffer->bind(_program->positionAttribute(),
         _program->textureAttribute());
     _program->enableTexture(false);
@@ -88,9 +85,6 @@ void MainWidget::paintGL()
         glBindTexture(GL_TEXTURE_2D, _frontTexture);
         _cardBuffer->drawTop();
     }
-
-    glDisableVertexAttribArray(_program->textureAttribute());
-    glDisableVertexAttribArray(_program->positionAttribute());
 
     _program->release();
 }
