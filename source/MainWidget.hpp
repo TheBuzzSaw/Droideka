@@ -47,7 +47,7 @@ private:
     TableBuffer* _tableBuffer;
 
     AnimationCollection _animations;
-    SpinnyAnimation _spinnyAnimation;
+    SpinnyAnimation _spinnyAnimations[ActorCount];
     CardActor _cardActors[ActorCount];
     GLint _viewport[4];
     QMatrix4x4 _projectionMatrix;

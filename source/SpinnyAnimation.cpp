@@ -1,6 +1,6 @@
 #include "SpinnyAnimation.hpp"
 
-SpinnyAnimation::SpinnyAnimation(CardActor& cardActor) : _cardActor(cardActor)
+SpinnyAnimation::SpinnyAnimation() : _cardActor(0)
 {
     _isSpinning = true;
 }
@@ -11,7 +11,13 @@ SpinnyAnimation::~SpinnyAnimation()
 
 bool SpinnyAnimation::update()
 {
-    _cardActor.rotation(_cardActor.rotation() + Rotation::fromDegrees(1.0f));
-    //_cardActor.flip(_cardActor.flip() + Rotation::fromDegrees(1.0f));
-    return _isSpinning;
+    bool result = false;
+
+    if (_cardActor)
+    {
+        _cardActor->rotation(_cardActor->rotation() + _rotation);
+        result = _isSpinning;
+    }
+
+    return result;
 }

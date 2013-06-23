@@ -5,15 +5,14 @@
 #include <QPainter>
 #include <QVector2D>
 
-MainWidget::MainWidget(QWidget* parent) : QGLWidget(parent),
-    _spinnyAnimation(_cardActors[0])
+MainWidget::MainWidget(QWidget* parent) : QGLWidget(parent)
 {
     _program = 0;
     _cardBuffer = 0;
     _tableBuffer = 0;
     _isCameraMoving = false;
-    _camera.distance(12.0f);
-    _animations.add(_spinnyAnimation);
+    _camera.distance(32.0f);
+    _camera.angle(Rotation::fromDegrees(-45.0f));
 }
 
 MainWidget::~MainWidget()
@@ -45,10 +44,14 @@ void MainWidget::initializeGL()
     {
         _cardActors[i].topTexture(_frontTexture);
         _cardActors[i].bottomTexture(_backTexture);
-        _cardActors[i].position(QVector3D(0.0f, i, i + 3));
-        _cardActors[i].rotation(Rotation::fromDegrees(45.0f));
-        _cardActors[i].flip(Rotation::fromDegrees(45.0f));
+        _cardActors[i].position(QVector3D(0.0f, 0, i + 3));
+        //_cardActors[i].rotation(Rotation::fromDegrees(45.0f));
+        //_cardActors[i].flip(Rotation::fromDegrees(45.0f));
         //_cardActors[i].highlight(QVector4D(0.0f, 0.3f, 0.2f, 0.0f));
+
+        _spinnyAnimations[i].set(_cardActors + i);
+        _spinnyAnimations[i].set(Rotation::fromDegrees(i & 1 ? 1.0f : -1.0f));
+        _animations.add(_spinnyAnimations[i]);
     }
 
     CardSpecifications specifications;
@@ -209,5 +212,4 @@ QVector3D MainWidget::unproject(int x, int y)
 
 void MainWidget::dump()
 {
-    _spinnyAnimation.stop();
 }
