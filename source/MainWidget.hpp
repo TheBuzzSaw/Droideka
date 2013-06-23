@@ -38,12 +38,14 @@ protected:
 
 private:
     GLuint loadImage(const QImage& image);
+    QVector3D unproject(int x, int y);
 
     MainProgram* _program;
     CardBuffer* _cardBuffer;
     TableBuffer* _tableBuffer;
 
     CardActor _cardActors[ActorCount];
+    GLint _viewport[4];
     QMatrix4x4 _projectionMatrix;
     GLuint _tableTexture;
     GLuint _frontTexture;

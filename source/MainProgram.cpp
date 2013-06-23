@@ -15,9 +15,11 @@ MainProgram::MainProgram()
         "}\n";
 
     const char* fragmentShaderSource =
-#ifndef Q_OS_LINUX
+#ifdef Q_OS_WIN
         // This produces a warning in Linux:
         // warning C7022: unrecognized profile specifier "precision"
+
+        // This explodes in OSX. Apparently, only Windows demands it.
         "precision highp float;\n"
 #endif
         "uniform bool enableTexture;\n"

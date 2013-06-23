@@ -70,6 +70,7 @@ void MainWidget::resizeGL(int w, int h)
     _projectionMatrix.setToIdentity();
     _projectionMatrix.perspective(60.0f, ratio, 1.0f, 100.0f);
     glViewport(0, 0, w, h);
+    glGetIntegerv(GL_VIEWPORT, _viewport);
 }
 
 void MainWidget::paintGL()
@@ -115,6 +116,11 @@ void MainWidget::mousePressEvent(QMouseEvent* event)
         _isCameraMoving = true;
         _mouseX = event->x();
         _mouseY = event->y();
+    }
+    else if (event->button() == Qt::LeftButton)
+    {
+        QVector3D result = unproject(event->x(), event->y());
+        qDebug() << result;
     }
 }
 
@@ -177,6 +183,25 @@ GLuint MainWidget::loadImage(const QImage& image)
     }
 
     return result;
+}
+
+QVector3D MainWidget::unproject(int x, int y)
+{
+    y = height() - y;
+
+    GLfloat depthSample;
+    glReadPixels(x, y, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depthSample);
+
+    QVector4D v;
+    v.setX(float(x - _viewport[0]) * 2.0f / float(_viewport[2]) - 1.0f);
+    v.setY(float(y - _viewport[1]) * 2.0f / float(_viewport[3]) - 1.0f);
+    v.setZ(2.0f * depthSample - 1.0f);
+    v.setW(1.0f);
+
+    QMatrix4x4 modelViewProjectionMatrix = _projectionMatrix
+        * _camera.matrix();
+    QMatrix4x4 inverse = modelViewProjectionMatrix.inverted();
+    return (inverse * v).toVector3DAffine();
 }
 
 void MainWidget::dump()
