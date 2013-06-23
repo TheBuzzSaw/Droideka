@@ -68,7 +68,7 @@ void MainWidget::resizeGL(int w, int h)
 {
     float ratio = float(w) / float(h);
     _projectionMatrix.setToIdentity();
-    _projectionMatrix.perspective(60.0f, ratio, 1.0f, 100.0f);
+    _projectionMatrix.perspective(60.0f, ratio, 1.0f, 1000.0f);
     glViewport(0, 0, w, h);
     glGetIntegerv(GL_VIEWPORT, _viewport);
 }
