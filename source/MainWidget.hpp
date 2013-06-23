@@ -6,6 +6,8 @@
 #include "CardBuffer.hpp"
 #include "TableBuffer.hpp"
 #include "MainProgram.hpp"
+#include "AnimationCollection.hpp"
+#include "SpinnyAnimation.hpp"
 #include <QWidget>
 #include <QGLWidget>
 #include <QOpenGLFunctions>
@@ -44,6 +46,8 @@ private:
     CardBuffer* _cardBuffer;
     TableBuffer* _tableBuffer;
 
+    AnimationCollection _animations;
+    SpinnyAnimation _spinnyAnimation;
     CardActor _cardActors[ActorCount];
     GLint _viewport[4];
     QMatrix4x4 _projectionMatrix;

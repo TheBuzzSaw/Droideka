@@ -5,13 +5,15 @@
 #include <QPainter>
 #include <QVector2D>
 
-MainWidget::MainWidget(QWidget* parent) : QGLWidget(parent)
+MainWidget::MainWidget(QWidget* parent) : QGLWidget(parent),
+    _spinnyAnimation(_cardActors[0])
 {
     _program = 0;
     _cardBuffer = 0;
     _tableBuffer = 0;
     _isCameraMoving = false;
     _camera.distance(12.0f);
+    _animations.add(_spinnyAnimation);
 }
 
 MainWidget::~MainWidget()
@@ -31,7 +33,7 @@ void MainWidget::initializeGL()
 
     QTimer* timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(onTimer()));
-    timer->start(25);
+    timer->start(16);
 
     _program = new MainProgram;
 
@@ -153,6 +155,7 @@ void MainWidget::wheelEvent(QWheelEvent* event)
 
 void MainWidget::onTimer()
 {
+    _animations.updateAll();
     _camera.update();
 
     for (int i = 0; i < ActorCount; ++i)
@@ -206,4 +209,5 @@ QVector3D MainWidget::unproject(int x, int y)
 
 void MainWidget::dump()
 {
+    _spinnyAnimation.stop();
 }

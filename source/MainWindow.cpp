@@ -41,9 +41,6 @@ void MainWindow::keyPressEvent(QKeyEvent* event)
     default:
         break;
     }
-
-    if (event->key() == Qt::Key_Escape)
-        close();
 }
 
 void MainWindow::toggleFullscreen()

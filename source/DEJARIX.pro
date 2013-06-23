@@ -23,7 +23,9 @@ SOURCES += main.cpp\
     Rotation.cpp \
     Camera.cpp \
     Animation.cpp \
-    TableBuffer.cpp
+    TableBuffer.cpp \
+    AnimationCollection.cpp \
+    SpinnyAnimation.cpp
 
 HEADERS  += MainWindow.hpp \
     MainWidget.hpp \
@@ -35,4 +37,6 @@ HEADERS  += MainWindow.hpp \
     Rotation.hpp \
     Camera.hpp \
     Animation.hpp \
-    TableBuffer.hpp
+    TableBuffer.hpp \
+    AnimationCollection.hpp \
+    SpinnyAnimation.hpp

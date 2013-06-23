@@ -37,8 +37,8 @@ void CardActor::update(const QMatrix4x4& modelViewMatrix)
 {
     _localMatrix.setToIdentity();
     _localMatrix.translate(_position);
-    _localMatrix.rotate(_rotation.toDegrees(), 0.0f, 0.0f, 1.0f);
     _localMatrix.rotate(_flip.toDegrees(), 0.0f, 1.0f, 0.0f);
+    _localMatrix.rotate(_rotation.toDegrees(), 0.0f, 0.0f, 1.0f);
 
     _modelViewMatrix = modelViewMatrix * _localMatrix;
 
