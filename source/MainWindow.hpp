@@ -7,7 +7,7 @@
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
-    
+
 public:
     MainWindow(QWidget* parent = 0);
     virtual ~MainWindow();
@@ -16,7 +16,10 @@ protected:
     virtual void keyPressEvent(QKeyEvent* event);
 
 private:
+    void toggleFullscreen();
+
     MainWidget* _mainWidget;
+    bool _isFullscreen;
 };
 
 #endif

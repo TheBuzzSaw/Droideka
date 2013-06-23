@@ -11,6 +11,7 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent)
 #endif
 
     _mainWidget = new MainWidget(this);
+    _isFullscreen = false;
 
     setCentralWidget(_mainWidget);
     setWindowTitle("DEJARIX");
@@ -25,6 +26,10 @@ void MainWindow::keyPressEvent(QKeyEvent* event)
 {
     switch (event->key())
     {
+    case Qt::Key_F11:
+        toggleFullscreen();
+        break;
+
     case Qt::Key_Escape:
         close();
         break;
@@ -39,4 +44,18 @@ void MainWindow::keyPressEvent(QKeyEvent* event)
 
     if (event->key() == Qt::Key_Escape)
         close();
+}
+
+void MainWindow::toggleFullscreen()
+{
+    _isFullscreen = !_isFullscreen;
+
+    if (_isFullscreen)
+    {
+        showFullScreen();
+    }
+    else
+    {
+        showNormal();
+    }
 }
