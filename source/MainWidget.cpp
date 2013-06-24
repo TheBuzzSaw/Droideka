@@ -19,8 +19,6 @@ MainWidget::~MainWidget()
 {
     _program->release();
 
-    deleteTexture(_backTexture);
-    deleteTexture(_frontTexture);
     deleteTexture(_tableTexture);
     delete _tableBuffer;
     delete _cardBuffer;
@@ -38,25 +36,8 @@ void MainWidget::initializeGL()
     _program = new MainProgram;
 
     _tableTexture = loadImage(QImage("../wood.jpg"));
-    _frontTexture = loadImage(QImage("../localuprising.gif"));
-    _backTexture = loadImage(QImage("../liberation.gif"));
-
-    for (int i = 0; i < ActorCount; ++i)
-    {
-        _cardActors[i].topTexture(_frontTexture);
-        _cardActors[i].bottomTexture(_backTexture);
-        _cardActors[i].position(QVector3D(0.0f, 0, i + 3));
-        //_cardActors[i].rotation(Rotation::fromDegrees(45.0f));
-        //_cardActors[i].flip(Rotation::fromDegrees(45.0f));
-        //_cardActors[i].highlight(QVector4D(0.0f, 0.3f, 0.2f, -0.5f));
-
-        _spinnyAnimations[i].set(_cardActors + i);
-        _spinnyAnimations[i].set(Rotation::fromDegrees(i & 1 ? 1.0f : -1.0f));
-        _animations.add(_spinnyAnimations[i]);
-    }
 
     CardSpecifications specifications;
-    //specifications.depth(1.0f);
     CardBuilder builder(specifications);
     _cardBuffer = new CardBuffer(builder);
     _tableBuffer = new TableBuffer;
@@ -88,27 +69,9 @@ void MainWidget::paintGL()
     _cardBuffer->bind(_program->positionAttribute(),
         _program->textureAttribute());
 
-    for (int i = 0; i < ActorCount; ++i)
-    {
-        _program->setMatrix(_projectionMatrix
-           * _cardActors[i].modelViewMatrix());
-        _program->setHighlight(_cardActors[i].highlight());
-        _program->enableTexture(false);
-        _cardBuffer->drawMiddle();
-        _program->enableTexture(true);
+    // Draw cards here.
 
-        if (_cardActors[i].isTopVisible())
-        {
-            glBindTexture(GL_TEXTURE_2D, _cardActors[i].topTexture());
-            _cardBuffer->drawTop();
-        }
-        else
-        {
-            glBindTexture(GL_TEXTURE_2D, _cardActors[i].bottomTexture());
-            _cardBuffer->drawBottom();
-        }
-    }
-
+    _program->enableTexture(true);
     _program->setMatrix(_projectionMatrix * _camera.matrix());
     _program->setHighlight(QVector4D());
     glBindTexture(GL_TEXTURE_2D, _tableTexture);
@@ -161,14 +124,8 @@ void MainWidget::wheelEvent(QWheelEvent* event)
 
 void MainWidget::onTimer()
 {
-    _camera.adjustPosition(QVector3D(0.0f, 0.0f, 0.1f));
     _animations.updateAll();
     _camera.update();
-
-    for (int i = 0; i < ActorCount; ++i)
-    {
-        _cardActors[i].update(_camera.matrix());
-    }
 
     updateGL();
 }

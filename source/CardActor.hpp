@@ -32,6 +32,9 @@ public:
 
     inline bool isTopVisible() const { return _isTopVisible; }
 
+    inline float depthFactor() const { return _depthFactor; }
+    inline void depthFactor(float df) { _depthFactor = df > 0.0f ? df : 1.0f; }
+
     inline const QVector4D& highlight() const { return _highlight; }
     inline void highlight(const QVector4D& h) { _highlight = h; }
 
@@ -48,6 +51,7 @@ private:
     GLuint _topTexture;
     GLuint _bottomTexture;
     bool _isTopVisible;
+    float _depthFactor;
 
     QVector4D _highlight;
     QVector3D _position;

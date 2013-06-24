@@ -1,6 +1,8 @@
 #ifndef ANIMATION_HPP
 #define ANIMATION_HPP
 
+class AnimationCollection;
+
 class Animation
 {
 public:
@@ -10,11 +12,13 @@ public:
     Animation(const Animation& other);
     virtual ~Animation();
 
+    Animation& operator=(const Animation& other);
+
     virtual bool update() = 0;
 
 private:
     Animation* _nextAnimation;
-    void* _collection;
+    AnimationCollection* _collection;
 };
 
 #endif

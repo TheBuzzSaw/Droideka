@@ -1,15 +1,23 @@
 #include "CardActor.hpp"
 
 CardActor::CardActor()
-    : _topTexture(0), _bottomTexture(0), _isTopVisible(true)
+    : _topTexture(0),
+    _bottomTexture(0),
+    _isTopVisible(true),
+    _depthFactor(1.0f)
 {
 }
 
-CardActor::CardActor(const CardActor &other)
-    : _topTexture(other._topTexture), _bottomTexture(other._bottomTexture),
-    _isTopVisible(other._isTopVisible), _highlight(other._highlight),
-    _position(other._position), _rotation(other._rotation),
-    _flip(other._flip), _localMatrix(other._localMatrix),
+CardActor::CardActor(const CardActor& other)
+    : _topTexture(other._topTexture),
+    _bottomTexture(other._bottomTexture),
+    _isTopVisible(other._isTopVisible),
+    _depthFactor(other._depthFactor),
+    _highlight(other._highlight),
+    _position(other._position),
+    _rotation(other._rotation),
+    _flip(other._flip),
+    _localMatrix(other._localMatrix),
     _modelViewMatrix(other._modelViewMatrix)
 {
 }
@@ -23,6 +31,7 @@ CardActor& CardActor::operator=(const CardActor& other)
     _topTexture = other._topTexture;
     _bottomTexture = other._bottomTexture;
     _isTopVisible = other._isTopVisible;
+    _depthFactor = other._depthFactor;
     _highlight = other._highlight;
     _position = other._position;
     _rotation = other._rotation;
@@ -36,6 +45,7 @@ CardActor& CardActor::operator=(const CardActor& other)
 void CardActor::update(const QMatrix4x4& modelViewMatrix)
 {
     _localMatrix.setToIdentity();
+    _localMatrix.scale(1.0f, 1.0f, _depthFactor);
     _localMatrix.translate(_position);
     _localMatrix.rotate(_flip.toDegrees(), 0.0f, 1.0f, 0.0f);
     _localMatrix.rotate(_rotation.toDegrees(), 0.0f, 0.0f, 1.0f);

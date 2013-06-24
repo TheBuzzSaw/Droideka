@@ -11,6 +11,7 @@ class Rotation
 public:
     static const Rotation fromDegrees(float degrees);
     static const Rotation fromRadians(float radians);
+    static const Rotation half();
 
     Rotation();
     Rotation(const Rotation& other);

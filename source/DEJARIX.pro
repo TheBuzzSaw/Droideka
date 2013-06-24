@@ -25,7 +25,8 @@ SOURCES += main.cpp\
     Animation.cpp \
     TableBuffer.cpp \
     AnimationCollection.cpp \
-    SpinnyAnimation.cpp
+    swccg/CardPile.cpp \
+    swccg/Card.cpp
 
 HEADERS  += MainWindow.hpp \
     MainWidget.hpp \
@@ -39,4 +40,5 @@ HEADERS  += MainWindow.hpp \
     Animation.hpp \
     TableBuffer.hpp \
     AnimationCollection.hpp \
-    SpinnyAnimation.hpp
+    swccg/CardPile.hpp \
+    swccg/Card.hpp

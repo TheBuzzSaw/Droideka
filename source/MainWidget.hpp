@@ -7,13 +7,10 @@
 #include "TableBuffer.hpp"
 #include "MainProgram.hpp"
 #include "AnimationCollection.hpp"
-#include "SpinnyAnimation.hpp"
 #include <QWidget>
 #include <QGLWidget>
 #include <QOpenGLFunctions>
 #include <QImage>
-
-const int ActorCount = 150;
 
 class MainWidget : public QGLWidget, protected QOpenGLFunctions
 {
@@ -47,13 +44,9 @@ private:
     TableBuffer* _tableBuffer;
 
     AnimationCollection _animations;
-    SpinnyAnimation _spinnyAnimations[ActorCount];
-    CardActor _cardActors[ActorCount];
     GLint _viewport[4];
     QMatrix4x4 _projectionMatrix;
     GLuint _tableTexture;
-    GLuint _frontTexture;
-    GLuint _backTexture;
     Camera _camera;
     bool _isCameraMoving;
     int _mouseX;

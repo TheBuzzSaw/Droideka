@@ -13,3 +13,9 @@ Animation::Animation(const Animation& other) : _nextAnimation(0),
 Animation::~Animation()
 {
 }
+
+Animation& Animation::operator=(const Animation& other)
+{
+    (void)other;
+    return *this;
+}

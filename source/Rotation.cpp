@@ -20,6 +20,11 @@ const Rotation Rotation::fromRadians(float radians)
     return Rotation(result);
 }
 
+const Rotation Rotation::half()
+{
+    return Rotation(Pi);
+}
+
 Rotation::Rotation() : _radians(0.0f)
 {
 }
