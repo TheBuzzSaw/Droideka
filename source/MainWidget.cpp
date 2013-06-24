@@ -9,6 +9,7 @@ MainWidget::MainWidget(QWidget* parent) : QGLWidget(parent)
 {
     _program = 0;
     _cardBuffer = 0;
+    _drawTool = 0;
     _tableBuffer = 0;
     _isCameraMoving = false;
     _camera.distance(32.0f);
@@ -37,9 +38,13 @@ void MainWidget::initializeGL()
 
     _tableTexture = loadImage(QImage("../wood.jpg"));
 
+    _textures[0] = loadImage(QImage("../localuprising.gif"));
+    _textures[1] = loadImage(QImage("../liberation.gif"));
+
     CardSpecifications specifications;
     CardBuilder builder(specifications);
     _cardBuffer = new CardBuffer(builder);
+    _drawTool = new CardDrawTool(*_program, *_cardBuffer, _projectionMatrix);
     _tableBuffer = new TableBuffer;
 
     glEnable(GL_DEPTH_TEST);
@@ -66,10 +71,14 @@ void MainWidget::paintGL()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    _cardBuffer->bind(_program->positionAttribute(),
-        _program->textureAttribute());
+    _drawTool->bind();
 
-    // Draw cards here.
+    CardActor actor;
+    actor.topTexture(_textures[0]);
+    actor.bottomTexture(_textures[1]);
+    actor.position(actor.position() + QVector3D(0.0f, 0.0f, 1.0f));
+    actor.update(_camera.matrix());
+    _drawTool->draw(actor);
 
     _program->enableTexture(true);
     _program->setMatrix(_projectionMatrix * _camera.matrix());

@@ -12,6 +12,9 @@ public:
 
     Card& operator=(const Card& other);
 
+    inline GLuint frontTexture() const { return _frontTexture; }
+    inline GLuint backTexture() const { return _backTexture; }
+
 private:
     GLuint _frontTexture;
     GLuint _backTexture;

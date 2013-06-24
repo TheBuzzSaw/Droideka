@@ -2,8 +2,7 @@
 #define MAINWIDGET_HPP
 
 #include "Camera.hpp"
-#include "CardActor.hpp"
-#include "CardBuffer.hpp"
+#include "CardDrawTool.hpp"
 #include "TableBuffer.hpp"
 #include "MainProgram.hpp"
 #include "AnimationCollection.hpp"
@@ -41,6 +40,7 @@ private:
 
     MainProgram* _program;
     CardBuffer* _cardBuffer;
+    CardDrawTool* _drawTool;
     TableBuffer* _tableBuffer;
 
     AnimationCollection _animations;
@@ -51,6 +51,8 @@ private:
     bool _isCameraMoving;
     int _mouseX;
     int _mouseY;
+
+    GLuint _textures[2];
 };
 
 #endif

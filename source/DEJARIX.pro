@@ -26,7 +26,8 @@ SOURCES += main.cpp\
     TableBuffer.cpp \
     AnimationCollection.cpp \
     swccg/CardPile.cpp \
-    swccg/Card.cpp
+    swccg/Card.cpp \
+    CardDrawTool.cpp
 
 HEADERS  += MainWindow.hpp \
     MainWidget.hpp \
@@ -41,4 +42,5 @@ HEADERS  += MainWindow.hpp \
     TableBuffer.hpp \
     AnimationCollection.hpp \
     swccg/CardPile.hpp \
-    swccg/Card.hpp
+    swccg/Card.hpp \
+    CardDrawTool.hpp

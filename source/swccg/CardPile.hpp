@@ -16,6 +16,7 @@ private:
     CardPile& operator=(const CardPile& other);
 
     QVector<Card*> _cards;
+    CardActor _actor;
 };
 
 #endif
