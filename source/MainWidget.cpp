@@ -19,8 +19,9 @@ MainWidget::~MainWidget()
 {
     _program->release();
 
-    deleteTexture(_frontTexture);
     deleteTexture(_backTexture);
+    deleteTexture(_frontTexture);
+    deleteTexture(_tableTexture);
     delete _tableBuffer;
     delete _cardBuffer;
     delete _program;
@@ -47,7 +48,7 @@ void MainWidget::initializeGL()
         _cardActors[i].position(QVector3D(0.0f, 0, i + 3));
         //_cardActors[i].rotation(Rotation::fromDegrees(45.0f));
         //_cardActors[i].flip(Rotation::fromDegrees(45.0f));
-        //_cardActors[i].highlight(QVector4D(0.0f, 0.3f, 0.2f, 0.0f));
+        //_cardActors[i].highlight(QVector4D(0.0f, 0.3f, 0.2f, -0.5f));
 
         _spinnyAnimations[i].set(_cardActors + i);
         _spinnyAnimations[i].set(Rotation::fromDegrees(i & 1 ? 1.0f : -1.0f));
@@ -64,6 +65,8 @@ void MainWidget::initializeGL()
     glEnable(GL_CULL_FACE);
     glFrontFace(GL_CW);
     glCullFace(GL_BACK);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glClearColor(0.0f, 0.0f, 0.1f, 1.0f);
 
     _program->bind();
@@ -182,10 +185,15 @@ GLuint MainWidget::loadImage(const QImage& image)
         while (width < image.width()) width *= 2;
         while (height < image.height()) height *= 2;
 
-        QImage square(width, height, image.format());
-        QPainter painter(&square);
-        painter.drawImage(QRect(0, 0, square.width(), square.height()), image);
-        result = bindTexture(square);
+        if (width > image.width() || height > image.height())
+        {
+            result = bindTexture(image.scaled(width, height));
+        }
+        else
+        {
+            result = bindTexture(image);
+        }
+
         glGenerateMipmap(GL_TEXTURE_2D);
     }
 

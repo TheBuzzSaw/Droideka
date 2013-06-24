@@ -31,10 +31,8 @@ void AnimationCollection::updateAll()
 {
     Animation** a = &_firstAnimation;
 
-    while (*a)
+    while (Animation* animation = *a)
     {
-        Animation* animation = *a;
-
         if (animation->update())
         {
             a = &animation->_nextAnimation;
