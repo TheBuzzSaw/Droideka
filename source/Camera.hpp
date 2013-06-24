@@ -16,6 +16,7 @@ public:
 
     inline const QVector3D& position() const { return _position; }
     inline void position(const QVector3D& p) { _position = p; }
+    inline void adjustPosition(const QVector3D& p) { _position += p; }
     void panRelative(float x, float y);
 
     inline float distance() const { return _distance; }

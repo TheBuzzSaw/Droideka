@@ -158,6 +158,7 @@ void MainWidget::wheelEvent(QWheelEvent* event)
 
 void MainWidget::onTimer()
 {
+    _camera.adjustPosition(QVector3D(0.0f, 0.0f, 0.1f));
     _animations.updateAll();
     _camera.update();
 

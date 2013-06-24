@@ -15,6 +15,8 @@ bool SpinnyAnimation::update()
 
     if (_cardActor)
     {
+        _isSpinning = qrand() % 1000;
+
         _cardActor->rotation(_cardActor->rotation() + _rotation);
         result = _isSpinning;
     }
