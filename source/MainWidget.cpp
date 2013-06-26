@@ -74,6 +74,7 @@ void MainWidget::paintGL()
     _drawTool->bind();
 
     CardActor actor;
+    actor.depthFactor(60.0f);
     actor.topTexture(_textures[0]);
     actor.bottomTexture(_textures[1]);
     actor.position(actor.position() + QVector3D(0.0f, 0.0f, 1.0f));

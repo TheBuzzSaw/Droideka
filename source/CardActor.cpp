@@ -45,10 +45,10 @@ CardActor& CardActor::operator=(const CardActor& other)
 void CardActor::update(const QMatrix4x4& modelViewMatrix)
 {
     _localMatrix.setToIdentity();
-    _localMatrix.scale(1.0f, 1.0f, _depthFactor);
     _localMatrix.translate(_position);
     _localMatrix.rotate(_flip.toDegrees(), 0.0f, 1.0f, 0.0f);
     _localMatrix.rotate(_rotation.toDegrees(), 0.0f, 0.0f, 1.0f);
+    _localMatrix.scale(1.0f, 1.0f, _depthFactor);
 
     _modelViewMatrix = modelViewMatrix * _localMatrix;
 
@@ -58,7 +58,8 @@ void CardActor::update(const QMatrix4x4& modelViewMatrix)
     QVector4D arrow(0.0f, 0.0f, 1.0f, 1.0f);
     QVector4D modelViewArrow = _modelViewMatrix * arrow;
 
-    QVector3D direction = QVector3D(modelViewArrow - modelViewOrigin);
+    QVector3D direction = modelViewArrow.toVector3DAffine()
+        - modelViewOrigin.toVector3DAffine();
     QVector3D cameraToPolygon = QVector3D(modelViewOrigin).normalized();
     float dotProduct = QVector3D::dotProduct(cameraToPolygon, direction);
     _isTopVisible = dotProduct < 0.0f;
