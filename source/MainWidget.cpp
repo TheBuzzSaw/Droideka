@@ -13,7 +13,7 @@ MainWidget::MainWidget(QWidget* parent) : QGLWidget(parent)
     _tableBuffer = 0;
     _isCameraMoving = false;
     _camera.distance(32.0f);
-    _camera.angle(Rotation::fromDegrees(-45.0f));
+    _camera.angle(Rotation::fromDegrees(-10.0f));
 }
 
 MainWidget::~MainWidget()
@@ -21,6 +21,7 @@ MainWidget::~MainWidget()
     _program->release();
 
     deleteTexture(_tableTexture);
+    delete _drawTool;
     delete _tableBuffer;
     delete _cardBuffer;
     delete _program;
@@ -46,6 +47,20 @@ void MainWidget::initializeGL()
     _cardBuffer = new CardBuffer(builder);
     _drawTool = new CardDrawTool(*_program, *_cardBuffer, _projectionMatrix);
     _tableBuffer = new TableBuffer;
+
+    for (int i = 0; i < 3; ++i)
+    {
+        CardActor actor;
+        actor.topTexture(_textures[0]);
+        actor.bottomTexture(_textures[1]);
+        actor.position(QVector3D(float(i)
+            * _cardBuffer->specifications().height(), 0.0f,
+            _cardBuffer->specifications().depth() / 2.0f));
+
+        actor.rotation(Rotation::fromDegrees(90.0f));
+
+        _actors.append(actor);
+    }
 
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
@@ -73,13 +88,10 @@ void MainWidget::paintGL()
 
     _drawTool->bind();
 
-    CardActor actor;
-    actor.depthFactor(60.0f);
-    actor.topTexture(_textures[0]);
-    actor.bottomTexture(_textures[1]);
-    actor.position(actor.position() + QVector3D(0.0f, 0.0f, 1.0f));
-    actor.update(_camera.matrix());
-    _drawTool->draw(actor);
+    for (int i = 0; i < _actors.size(); ++i)
+    {
+        _drawTool->draw(_actors[i]);
+    }
 
     _program->enableTexture(true);
     _program->setMatrix(_projectionMatrix * _camera.matrix());
@@ -136,6 +148,11 @@ void MainWidget::onTimer()
 {
     _animations.updateAll();
     _camera.update();
+
+    for (int i = 0; i < _actors.size(); ++i)
+    {
+        _actors[i].update(_camera.matrix());
+    }
 
     updateGL();
 }

@@ -10,6 +10,7 @@
 #include <QGLWidget>
 #include <QOpenGLFunctions>
 #include <QImage>
+#include <QVector>
 
 class MainWidget : public QGLWidget, protected QOpenGLFunctions
 {
@@ -53,6 +54,7 @@ private:
     int _mouseY;
 
     GLuint _textures[2];
+    QVector<CardActor> _actors;
 };
 
 #endif
