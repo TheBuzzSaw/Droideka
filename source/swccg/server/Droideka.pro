@@ -16,7 +16,9 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp \
-    GameServer.cpp
+    GameServer.cpp \
+    ClientConnection.cpp
 
 HEADERS += \
-    GameServer.hpp
+    GameServer.hpp \
+    ClientConnection.hpp

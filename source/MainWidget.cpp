@@ -20,6 +20,8 @@ MainWidget::~MainWidget()
 {
     _program->release();
 
+    deleteTexture(_textures[1]);
+    deleteTexture(_textures[0]);
     deleteTexture(_tableTexture);
     delete _drawTool;
     delete _tableBuffer;
@@ -37,7 +39,8 @@ void MainWidget::initializeGL()
 
     _program = new MainProgram;
 
-    _tableTexture = loadImage(QImage("../wood.jpg"));
+    //_tableTexture = loadImage(QImage("../wood.jpg"));
+    _tableTexture = loadText("DEJARIX");
 
     _textures[0] = loadImage(QImage("../localuprising.gif"));
     _textures[1] = loadImage(QImage("../liberation.gif"));
@@ -180,6 +183,24 @@ GLuint MainWidget::loadImage(const QImage& image)
 
         glGenerateMipmap(GL_TEXTURE_2D);
     }
+
+    return result;
+}
+
+GLuint MainWidget::loadText(const QString& text)
+{
+    GLuint result = 0;
+
+    QFont font("../DejaVuSans.ttf");
+    font.setPixelSize(64);
+    QImage image(256, 256, QImage::Format_ARGB32);
+    image.fill(QColor(0, 0, 0));
+
+    QPainter painter(&image);
+    painter.setFont(font);
+    painter.setPen(Qt::green);
+    painter.drawText(image.rect(), Qt::AlignCenter, text);
+    result = loadImage(image);
 
     return result;
 }

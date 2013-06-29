@@ -37,6 +37,7 @@ protected:
 
 private:
     GLuint loadImage(const QImage& image);
+    GLuint loadText(const QString& text);
     QVector3D unproject(int x, int y);
 
     MainProgram* _program;

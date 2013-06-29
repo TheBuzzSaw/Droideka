@@ -10,7 +10,7 @@ class GameServer : public QObject
     Q_OBJECT
 
 public:
-    GameServer(quint16 port, QObject* parent = 0);
+    explicit GameServer(quint16 port, QObject* parent = 0);
     virtual ~GameServer();
 
 protected slots:
