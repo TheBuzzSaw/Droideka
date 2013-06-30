@@ -12,8 +12,11 @@ MainWidget::MainWidget(QWidget* parent) : QGLWidget(parent)
     _drawTool = 0;
     _tableBuffer = 0;
     _isCameraMoving = false;
+    _locationSpan = 0.0f;
+    _mouseMode = MouseMode::None;
     _camera.distance(32.0f);
     _camera.angle(Rotation::fromDegrees(-10.0f));
+    setMouseTracking(true);
 }
 
 MainWidget::~MainWidget()
@@ -39,8 +42,8 @@ void MainWidget::initializeGL()
 
     _program = new MainProgram;
 
-    //_tableTexture = loadImage(QImage("../wood.jpg"));
-    _tableTexture = loadText("DEJARIX");
+    _tableTexture = loadImage(QImage("../wood.jpg"));
+    //_tableTexture = loadText("DEJARIX");
 
     _textures[0] = loadImage(QImage("../localuprising.gif"));
     _textures[1] = loadImage(QImage("../liberation.gif"));
@@ -51,18 +54,27 @@ void MainWidget::initializeGL()
     _drawTool = new CardDrawTool(*_program, *_cardBuffer, _projectionMatrix);
     _tableBuffer = new TableBuffer;
 
-    for (int i = 0; i < 3; ++i)
+    _locationSpan = _cardBuffer->specifications().height()
+        + 1.0f / 8.0f;
+
+    for (int i = 0; i < 6; ++i)
     {
         CardActor actor;
         actor.topTexture(_textures[0]);
         actor.bottomTexture(_textures[1]);
-        actor.position(QVector3D(float(i)
-            * _cardBuffer->specifications().height(), 0.0f,
-            _cardBuffer->specifications().depth() / 2.0f));
 
         actor.rotation(Rotation::fromDegrees(90.0f));
 
-        _actors.append(actor);
+        _locationActors.append(actor);
+    }
+
+    float count = float(_locationActors.size() - 1);
+    float firstX = count * _locationSpan / -2.0f;
+
+    for (int i = 0; i < _locationActors.size(); ++i)
+    {
+        _locationActors[i].position(QVector3D(firstX + float(i)
+            * _locationSpan, 0.0f, specifications.depth() / 2.0f));
     }
 
     glEnable(GL_DEPTH_TEST);
@@ -71,7 +83,7 @@ void MainWidget::initializeGL()
     glCullFace(GL_BACK);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glClearColor(0.0f, 0.0f, 0.1f, 1.0f);
+    glClearColor(0.2f, 0.0f, 0.0f, 1.0f);
 
     _program->bind();
 }
@@ -91,9 +103,9 @@ void MainWidget::paintGL()
 
     _drawTool->bind();
 
-    for (int i = 0; i < _actors.size(); ++i)
+    for (int i = 0; i < _locationActors.size(); ++i)
     {
-        _drawTool->draw(_actors[i]);
+        _drawTool->draw(_locationActors[i]);
     }
 
     _program->enableTexture(true);
@@ -128,6 +140,52 @@ void MainWidget::mouseReleaseEvent(QMouseEvent* event)
 
 void MainWidget::mouseMoveEvent(QMouseEvent* event)
 {
+    QVector3D mousePosition = unproject(event->x(), event->y());
+    float radius = _locationSpan / 2.0f;
+
+    if (_mouseMode == MouseMode::None)
+    {
+        if (mousePosition.y() > -radius && mousePosition.y() < radius)
+        {
+            _mouseMode = MouseMode::InsertLocation;
+        }
+    }
+
+    if (_mouseMode == MouseMode::InsertLocation)
+    {
+        if (mousePosition.y() <= -radius || mousePosition.y() >= radius)
+        {
+            _locationTarget = 0xdeadbeef;
+            _locationPopper.clear();
+            _mouseMode = MouseMode::None;
+        }
+        else
+        {
+            float locationsSpan = float(_locationActors.size())
+                * _locationSpan;
+            float region = locationsSpan + mousePosition.x() * 2.0f;
+            int halfRegionCount = int(region / _locationSpan) + 1;
+            int locationTarget = halfRegionCount / 2 - 1;
+
+            if (locationTarget >= -1 && locationTarget < _locationActors.size()
+                && locationTarget != _locationTarget)
+            {
+                _locationTarget = locationTarget;
+
+                CardActor* a = 0;
+                CardActor* b = 0;
+
+                if (_locationTarget > -1)
+                    a = _locationActors.data() + _locationTarget;
+
+                if (_locationTarget < _locationActors.size() - 1)
+                    b = _locationActors.data() + _locationTarget + 1;
+
+                _locationPopper.set(a, b);
+            }
+        }
+    }
+
     if (_isCameraMoving)
     {
         int deltaX = event->x() - _mouseX;
@@ -152,9 +210,9 @@ void MainWidget::onTimer()
     _animations.updateAll();
     _camera.update();
 
-    for (int i = 0; i < _actors.size(); ++i)
+    for (int i = 0; i < _locationActors.size(); ++i)
     {
-        _actors[i].update(_camera.matrix());
+        _locationActors[i].update(_camera.matrix());
     }
 
     updateGL();
@@ -194,7 +252,7 @@ GLuint MainWidget::loadText(const QString& text)
     QFont font("../DejaVuSans.ttf");
     font.setPixelSize(64);
     QImage image(256, 256, QImage::Format_ARGB32);
-    image.fill(QColor(0, 0, 0));
+    image.fill(QColor(0, 0, 0, 0));
 
     QPainter painter(&image);
     painter.setFont(font);

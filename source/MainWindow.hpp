@@ -14,6 +14,7 @@ public:
 
 protected:
     virtual void keyPressEvent(QKeyEvent* event);
+    virtual void contextMenuEvent(QContextMenuEvent* event);
 
 private:
     void toggleFullscreen();

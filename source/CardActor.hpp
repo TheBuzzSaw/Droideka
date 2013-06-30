@@ -15,7 +15,7 @@ public:
 
     CardActor& operator=(const CardActor& other);
 
-    void update(const QMatrix4x4& modelViewMatrix);
+    void update(const QMatrix4x4& viewMatrix);
     inline const QMatrix4x4& modelViewMatrix() const
     {
         return _modelViewMatrix;
@@ -58,7 +58,7 @@ private:
     Rotation _rotation;
     Rotation _flip;
 
-    QMatrix4x4 _localMatrix;
+    QMatrix4x4 _modelMatrix;
     QMatrix4x4 _modelViewMatrix;
 };
 

@@ -6,11 +6,17 @@
 #include "TableBuffer.hpp"
 #include "MainProgram.hpp"
 #include "AnimationCollection.hpp"
+#include "swccg/LocationPopper.hpp"
 #include <QWidget>
 #include <QGLWidget>
 #include <QOpenGLFunctions>
 #include <QImage>
 #include <QVector>
+
+namespace MouseMode
+{
+    enum Mode { None, InsertLocation };
+}
 
 class MainWidget : public QGLWidget, protected QOpenGLFunctions
 {
@@ -55,7 +61,11 @@ private:
     int _mouseY;
 
     GLuint _textures[2];
-    QVector<CardActor> _actors;
+    QVector<CardActor> _locationActors;
+    float _locationSpan;
+    MouseMode::Mode _mouseMode;
+    LocationPopper _locationPopper;
+    int _locationTarget;
 };
 
 #endif

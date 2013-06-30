@@ -17,7 +17,7 @@ CardActor::CardActor(const CardActor& other)
     _position(other._position),
     _rotation(other._rotation),
     _flip(other._flip),
-    _localMatrix(other._localMatrix),
+    _modelMatrix(other._modelMatrix),
     _modelViewMatrix(other._modelViewMatrix)
 {
 }
@@ -36,21 +36,21 @@ CardActor& CardActor::operator=(const CardActor& other)
     _position = other._position;
     _rotation = other._rotation;
     _flip = other._flip;
-    _localMatrix = other._localMatrix;
+    _modelMatrix = other._modelMatrix;
     _modelViewMatrix = other._modelViewMatrix;
 
     return *this;
 }
 
-void CardActor::update(const QMatrix4x4& modelViewMatrix)
+void CardActor::update(const QMatrix4x4& viewMatrix)
 {
-    _localMatrix.setToIdentity();
-    _localMatrix.translate(_position);
-    _localMatrix.rotate(_flip.toDegrees(), 0.0f, 1.0f, 0.0f);
-    _localMatrix.rotate(_rotation.toDegrees(), 0.0f, 0.0f, 1.0f);
-    _localMatrix.scale(1.0f, 1.0f, _depthFactor);
+    _modelMatrix.setToIdentity();
+    _modelMatrix.translate(_position);
+    _modelMatrix.rotate(_flip.toDegrees(), 0.0f, 1.0f, 0.0f);
+    _modelMatrix.rotate(_rotation.toDegrees(), 0.0f, 0.0f, 1.0f);
+    _modelMatrix.scale(1.0f, 1.0f, _depthFactor);
 
-    _modelViewMatrix = modelViewMatrix * _localMatrix;
+    _modelViewMatrix = viewMatrix * _modelMatrix;
 
     QVector4D origin(0.0f, 0.0f, 0.0f, 1.0f);
     QVector4D modelViewOrigin = _modelViewMatrix * origin;
