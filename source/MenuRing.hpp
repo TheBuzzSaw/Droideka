@@ -18,7 +18,7 @@ public:
     void add(QString option);
 
     static bool tryGetAngle(QPoint direction, int minDistance,
-        Rotation& rotation);
+        RotationF& rotation);
 
 signals:
 

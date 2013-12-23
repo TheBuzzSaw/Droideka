@@ -23,20 +23,20 @@ public:
     inline void distance(float d) { _distance = d > 0.0f ? d : 0.0f; }
     inline void adjustDistance(float d) { distance(_distance + d); }
 
-    inline const Rotation rotation() const { return _rotation; }
-    inline void rotation(const Rotation r) { _rotation = r; }
-    inline void adjustRotation(const Rotation r) { _rotation += r; }
+    inline const RotationF rotation() const { return _rotation; }
+    inline void rotation(const RotationF r) { _rotation = r; }
+    inline void adjustRotation(const RotationF r) { _rotation += r; }
 
-    inline const Rotation angle() const { return _angle; }
-    inline void angle(const Rotation a) { _angle = a; }
-    inline void adjustAngle(const Rotation a) { _angle += a; }
+    inline const RotationF angle() const { return _angle; }
+    inline void angle(const RotationF a) { _angle = a; }
+    inline void adjustAngle(const RotationF a) { _angle += a; }
 
 private:
     QMatrix4x4 _matrix;
     QVector3D _position;
     float _distance;
-    Rotation _rotation;
-    Rotation _angle;
+    RotationF _rotation;
+    RotationF _angle;
 };
 
 #endif

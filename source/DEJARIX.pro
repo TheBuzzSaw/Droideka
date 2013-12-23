@@ -20,7 +20,6 @@ SOURCES += main.cpp\
     CardBuffer.cpp \
     MainProgram.cpp \
     CardActor.cpp \
-    Rotation.cpp \
     Camera.cpp \
     Animation.cpp \
     TableBuffer.cpp \

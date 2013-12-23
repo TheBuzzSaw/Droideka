@@ -17,7 +17,7 @@ MainWidget::MainWidget(QWidget* parent)
     , _mouseMode(MouseMode::None)
 {
     _camera.distance(32.0f);
-    _camera.angle(Rotation::fromDegrees(-10.0f));
+    _camera.angle(RotationF::fromDegrees(-10.0f));
     setMouseTracking(true);
 }
 
@@ -65,7 +65,7 @@ void MainWidget::initializeGL()
         actor.topTexture(_textures[0]);
         actor.bottomTexture(_textures[1]);
 
-        actor.rotation(Rotation::fromDegrees(90.0f));
+        actor.rotation(RotationF::fromDegrees(90.0f));
 
         _locationActors.append(actor);
     }
@@ -137,7 +137,7 @@ void MainWidget::mousePressEvent(QMouseEvent* event)
         //qDebug() << "click: " << event->pos();
         qDebug() << "direction: " << direction;
 
-        Rotation rotation;
+        RotationF rotation;
 
         if (MenuRing::tryGetAngle(direction, 8, rotation))
         {
@@ -208,8 +208,8 @@ void MainWidget::mouseMoveEvent(QMouseEvent* event)
     {
         QPoint delta = event->pos() - _mouse;
 
-        _camera.adjustRotation(Rotation::fromDegrees(float(delta.x()) / 3.0f));
-        _camera.adjustAngle(Rotation::fromDegrees(float(delta.y()) / 3.0f));
+        _camera.adjustRotation(RotationF::fromDegrees(float(delta.x()) / 3.0f));
+        _camera.adjustAngle(RotationF::fromDegrees(float(delta.y()) / 3.0f));
 
         _mouse = event->pos();
     }

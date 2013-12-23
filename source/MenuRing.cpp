@@ -13,7 +13,7 @@ MenuRing::~MenuRing()
 }
 
 bool MenuRing::tryGetAngle(QPoint direction, int minDistance,
-    Rotation& rotation)
+    RotationF& rotation)
 {
     bool result = false;
 
@@ -49,7 +49,7 @@ bool MenuRing::tryGetAngle(QPoint direction, int minDistance,
             }
         }
 
-        rotation = Rotation::fromRadians(radians);
+        rotation = RotationF::fromRadians(radians);
     }
 
     return result;

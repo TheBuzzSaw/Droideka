@@ -41,11 +41,11 @@ public:
     inline const QVector3D& position() const { return _position; }
     inline void position(const QVector3D& p) { _position = p; }
 
-    inline const Rotation rotation() const { return _rotation; }
-    inline void rotation(const Rotation& r) { _rotation = r; }
+    inline const RotationF rotation() const { return _rotation; }
+    inline void rotation(const RotationF& r) { _rotation = r; }
 
-    inline const Rotation flip() const { return _flip; }
-    inline void flip(const Rotation& f) { _flip = f; }
+    inline const RotationF flip() const { return _flip; }
+    inline void flip(const RotationF& f) { _flip = f; }
 
 private:
     GLuint _topTexture;
@@ -55,8 +55,8 @@ private:
 
     QVector4D _highlight;
     QVector3D _position;
-    Rotation _rotation;
-    Rotation _flip;
+    RotationF _rotation;
+    RotationF _flip;
 
     QMatrix4x4 _modelMatrix;
     QMatrix4x4 _modelViewMatrix;
