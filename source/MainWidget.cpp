@@ -6,15 +6,16 @@
 #include <QPainter>
 #include <QVector2D>
 
-MainWidget::MainWidget(QWidget* parent) : QGLWidget(parent)
+MainWidget::MainWidget(QWidget* parent)
+    : QGLWidget(parent)
+    , _program(nullptr)
+    , _cardBuffer(nullptr)
+    , _drawTool(nullptr)
+    , _tableBuffer(nullptr)
+    , _isCameraMoving(false)
+    , _locationSpan(0.0f)
+    , _mouseMode(MouseMode::None)
 {
-    _program = 0;
-    _cardBuffer = 0;
-    _drawTool = 0;
-    _tableBuffer = 0;
-    _isCameraMoving = false;
-    _locationSpan = 0.0f;
-    _mouseMode = MouseMode::None;
     _camera.distance(32.0f);
     _camera.angle(Rotation::fromDegrees(-10.0f));
     setMouseTracking(true);
@@ -123,8 +124,7 @@ void MainWidget::mousePressEvent(QMouseEvent* event)
     if (event->button() == Qt::RightButton)
     {
         _isCameraMoving = true;
-        _mouse.setX(event->x());
-        _mouse.setY(event->y());
+        _mouse = event->pos();
     }
     else if (event->button() == Qt::LeftButton)
     {
@@ -158,7 +158,7 @@ void MainWidget::mouseReleaseEvent(QMouseEvent* event)
 
 void MainWidget::mouseMoveEvent(QMouseEvent* event)
 {
-    QVector3D mousePosition = unproject(event->x(), event->y());
+    QVector3D mousePosition = unproject(event->pos());
     float radius = _locationSpan / 2.0f;
 
     if (_mouseMode == MouseMode::None)
@@ -217,8 +217,8 @@ void MainWidget::mouseMoveEvent(QMouseEvent* event)
 
 void MainWidget::wheelEvent(QWheelEvent* event)
 {
-    const float delta = 3.0f;
-    _camera.adjustDistance(event->delta() > 0 ? -delta : delta);
+    const float Delta = 3.0f;
+    _camera.adjustDistance(event->delta() > 0 ? -Delta : Delta);
 }
 
 void MainWidget::onTimer()
@@ -279,9 +279,10 @@ GLuint MainWidget::loadText(const QString& text)
     return result;
 }
 
-QVector3D MainWidget::unproject(int x, int y)
+QVector3D MainWidget::unproject(QPoint pixel)
 {
-    y = height() - y;
+    int x = pixel.x();
+    int y = height() - pixel.y();
 
     GLfloat depthSample;
     glReadPixels(x, y, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depthSample);

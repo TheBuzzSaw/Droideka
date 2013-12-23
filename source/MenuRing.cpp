@@ -1,10 +1,10 @@
 #include "MenuRing.hpp"
 #include <QtGlobal>
 #include <QtMath>
-#include <QDebug>
 
-MenuRing::MenuRing(QObject* parent) :
-    QObject(parent)
+MenuRing::MenuRing(QObject* parent)
+    : QObject(parent)
+    , _functions(QOpenGLContext::currentContext())
 {
 }
 
@@ -27,14 +27,10 @@ bool MenuRing::tryGetAngle(QPoint direction, int minDistance,
         result = true;
 
         qreal radians = 0;
-        const qreal Pi = 3.1415926535897932384626433832795028841971;
-        const qreal HalfPi = Pi / qreal(2);
-
-        qDebug() << Pi << HalfPi;
 
         if (direction.y() == 0)
         {
-            radians = direction.x() > 0 ? HalfPi : -HalfPi;
+            radians = direction.x() > 0 ? halfPi<qreal>() : -halfPi<qreal>();
         }
         else
         {
@@ -44,7 +40,7 @@ bool MenuRing::tryGetAngle(QPoint direction, int minDistance,
 
             if (direction.y() > 0)
             {
-                qreal bottom = direction.x() > 0 ? Pi : -Pi;
+                qreal bottom = direction.x() > 0 ? pi<qreal>() : -pi<qreal>();
                 radians = bottom - radians;
             }
             else

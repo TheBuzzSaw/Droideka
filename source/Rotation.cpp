@@ -1,9 +1,18 @@
 #include "Rotation.hpp"
-#include <cmath>
+
+static inline float cycle(float radians)
+{
+    if (radians >= pi<float>())
+        radians -= tau<float>();
+    else if (radians < -pi<float>())
+        radians += tau<float>();
+
+    return radians;
+}
 
 const Rotation Rotation::fromDegrees(float degrees)
 {
-    return fromRadians(degrees * RadiansPerDegree);
+    return Rotation(qDegreesToRadians(degrees));
 }
 
 const Rotation Rotation::fromRadians(float radians)
@@ -13,7 +22,7 @@ const Rotation Rotation::fromRadians(float radians)
 
 const Rotation Rotation::half()
 {
-    return Rotation(Pi);
+    return Rotation(-pi<float>());
 }
 
 Rotation::Rotation() : _radians(0.0f)
@@ -40,25 +49,13 @@ Rotation& Rotation::operator=(const Rotation& other)
 
 Rotation& Rotation::operator+=(const Rotation& other)
 {
-    _radians += other._radians;
-
-    if (_radians > Pi)
-        _radians -= TwoPi;
-    else if (_radians < -Pi)
-        _radians += TwoPi;
-
+    _radians = cycle(_radians + other._radians);
     return *this;
 }
 
 Rotation& Rotation::operator-=(const Rotation& other)
 {
-    _radians -= other._radians;
-
-    if (_radians > Pi)
-        _radians -= TwoPi;
-    else if (_radians < -Pi)
-        _radians += TwoPi;
-
+    _radians = cycle(_radians - other._radians);
     return *this;
 }
 
