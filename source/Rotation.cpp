@@ -8,16 +8,7 @@ const Rotation Rotation::fromDegrees(float degrees)
 
 const Rotation Rotation::fromRadians(float radians)
 {
-    float result = 0.0f;
-
-    if (radians > Pi)
-        result = fmod(radians + Pi, TwoPi) - Pi;
-    else if (radians < -Pi)
-        result = fmod(radians - Pi, TwoPi) + Pi;
-    else if (radians == radians)
-        result = radians;
-
-    return Rotation(result);
+    return Rotation(radians);
 }
 
 const Rotation Rotation::half()

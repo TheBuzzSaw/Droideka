@@ -1,4 +1,5 @@
 #include "CardSpecifications.hpp"
+#include <QtGlobal>
 
 CardSpecifications::CardSpecifications()
 {
@@ -24,31 +25,26 @@ CardSpecifications::~CardSpecifications()
 
 void CardSpecifications::width(float w)
 {
-    const float Minimum = 1.0f;
-    _width = Minimum < w ? w : Minimum;
+    _width = qMax(w, 1.0f);
 }
 
 void CardSpecifications::height(float h)
 {
-    const float Minimum = 1.0f;
-    _height = Minimum < h ? h : Minimum;
+    _height = qMax(h, 1.0f);
 }
 
 void CardSpecifications::depth(float d)
 {
-    const float Minimum = 0.01f;
-    _depth = Minimum < d ? d : Minimum;
+    _depth = qMax(d, 0.01f);
 
 }
 
 void CardSpecifications::cornerRadius(float cr)
 {
-    const float Minimum = 0.01f;
-    _cornerRadius = Minimum < cr ? cr : Minimum;
+    _cornerRadius = qMax(cr, 0.01f);
 }
 
 void CardSpecifications::cornerDetail(int cd)
 {
-    const int Minimum = 1;
-    _cornerDetail = Minimum < cd ? cd : Minimum;
+    _cornerDetail = qMax(cd, 1);
 }

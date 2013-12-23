@@ -1,10 +1,10 @@
 #include "MainWidget.hpp"
+#include "MenuRing.hpp"
 #include <QDebug>
 #include <QMouseEvent>
 #include <QTimer>
 #include <QPainter>
 #include <QVector2D>
-#include <QtMath>
 
 MainWidget::MainWidget(QWidget* parent) : QGLWidget(parent)
 {
@@ -137,38 +137,11 @@ void MainWidget::mousePressEvent(QMouseEvent* event)
         //qDebug() << "click: " << event->pos();
         qDebug() << "direction: " << direction;
 
-        int squaredDistance = direction.x() * direction.x()
-            + direction.y() * direction.y();
+        Rotation rotation;
 
-        if (squaredDistance > 64)
+        if (MenuRing::tryGetAngle(direction, 8, rotation))
         {
-            qreal result = 0;
-
-            if (direction.y() == 0)
-            {
-                result = direction.x() > 0 ? 90 : -90;
-            }
-            else
-            {
-                qreal ratio = qreal(direction.x()) / qreal(direction.y());
-                qDebug() << "ratio: " << ratio;
-
-                result = qAtan(ratio) * qreal(180.0) / qreal(3.1415926535898);
-
-                qDebug() << "pre result: " << result;
-
-                if (direction.y() > 0)
-                {
-                    qreal bottom = direction.x() > 0 ? 180 : -180;
-                    result = bottom - result;
-                }
-                else
-                {
-                    result = -result;
-                }
-            }
-
-            qDebug() << "result: " << result;
+            qDebug() << "result: " << rotation.toDegrees();
         }
         else
         {
