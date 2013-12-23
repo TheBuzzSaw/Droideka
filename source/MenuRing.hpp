@@ -7,6 +7,7 @@
 #include <QOpenGLFunctions>
 #include <QVector>
 #include "Rotation.hpp"
+#include "MenuRingItem.hpp"
 
 class MenuRing : public QObject
 {
@@ -15,7 +16,7 @@ public:
     explicit MenuRing(QObject* parent = 0);
     virtual ~MenuRing();
 
-    void add(QString option);
+    void add(MenuRingItem* item);
 
     static bool tryGetAngle(QPoint direction, int minDistance,
         RotationF& rotation);
@@ -26,7 +27,7 @@ public slots:
 
 private:
     QOpenGLFunctions _functions;
-    QVector<QString> _options;
+    QVector<MenuRingItem*> _items;
 };
 
 #endif

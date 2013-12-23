@@ -1,8 +1,6 @@
 #ifndef ROTATION_HPP
 #define ROTATION_HPP
 
-#include <QtMath>
-
 template<typename T>
 constexpr T pi() { return 3.1415926535897932384626433832795028841971; }
 
@@ -64,7 +62,7 @@ public:
     }
 
     T toRadians() const { return _radians; }
-    T toDegrees() const { return qRadiansToDegrees(_radians); }
+    T toDegrees() const { return _radians * T(180) / pi<T>(); }
 
 private:
     Rotation(T radians) : _radians(radians) {}

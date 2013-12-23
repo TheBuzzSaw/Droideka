@@ -190,8 +190,8 @@ void MainWidget::mouseMoveEvent(QMouseEvent* event)
             {
                 _locationTarget = locationTarget;
 
-                CardActor* a = 0;
-                CardActor* b = 0;
+                CardActor* a = nullptr;
+                CardActor* b = nullptr;
 
                 if (_locationTarget > -1)
                     a = _locationActors.data() + _locationTarget;

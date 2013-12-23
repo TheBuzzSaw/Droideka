@@ -27,7 +27,8 @@ SOURCES += main.cpp\
     swccg/Card.cpp \
     CardDrawTool.cpp \
     MenuRing.cpp \
-    swccg/LocationPopper.cpp
+    swccg/LocationPopper.cpp \
+    MenuRingItem.cpp
 
 HEADERS  += MainWindow.hpp \
     MainWidget.hpp \
@@ -44,4 +45,5 @@ HEADERS  += MainWindow.hpp \
     swccg/Card.hpp \
     CardDrawTool.hpp \
     MenuRing.hpp \
-    swccg/LocationPopper.hpp
+    swccg/LocationPopper.hpp \
+    MenuRingItem.hpp

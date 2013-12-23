@@ -12,6 +12,15 @@ MenuRing::~MenuRing()
 {
 }
 
+void MenuRing::add(MenuRingItem* item)
+{
+    if (item)
+    {
+        item->setParent(this);
+        _items.append(item);
+    }
+}
+
 bool MenuRing::tryGetAngle(QPoint direction, int minDistance,
     RotationF& rotation)
 {
