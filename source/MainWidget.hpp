@@ -12,6 +12,7 @@
 #include <QOpenGLFunctions>
 #include <QImage>
 #include <QVector>
+#include <QPoint>
 
 namespace MouseMode
 {
@@ -57,8 +58,7 @@ private:
     GLuint _tableTexture;
     Camera _camera;
     bool _isCameraMoving;
-    int _mouseX;
-    int _mouseY;
+    QPoint _mouse;
 
     GLuint _textures[2];
     QVector<CardActor> _locationActors;

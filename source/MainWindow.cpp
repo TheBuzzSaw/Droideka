@@ -46,7 +46,7 @@ void MainWindow::keyPressEvent(QKeyEvent* event)
 void MainWindow::contextMenuEvent(QContextMenuEvent* event)
 {
     (void)event;
-    qDebug() << "context";
+    //qDebug() << "context";
 }
 
 void MainWindow::toggleFullscreen()

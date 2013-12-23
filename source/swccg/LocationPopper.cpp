@@ -20,7 +20,7 @@ void LocationPopper::set(CardActor* firstActor, CardActor* secondActor)
         _actors[0].actor = firstActor;
         _actors[0].oldPosition = firstActor->position();
         firstActor->position(_actors[0].oldPosition
-            + QVector3D(-1.0f, 1.0f, 1.0f));
+            + QVector3D(-2.0f, 2.0f, 2.0f));
     }
 
     if (secondActor && secondActor != firstActor)
@@ -28,7 +28,7 @@ void LocationPopper::set(CardActor* firstActor, CardActor* secondActor)
         _actors[1].actor = secondActor;
         _actors[1].oldPosition = secondActor->position();
         secondActor->position(_actors[1].oldPosition
-            + QVector3D(1.0f, 1.0f, 1.0f));
+            + QVector3D(2.0f, 2.0f, 2.0f));
     }
 }
 

@@ -20,7 +20,7 @@ MainProgram::MainProgram()
         // warning C7022: unrecognized profile specifier "precision"
 
         // This explodes in OSX. Apparently, only Windows demands it.
-        "precision highp float;\n"
+        //"precision highp float;\n"
 #endif
         "uniform bool enableTexture;\n"
         "uniform sampler2D texture;\n"

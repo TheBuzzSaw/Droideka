@@ -4,6 +4,7 @@
 #include <QTimer>
 #include <QPainter>
 #include <QVector2D>
+#include <QtMath>
 
 MainWidget::MainWidget(QWidget* parent) : QGLWidget(parent)
 {
@@ -122,13 +123,57 @@ void MainWidget::mousePressEvent(QMouseEvent* event)
     if (event->button() == Qt::RightButton)
     {
         _isCameraMoving = true;
-        _mouseX = event->x();
-        _mouseY = event->y();
+        _mouse.setX(event->x());
+        _mouse.setY(event->y());
     }
     else if (event->button() == Qt::LeftButton)
     {
-        QVector3D result = unproject(event->x(), event->y());
-        qDebug() << result;
+        //QVector3D result = unproject(event->x(), event->y());
+        //qDebug() << result;
+
+        QPoint center(width() / 2, height() / 2);
+        QPoint direction = event->pos() - center;
+        //qDebug() << "center: " << center;
+        //qDebug() << "click: " << event->pos();
+        qDebug() << "direction: " << direction;
+
+        int squaredDistance = direction.x() * direction.x()
+            + direction.y() * direction.y();
+
+        if (squaredDistance > 64)
+        {
+            qreal result = 0;
+
+            if (direction.y() == 0)
+            {
+                result = direction.x() > 0 ? 90 : -90;
+            }
+            else
+            {
+                qreal ratio = qreal(direction.x()) / qreal(direction.y());
+                qDebug() << "ratio: " << ratio;
+
+                result = qAtan(ratio) * qreal(180.0) / qreal(3.1415926535898);
+
+                qDebug() << "pre result: " << result;
+
+                if (direction.y() > 0)
+                {
+                    qreal bottom = direction.x() > 0 ? 180 : -180;
+                    result = bottom - result;
+                }
+                else
+                {
+                    result = -result;
+                }
+            }
+
+            qDebug() << "result: " << result;
+        }
+        else
+        {
+            qDebug() << "too close to origin";
+        }
     }
 }
 
@@ -188,14 +233,12 @@ void MainWidget::mouseMoveEvent(QMouseEvent* event)
 
     if (_isCameraMoving)
     {
-        int deltaX = event->x() - _mouseX;
-        int deltaY = event->y() - _mouseY;
+        QPoint delta = event->pos() - _mouse;
 
-        _camera.adjustRotation(Rotation::fromDegrees(float(deltaX) / 3.0f));
-        _camera.adjustAngle(Rotation::fromDegrees(float(deltaY) / 3.0f));
+        _camera.adjustRotation(Rotation::fromDegrees(float(delta.x()) / 3.0f));
+        _camera.adjustAngle(Rotation::fromDegrees(float(delta.y()) / 3.0f));
 
-        _mouseX = event->x();
-        _mouseY = event->y();
+        _mouse = event->pos();
     }
 }
 
