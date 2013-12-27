@@ -23,7 +23,7 @@ MainWidget::MainWidget(QWidget* parent)
 
 MainWidget::~MainWidget()
 {
-    _program->release();
+    _program->close();
 
     deleteTexture(_textures[1]);
     deleteTexture(_textures[0]);
@@ -36,13 +36,13 @@ MainWidget::~MainWidget()
 
 void MainWidget::initializeGL()
 {
-    initializeOpenGLFunctions();
+    _functions.initializeOpenGLFunctions();
 
     QTimer* timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(onTimer()));
     timer->start(16);
 
-    _program = new BasicProgram;
+    _program = new BasicProgram(_functions);
 
     _tableTexture = loadImage(QImage("../wood.jpg"));
     //_tableTexture = loadText("DEJARIX");
@@ -54,7 +54,7 @@ void MainWidget::initializeGL()
     CardBuilder builder(specifications);
     _cardBuffer = new CardBuffer(builder);
     _drawTool = new CardDrawTool(*_program, *_cardBuffer, _projectionMatrix);
-    _tableBuffer = new TableBuffer;
+    _tableBuffer = new TableBuffer(_functions);
 
     _locationSpan = _cardBuffer->specifications().height()
         + 1.0f / 8.0f;
@@ -87,7 +87,7 @@ void MainWidget::initializeGL()
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glClearColor(0.2f, 0.0f, 0.0f, 1.0f);
 
-    _program->bind();
+    _program->open();
 }
 
 void MainWidget::resizeGL(int w, int h)
@@ -114,9 +114,7 @@ void MainWidget::paintGL()
     _program->setMatrix(_projectionMatrix * _camera.matrix());
     _program->setHighlight(QVector4D());
     glBindTexture(GL_TEXTURE_2D, _tableTexture);
-    _tableBuffer->bind(_program->positionAttribute(),
-        _program->textureAttribute());
-    _tableBuffer->draw();
+    _tableBuffer->draw(*_program);
 }
 
 void MainWidget::mousePressEvent(QMouseEvent* event)
@@ -255,7 +253,7 @@ GLuint MainWidget::loadImage(const QImage& image)
             result = bindTexture(image);
         }
 
-        glGenerateMipmap(GL_TEXTURE_2D);
+        _functions.glGenerateMipmap(GL_TEXTURE_2D);
     }
 
     return result;

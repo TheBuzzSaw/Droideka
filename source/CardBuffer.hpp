@@ -15,20 +15,19 @@ public:
         return _specifications;
     }
 
-    void bind(GLuint vertexLocation, GLuint textureLocation);
+    void bind(const BasicProgram& program);
     void drawTop();
     void drawMiddle();
     void drawBottom();
 
 private:
-    static const int BufferCount = 5;
-    static const int Vertex = 0;
-    static const int Texture = 1;
-    static const int TopIndex = 2;
-    static const int MiddleIndex = 3;
-    static const int BottomIndex = 4;
+    static const int BufferCount = 3;
+    static const int TopIndex = 0;
+    static const int MiddleIndex = 1;
+    static const int BottomIndex = 2;
 
     CardSpecifications _specifications;
+    BasicBufferObject _object;
     GLuint _buffers[BufferCount];
     GLsizei _topCount;
     GLsizei _middleCount;

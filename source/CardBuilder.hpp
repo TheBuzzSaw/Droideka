@@ -2,7 +2,7 @@
 #define CARDBUILDER_HPP
 
 #include "CardSpecifications.hpp"
-#include <QVector>
+#include "BasicBufferObject.hpp"
 #include <QOpenGLFunctions>
 
 class CardBuilder
@@ -16,15 +16,7 @@ public:
         return _specifications;
     }
 
-    inline const QVector<GLfloat>& vertices() const
-    {
-        return _vertices;
-    }
-
-    inline const QVector<GLfloat>& textureCoordinates() const
-    {
-        return _textureCoordinates;
-    }
+    BasicBufferObject bufferObject(QOpenGLFunctions& functions) const;
 
     inline const QVector<GLushort>& topIndices() const
     {

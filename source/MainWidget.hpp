@@ -19,7 +19,7 @@ namespace MouseMode
     enum Mode { None, InsertLocation };
 }
 
-class MainWidget : public QGLWidget, protected QOpenGLFunctions
+class MainWidget : public QGLWidget
 {
     Q_OBJECT
 
@@ -47,6 +47,7 @@ private:
     GLuint loadText(const QString& text);
     QVector3D unproject(QPoint pixel);
 
+    QOpenGLFunctions _functions;
     BasicProgram* _program;
     CardBuffer* _cardBuffer;
     CardDrawTool* _drawTool;

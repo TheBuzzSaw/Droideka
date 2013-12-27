@@ -1,20 +1,13 @@
 #include "CardBuffer.hpp"
+#include <QDebug>
 
 CardBuffer::CardBuffer(const CardBuilder& builder)
     : _specifications(builder.specifications())
 {
     initializeOpenGLFunctions();
+    _object = builder.bufferObject(*this);
+
     glGenBuffers(BufferCount, _buffers);
-
-    glBindBuffer(GL_ARRAY_BUFFER, _buffers[Vertex]);
-    glBufferData(GL_ARRAY_BUFFER, builder.vertices().size() * sizeof(GLfloat),
-        builder.vertices().constData(), GL_STATIC_DRAW);
-
-    glBindBuffer(GL_ARRAY_BUFFER, _buffers[Texture]);
-    glBufferData(GL_ARRAY_BUFFER,
-        builder.textureCoordinates().size() * sizeof(GLfloat),
-        builder.textureCoordinates().constData(),
-        GL_STATIC_DRAW);
 
     _topCount = builder.topIndices().size();
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _buffers[TopIndex]);
@@ -61,11 +54,7 @@ void CardBuffer::drawBottom()
     glDrawElements(GL_TRIANGLES, _bottomCount, GL_UNSIGNED_SHORT, 0);
 }
 
-void CardBuffer::bind(GLuint vertexLocation, GLuint textureLocation)
+void CardBuffer::bind(const BasicProgram& program)
 {
-    glBindBuffer(GL_ARRAY_BUFFER, _buffers[Vertex]);
-    glVertexAttribPointer(vertexLocation, 3, GL_FLOAT, GL_FALSE, 0, 0);
-
-    glBindBuffer(GL_ARRAY_BUFFER, _buffers[Texture]);
-    glVertexAttribPointer(textureLocation, 2, GL_FLOAT, GL_FALSE, 0, 0);
+    _object.bind(program);
 }

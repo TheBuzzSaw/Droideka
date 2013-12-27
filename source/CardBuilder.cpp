@@ -140,6 +140,29 @@ CardBuilder::~CardBuilder()
 {
 }
 
+BasicBufferObject CardBuilder::bufferObject(QOpenGLFunctions& functions) const
+{
+    int vertexCount = _vertices.size() / 3;
+
+    BasicBuilder builder;
+    builder.reserve(vertexCount);
+
+    for (int i = 0; i < vertexCount; ++i)
+    {
+        int vi = i * 3;
+        QVector3D vertex(_vertices[vi + 0], _vertices[vi + 1],
+            _vertices[vi + 2]);
+
+        int tci = i * 2;
+        QVector2D textureCoordinate(_textureCoordinates[tci + 0],
+            _textureCoordinates[tci + 1]);
+
+        builder.add(vertex, textureCoordinate);
+    }
+
+    return BasicBufferObject(functions, builder);
+}
+
 void CardBuilder::addVertex(float x, float y, float s, float t)
 {
     float d = _specifications.depth() / 2.0f;

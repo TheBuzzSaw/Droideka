@@ -1,46 +1,27 @@
 #include "TableBuffer.hpp"
+#include <QDebug>
 
-TableBuffer::TableBuffer()
+TableBuffer::TableBuffer(QOpenGLFunctions& functions)
 {
-    initializeOpenGLFunctions();
-    glGenBuffers(BufferCount, _buffers);
+    BasicBuilder builder;
 
-    GLfloat vertices[] = {
-        500.0f, 500.0f,
-        500.0f, -500.0f,
-        -500.0f, -500.0f,
-        -500.0f, 500.0f,
-        };
+    const float P = 500.0f;
+    const float T = 100.0f;
 
-    GLfloat textureCoordinates[] = {
-        100.0f, 100.0f,
-        100.0f, -100.0f,
-        -100.0f, -100.0f,
-        -100.0f, 100.0f,
-        };
+    builder.add(QVector3D(P, P, 0.0f), QVector2D(T, T));
+    builder.add(QVector3D(P, -P, 0.0f), QVector2D(T, -T));
+    builder.add(QVector3D(-P, -P, 0.0f), QVector2D(-T, -T));
+    builder.add(QVector3D(-P, P, 0.0f), QVector2D(-T, T));
 
-    glBindBuffer(GL_ARRAY_BUFFER, _buffers[Vertex]);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-    glBindBuffer(GL_ARRAY_BUFFER, _buffers[Texture]);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(textureCoordinates),
-        textureCoordinates, GL_STATIC_DRAW);
+    _object = BasicBufferObject(functions, builder);
 }
 
 TableBuffer::~TableBuffer()
 {
 }
 
-void TableBuffer::bind(GLuint vertexLocation, GLuint textureLocation)
+void TableBuffer::draw(const BasicProgram& program)
 {
-    glBindBuffer(GL_ARRAY_BUFFER, _buffers[Vertex]);
-    glVertexAttribPointer(vertexLocation, 2, GL_FLOAT, GL_FALSE, 0, 0);
-
-    glBindBuffer(GL_ARRAY_BUFFER, _buffers[Texture]);
-    glVertexAttribPointer(textureLocation, 2, GL_FLOAT, GL_FALSE, 0, 0);
-}
-
-void TableBuffer::draw()
-{
-    glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
+    _object.bind(program);
+    glDrawArrays(GL_TRIANGLE_FAN, 0, _object.vertexCount());
 }

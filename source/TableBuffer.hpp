@@ -1,23 +1,18 @@
 #ifndef TABLEBUFFER_HPP
 #define TABLEBUFFER_HPP
 
-#include <QOpenGLFunctions>
+#include "BasicBufferObject.hpp"
 
-class TableBuffer : protected QOpenGLFunctions
+class TableBuffer
 {
 public:
-    TableBuffer();
+    TableBuffer(QOpenGLFunctions& functions);
     virtual ~TableBuffer();
 
-    void bind(GLuint vertexLocation, GLuint textureLocation);
-    void draw();
+    void draw(const BasicProgram& program);
 
 private:
-    static const int BufferCount = 2;
-    static const int Vertex = 0;
-    static const int Texture = 1;
-
-    GLuint _buffers[BufferCount];
+    BasicBufferObject _object;
 };
 
 #endif

@@ -1,9 +1,8 @@
 #include "BasicProgram.hpp"
 
-BasicProgram::BasicProgram()
+BasicProgram::BasicProgram(QOpenGLFunctions& functions)
+    : _functions(functions)
 {
-    initializeOpenGLFunctions();
-
     const char* vertexShaderSource =
         "attribute highp vec4 position;\n"
         "attribute lowp vec2 tc;\n"
@@ -53,17 +52,17 @@ BasicProgram::~BasicProgram()
 {
 }
 
-void BasicProgram::bind()
+void BasicProgram::open()
 {
     _program.bind();
-    glEnableVertexAttribArray(_positionAttribute);
-    glEnableVertexAttribArray(_textureAttribute);
+    _functions.glEnableVertexAttribArray(_positionAttribute);
+    _functions.glEnableVertexAttribArray(_textureAttribute);
 }
 
-void BasicProgram::release()
+void BasicProgram::close()
 {
-    glDisableVertexAttribArray(_textureAttribute);
-    glDisableVertexAttribArray(_positionAttribute);
+    _functions.glDisableVertexAttribArray(_textureAttribute);
+    _functions.glDisableVertexAttribArray(_positionAttribute);
     _program.release();
 }
 

@@ -29,7 +29,8 @@ SOURCES += main.cpp\
     swccg/LocationPopper.cpp \
     MenuRingItem.cpp \
     BasicBuilder.cpp \
-    BasicProgram.cpp
+    BasicProgram.cpp \
+    BasicBufferObject.cpp
 
 HEADERS  += MainWindow.hpp \
     MainWidget.hpp \
@@ -48,4 +49,5 @@ HEADERS  += MainWindow.hpp \
     swccg/LocationPopper.hpp \
     MenuRingItem.hpp \
     BasicBuilder.hpp \
-    BasicProgram.hpp
+    BasicProgram.hpp \
+    BasicBufferObject.hpp

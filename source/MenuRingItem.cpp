@@ -7,8 +7,6 @@ MenuRingItem::MenuRingItem(QString name)
     : QObject(nullptr)
     , _name(std::move(name))
 {
-    initializeOpenGLFunctions();
-
     QFont font("../DejaVuSans.ttf");
     font.setPixelSize(64);
     QImage image(256, 128, QImage::Format_ARGB32);
@@ -32,7 +30,6 @@ void MenuRingItem::draw(BasicProgram& program)
     program.enableTexture(true);
     program.setHighlight(QVector4D());
     glBindTexture(GL_TEXTURE_2D, _texture);
-
 }
 
 QString MenuRingItem::name() const

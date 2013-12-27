@@ -6,7 +6,7 @@
 #include <QOpenGLFunctions>
 #include "BasicProgram.hpp"
 
-class MenuRingItem : public QObject, protected QOpenGLFunctions
+class MenuRingItem : public QObject
 {
     Q_OBJECT
 public:

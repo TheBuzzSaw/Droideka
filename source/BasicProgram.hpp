@@ -6,22 +6,23 @@
 #include <QOpenGLShaderProgram>
 #include <QOpenGLFunctions>
 
-class BasicProgram : protected QOpenGLFunctions
+class BasicProgram
 {
 public:
-    BasicProgram();
+    BasicProgram(QOpenGLFunctions& functions);
     virtual ~BasicProgram();
 
     inline GLuint positionAttribute() const { return _positionAttribute; }
     inline GLuint textureAttribute() const { return _textureAttribute; }
 
-    void bind();
-    void release();
+    void open();
+    void close();
     void setMatrix(const QMatrix4x4& matrix);
     void enableTexture(bool enable);
     void setHighlight(const QVector4D& highlight);
 
 private:
+    QOpenGLFunctions& _functions;
     QOpenGLShaderProgram _program;
 
     GLuint _positionAttribute;
