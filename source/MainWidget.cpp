@@ -42,7 +42,7 @@ void MainWidget::initializeGL()
     connect(timer, SIGNAL(timeout()), this, SLOT(onTimer()));
     timer->start(16);
 
-    _program = new MainProgram;
+    _program = new BasicProgram;
 
     _tableTexture = loadImage(QImage("../wood.jpg"));
     //_tableTexture = loadText("DEJARIX");

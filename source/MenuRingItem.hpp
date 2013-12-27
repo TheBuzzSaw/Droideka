@@ -4,6 +4,7 @@
 #include <QtCore>
 #include <QObject>
 #include <QOpenGLFunctions>
+#include "BasicProgram.hpp"
 
 class MenuRingItem : public QObject, protected QOpenGLFunctions
 {
@@ -11,6 +12,8 @@ class MenuRingItem : public QObject, protected QOpenGLFunctions
 public:
     MenuRingItem(QString name);
     virtual ~MenuRingItem();
+
+    void draw(BasicProgram& program);
 
     QString name() const;
 
@@ -21,6 +24,7 @@ signals:
 
 private:
     QString _name;
+    GLuint _texture;
 };
 
 #endif

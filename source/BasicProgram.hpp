@@ -6,11 +6,11 @@
 #include <QOpenGLShaderProgram>
 #include <QOpenGLFunctions>
 
-class MainProgram : protected QOpenGLFunctions
+class BasicProgram : protected QOpenGLFunctions
 {
 public:
-    MainProgram();
-    virtual ~MainProgram();
+    BasicProgram();
+    virtual ~BasicProgram();
 
     inline GLuint positionAttribute() const { return _positionAttribute; }
     inline GLuint textureAttribute() const { return _textureAttribute; }

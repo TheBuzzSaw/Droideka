@@ -36,7 +36,6 @@ void CardSpecifications::height(float h)
 void CardSpecifications::depth(float d)
 {
     _depth = qMax(d, 0.01f);
-
 }
 
 void CardSpecifications::cornerRadius(float cr)

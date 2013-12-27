@@ -4,7 +4,7 @@
 #include "Camera.hpp"
 #include "CardDrawTool.hpp"
 #include "TableBuffer.hpp"
-#include "MainProgram.hpp"
+#include "BasicProgram.hpp"
 #include "AnimationCollection.hpp"
 #include "swccg/LocationPopper.hpp"
 #include <QWidget>
@@ -47,7 +47,7 @@ private:
     GLuint loadText(const QString& text);
     QVector3D unproject(QPoint pixel);
 
-    MainProgram* _program;
+    BasicProgram* _program;
     CardBuffer* _cardBuffer;
     CardDrawTool* _drawTool;
     TableBuffer* _tableBuffer;

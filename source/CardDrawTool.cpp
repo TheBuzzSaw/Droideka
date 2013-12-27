@@ -1,6 +1,6 @@
 #include "CardDrawTool.hpp"
 
-CardDrawTool::CardDrawTool(MainProgram& program, CardBuffer& buffer,
+CardDrawTool::CardDrawTool(BasicProgram& program, CardBuffer& buffer,
     QMatrix4x4& projectionMatrix)
     : _program(program),
     _buffer(buffer),

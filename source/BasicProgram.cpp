@@ -1,6 +1,6 @@
-#include "MainProgram.hpp"
+#include "BasicProgram.hpp"
 
-MainProgram::MainProgram()
+BasicProgram::BasicProgram()
 {
     initializeOpenGLFunctions();
 
@@ -49,35 +49,35 @@ MainProgram::MainProgram()
     setHighlight(QVector4D());
 }
 
-MainProgram::~MainProgram()
+BasicProgram::~BasicProgram()
 {
 }
 
-void MainProgram::bind()
+void BasicProgram::bind()
 {
     _program.bind();
     glEnableVertexAttribArray(_positionAttribute);
     glEnableVertexAttribArray(_textureAttribute);
 }
 
-void MainProgram::release()
+void BasicProgram::release()
 {
     glDisableVertexAttribArray(_textureAttribute);
     glDisableVertexAttribArray(_positionAttribute);
     _program.release();
 }
 
-void MainProgram::setMatrix(const QMatrix4x4& matrix)
+void BasicProgram::setMatrix(const QMatrix4x4& matrix)
 {
     _program.setUniformValue(_matrixUniform, matrix);
 }
 
-void MainProgram::enableTexture(bool enable)
+void BasicProgram::enableTexture(bool enable)
 {
     _program.setUniformValue(_enableTextureUniform, enable);
 }
 
-void MainProgram::setHighlight(const QVector4D &highlight)
+void BasicProgram::setHighlight(const QVector4D& highlight)
 {
     _program.setUniformValue(_highlightUniform, highlight);
 }
